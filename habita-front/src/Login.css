@@ -1,0 +1,192 @@
+:root {
+  --bg: oklch(0.98 0.005 200);
+  --surface: #ffffff;
+  --text: oklch(0.22 0.02 220);
+  --muted: oklch(0.55 0.02 220);
+  --border: oklch(0.92 0.01 220);
+  --primary: oklch(0.55 0.13 175);
+  --primary-hover: oklch(0.48 0.13 175);
+  --primary-fg: #ffffff;
+  --accent: oklch(0.27 0.045 200);
+  --accent-2: oklch(0.45 0.09 190);
+  --danger: oklch(0.55 0.18 25);
+  --ring: oklch(0.55 0.13 175 / 0.35);
+  --shadow: 0 20px 50px -20px oklch(0.27 0.045 200 / 0.35);
+}
+
+a { color: var(--primary); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+.page {
+  min-height: 100vh;
+
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background:
+    radial-gradient(1200px 600px at -10% -10%, oklch(0.45 0.09 190) 0%, transparent 60%),
+    linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%);
+
+  overflow: hidden;
+}
+
+.logo-container {
+  position: absolute;
+
+  top: 32px;
+  left: 42px;
+
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transform: scale(1.5);
+}
+
+.logo_habita {
+  font-family: Georgia, serif;
+  width: 40px;
+  height: 40px;
+
+  border-radius: 8px;
+
+  background: white;
+  color: var(--accent);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-weight: 700;
+  font-size: 20px;
+}
+
+.titulo {
+  font-family: Georgia, serif;
+  color: white;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.form-side {
+    /* transform: scale(0.9); */
+  width: 100%;
+  max-width: 700px;
+  min-height: 600px;
+
+  background: white;
+
+  border-radius: 28px;
+
+  margin-left: 28px;
+
+  box-shadow: 0 30px 80px rgba(0,0,0,0.18);
+
+  display: flex;
+  font-weight: 600;
+  size: 10px;
+}
+
+.form-wrap {
+  width: 100%;
+  max-width: 420px;
+
+  margin: auto;
+  padding: 56px 48px;
+}
+.form-wrap h2 {
+  font-size: 23px; margin: 0 0 8px; letter-spacing: -0.01em;
+}
+.muted { color: var(--muted); margin: 0 0 28px; font-size: 14px; }
+
+.form { display: flex; flex-direction: column; gap: 16px; }
+.field { display: flex; flex-direction: column; gap: 6px; }
+
+.input {
+  display: flex; align-items: center; gap: 10px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px;
+  height: 43px;
+  transition: border-color .15s, box-shadow .15s;
+  color: var(--muted);
+}
+
+.input:focus-within {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 4px var(--ring);
+}
+.input input {
+  flex: 1; border: 0; outline: 0; background: transparent;
+  font-size: 15px; color: var(--text); height: 100%;
+}
+.icon-btn {
+  border: 0; background: transparent; cursor: pointer; color: var(--muted);
+  display: grid; place-items: center; padding: 4px;
+}
+.icon-btn:hover { color: var(--text); }
+
+.row {
+  display: flex; align-items: center; justify-content: space-between;
+  font-size: 13px;
+}
+.check { display: inline-flex; align-items: center; gap: 8px; color: var(--text); cursor: pointer; }
+.check input { accent-color: var(--primary); width: 16px; height: 16px; }
+.link { color: var(--primary); }
+
+.error {
+  background: oklch(0.96 0.04 25);
+  color: var(--danger);
+  border: 1px solid oklch(0.85 0.08 25);
+  padding: 10px 12px; border-radius: 8px; font-size: 13px;
+}
+
+.btn-primary {
+  height: 46px; border: 0; border-radius: 10px;
+  background: var(--primary); color: var(--primary-fg);
+  font-weight: 600; font-size: 15px; cursor: pointer;
+  transition: background .15s, transform .05s;
+  box-shadow: var(--shadow);
+}
+.btn-primary:hover { background: var(--primary-hover); }
+.btn-primary:active { transform: translateY(1px); }
+.btn-primary:disabled { opacity: 0.7; cursor: not-allowed; }
+
+.divider {
+  display: flex; align-items: center; gap: 12px;
+  color: var(--muted); font-size: 12px; margin: 4px 0;
+}
+.divider::before, .divider::after {
+  content: ""; flex: 1; height: 1px; background: var(--border);
+}
+
+.btn-google {
+  height: 44px; border-radius: 10px;
+  border: 1px solid var(--border); background: var(--surface);
+  color: var(--text); font-weight: 500; font-size: 14px;
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  cursor: pointer; transition: background .15s, border-color .15s;
+}
+.btn-google:hover { background: oklch(0.97 0.005 200); border-color: oklch(0.85 0.01 220); }
+
+.footer-note {
+  margin-top: 24px; font-size: 12px; color: var(--muted); text-align: center;
+}
+
+@media (max-width: 900px) {
+  .form-side {
+    grid-template-columns: 1fr;
+  }
+
+  .hero {
+    display: none;
+  }
+
+  .form-wrap {
+    padding: 40px 24px;
+    transform: scale(0.08);
+  }
+}
