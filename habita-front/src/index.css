@@ -3,12 +3,11 @@
   --foreground: oklch(0.22 0.04 200);
   --card: #ffffff;
   --border: oklch(0.88 0.015 200);
-  --muted: oklch(0.94 0.01 200);
   --muted-foreground: oklch(0.5 0.02 200);
-  --barra_opcoes: oklch(0.27 0.045 200);
+  --barra_opcoes: #005f6d;
   --barra_opcoes-foreground: oklch(0.97 0.01 180);
   --barra_opcoes-accent: oklch(0.32 0.05 200);
-  --barra_opcoes-muted: oklch(0.7 0.04 200);
+  --barra_opcoes-muted: #bdfbff;
   --brand-mint: oklch(0.78 0.13 175);
   --status-ok: oklch(0.78 0.13 175);
   --status-pending: oklch(0.86 0.13 90);
@@ -94,3 +93,11 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
 }
 
 .notif-btn:hover { background: #a8ebd7be }
+
+.filtro-bt {
+  display: flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 6px;
+  border: 1px solid var(--border); font-size: 12px; color: var(--muted-foreground);
+  background: #e3eaea;
+}
+
+.filtro-bt:hover { background: rgb(207, 216, 218); }
