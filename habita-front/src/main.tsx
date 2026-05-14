@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import Dashboard from "./Dashboard";
 import Pagamentos from "./Pagamentos";
+import Relatorios  from "./Relatorios";
 import Login from "./Login";
 
 import {
@@ -19,6 +20,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
         <Route path="/" element={<Login />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/pagamentos" element={<Pagamentos />} />
+        <Route path="/relatorios" element={<Relatorios />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>
