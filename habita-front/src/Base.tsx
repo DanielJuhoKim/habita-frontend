@@ -31,20 +31,14 @@ export default function Base({ children }: LayoutProps) {
       icone: FileText,
     },
     {
-      label: "Relatórios",
-      path: "/relatorios",
-      atual: false,
-      icone: LineChart,
-    }
-  ];
-
-  const rotas_baixo = [
-    {
       label: "Imóveis",
       path: "/imoveis",
       atual: false,
       icone: Building2,
-    },
+    }
+  ];
+
+  const rotas_baixo = [
     {
       label: "Inquilinos",
       path: "/inquilinos",
@@ -62,10 +56,10 @@ export default function Base({ children }: LayoutProps) {
   return (
     <div className="app">
       <aside className="barra_opcoes">
-        <div className="barra_opcoes-titulo">
+        <button type="button" className="barra_opcoes-titulo" onClick={() => navegador("/dashboard")}>
           <div className="logo_habita">H</div>
           <span className="titulo">Habita</span>
-        </div>
+        </button>
 
         <div className="barra_opcoes-divider" />
 

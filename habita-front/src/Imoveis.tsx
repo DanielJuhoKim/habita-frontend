@@ -1,4 +1,4 @@
-import "./Relatorios.css";
+import "./Imoveis.css";
 import Base from "./Base";
 import { Filter } from "lucide-react";
 
@@ -137,7 +137,7 @@ function Card({ data }: { data: Imovel }) {
   );
 }
 
-export default function Relatorios() {
+export default function Imoveis() {
   return (
     <Base>
       <div className="card panel" style={{ flex: 1, minHeight: 0 }}>
