@@ -3,7 +3,10 @@ import "./Pagamentos.css";
 
 import {
   Filter, Search, ChevronDown,
+  ChevronUp,
 } from "lucide-react";
+
+import { useState } from "react";
 
 type Status = "pending-soon" | "late" | "paid";
 
@@ -31,16 +34,16 @@ const efetuados: Pagamento_info[] = [
   { title: "Condomínio - Av. Central, 890", tenant: "Ana Costa", info: "Data: 05/06/2026 - Pago em 04/06/2026", status: "paid", value: "R$ 380,00" },
 ];
 
-function PagamentoCard({ p }: { p: Pagamento_info }) {
+function PagamentoCard({ pagamento }: { pagamento: Pagamento_info }) {
   return (
     <div className="pay-card">
       <div className="pay-info">
-        <p className="pay-title">{p.title}</p>
-        <p className="pay-tenant">Inquilino: {p.tenant}</p>
-        <p className={`pay-date ${p.status}`}>{p.info}</p>
+        <p className="pay-title">{pagamento.title}</p>
+        <p className="pay-tenant">Inquilino: {pagamento.tenant}</p>
+        <p className={`pay-date ${pagamento.status}`}>{pagamento.info}</p>
       </div>
       <div className="pay-actions">
-        <p className="pay-value">{p.value}</p>
+        <p className="pay-value">{pagamento.value}</p>
         <button className="pay-btn">Pagar agora</button>
       </div>
     </div>
@@ -49,17 +52,54 @@ function PagamentoCard({ p }: { p: Pagamento_info }) {
 
 function Section({
   title, items, bg,
-}: { title: string; items: Pagamento_info[]; bg: "pendente" | "efetuado" }) {
+}: { 
+  title: string; 
+  items: Pagamento_info[]; 
+  bg: "pendente" | "efetuado" 
+  }) {
+  const [qtd_payment, qtd_payment_visivel] = useState(2);
+
+  function mostrarMaisPagamentos() {
+    qtd_payment_visivel((anterior) => anterior + 2);
+  }
+
+  function mostrarMenosPagamentos() {
+    qtd_payment_visivel((anterior) => anterior - 2);
+  }
+
+  const pagamentos_visiveis = items.slice(0, qtd_payment);
+
   return (
     <div className={`section section-${bg}`}>
       <div className="section-head">
         <h3>{title}</h3>
       </div>
+
       <div className="section-list">
-        {items.map((p, i) => <PagamentoCard key={i} p={p} />)}
-        <div className="ver-mais-wrap">
-          <button className="ver-mais">Ver mais <ChevronDown size={14} /></button>
-        </div>
+        {
+        pagamentos_visiveis.map((p, i) => (
+          <PagamentoCard key={i} pagamento={p} />
+        ))
+        }
+
+        {
+        qtd_payment < items.length && (
+          <div className="ver-mais-wrap">
+              <button className="ver-mais" onClick={mostrarMaisPagamentos}>
+                Ver mais <ChevronDown size={14} />
+              </button>
+            </div>
+          )
+        }
+        {
+          qtd_payment >= 2 && (
+          <div className="ver-menos-wrap">
+              <button className="ver-menos" onClick={mostrarMenosPagamentos}>
+                Ver menos <ChevronUp size={14} />
+              </button>
+            </div>
+          )
+        }
       </div>
     </div>
   );
@@ -72,7 +112,7 @@ export default function Pagamentos() {
           <div>
             <p className="banner-label">Total a pagar</p>
             <p className="banner-value">R$ 6.095,15</p>
-            <p className="banner-sub">10 pagamentos pendentes - 14 pagamentos efetuados</p>
+            <p className="banner-desc">10 pagamentos pendentes - 14 pagamentos efetuados</p>
           </div>
           <div className="progress-block">
             <p className="progress-label">Progresso</p>
@@ -93,7 +133,7 @@ export default function Pagamentos() {
             </div>
           </div>
 
-          <div className="sections-scroll">
+          <div className="lista-pagamentos">
             <Section title="Pendente" items={pendentes} bg="pendente" />
             <Section title="Efetuado" items={efetuados} bg="efetuado" />
           </div>
