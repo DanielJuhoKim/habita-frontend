@@ -4,7 +4,6 @@ import {
   Bell,
   LayoutDashboard,
   FileText,
-  LineChart,
   Building2,
   Users,
   Settings,

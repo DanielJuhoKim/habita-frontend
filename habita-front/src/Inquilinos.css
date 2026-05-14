@@ -1,0 +1,155 @@
+.panel { overflow: hidden; }
+.scroll { overflow-y: auto; min-height: 0; flex: 1; padding-right: 4px; }
+
+/* Toolbar */
+.inq-toolbar {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.inq-title { display: flex; align-items: baseline; gap: 12px; }
+.inq-title h2 { margin: 0; font-size: 18px; }
+.inq-count { color: var(--muted-fg); font-size: 13px; }
+
+.inq-tools {
+  display: flex; flex-wrap: wrap; gap: 10px; align-items: center;
+}
+.search {
+  position: relative; flex: 1; min-width: 240px;
+}
+.search input {
+  width: 100%;
+  padding: 10px 12px 10px 36px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: oklch(0.98 0.005 200);
+  font-size: 14px;
+  outline: none;
+}
+.search input:focus { border-color: var(--primary); background: var(--card); }
+.search-ico {
+  position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
+  font-size: 14px; opacity: 0.6;
+}
+
+.filters { display: flex; gap: 6px; flex-wrap: wrap; }
+.chip {
+  border: 1px solid var(--border);
+  background: var(--card);
+  padding: 8px 12px;
+  border-radius: 999px;
+  font-size: 13px;
+  cursor: pointer;
+  color: var(--fg);
+}
+.chip:hover { border-color: var(--primary); }
+.chip-active {
+  background: var(--primary);
+  color: var(--primary-fg);
+  border-color: var(--primary);
+}
+
+/* Grid */
+.inq-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 16px;
+}
+
+/* Card */
+.inq-card {
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  background: oklch(0.99 0.005 180);
+  transition: box-shadow 0.15s, transform 0.15s;
+}
+.inq-card:hover {
+  box-shadow: 0 6px 16px oklch(0 0 0 / 6%);
+  transform: translateY(-1px);
+}
+.inq-head {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 12px;
+  align-items: center;
+}
+.inq-avatar {
+  width: 44px; height: 44px; border-radius: 50%;
+  background: oklch(0.85 0.07 175); color: oklch(0.25 0.05 200);
+  display: grid; place-items: center; font-weight: 700; font-size: 14px;
+}
+.inq-name { font-weight: 600; font-size: 15px; }
+.inq-since { font-size: 12px; color: var(--muted-fg); }
+
+.badge {
+  font-size: 11px; font-weight: 600;
+  padding: 4px 10px; border-radius: 999px;
+  white-space: nowrap;
+}
+.badge-adimplente { background: oklch(0.92 0.07 175); color: oklch(0.35 0.1 175); }
+.badge-pendente   { background: oklch(0.94 0.1 90);  color: oklch(0.4 0.12 80); }
+.badge-atraso     { background: oklch(0.9 0.13 25);  color: oklch(0.35 0.18 25); }
+
+.inq-contact {
+  display: flex; flex-direction: column; gap: 6px;
+  font-size: 13px;
+}
+.contact-row {
+  display: flex; align-items: center; gap: 8px;
+  color: var(--fg);
+}
+.contact-row a { color: inherit; text-decoration: none; }
+.contact-row a:hover { color: var(--primary); text-decoration: underline; }
+.contact-ico { width: 18px; text-align: center; opacity: 0.7; }
+
+.inq-imoveis {
+  border-top: 1px dashed var(--border);
+  padding-top: 12px;
+}
+.imoveis-label {
+  font-size: 12px; color: var(--muted-fg);
+  text-transform: uppercase; letter-spacing: 0.5px;
+  margin-bottom: 8px;
+}
+.imoveis-list {
+  list-style: none; padding: 0; margin: 0;
+  display: flex; flex-direction: column; gap: 6px;
+}
+.imoveis-list li {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 13px;
+  padding: 6px 10px;
+  background: oklch(0.96 0.012 180);
+  border-radius: 8px;
+}
+.imovel-ico { opacity: 0.7; }
+
+.inq-actions {
+  display: flex; gap: 8px; justify-content: flex-end;
+  margin-top: auto;
+  padding-top: 4px;
+}
+.btn-primary {
+  background: var(--primary); color: var(--primary-fg);
+  border: none; padding: 8px 14px; border-radius: 10px;
+  font-size: 13px; font-weight: 600; cursor: pointer;
+}
+.btn-primary:hover { filter: brightness(1.05); }
+.btn-ghost {
+  background: transparent; color: var(--fg);
+  border: 1px solid var(--border);
+  padding: 8px 14px; border-radius: 10px;
+  font-size: 13px; cursor: pointer;
+}
+.btn-ghost:hover { border-color: var(--primary); color: var(--primary); }
+
+.empty {
+  grid-column: 1 / -1;
+  text-align: center;
+  color: var(--muted-fg);
+  padding: 40px 20px;
+}

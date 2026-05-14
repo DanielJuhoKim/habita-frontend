@@ -1,9 +1,11 @@
 import "./Imoveis.css";
 import Base from "./Base";
 import { Filter } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 type Prioridade = { tone: "late" | "pending"; text: string };
 type Imovel = {
+  id: number,
   title: string;
   tenant: string;
   gasto: string;
@@ -16,6 +18,7 @@ type Imovel = {
 
 const imoveis: Imovel[] = [
   {
+    id: 7,
     title: "Rua das Palmeiras, 210 — Casa",
     tenant: "João Silva",
     gasto: "R$ 312,40",
@@ -28,6 +31,7 @@ const imoveis: Imovel[] = [
     ],
   },
   {
+    id: 7,
     title: "Av. Central, 890 — Apt 45",
     tenant: "Ana Costa",
     gasto: "R$ 482,12",
@@ -41,6 +45,7 @@ const imoveis: Imovel[] = [
     ],
   },
   {
+    id: 7,
     title: "Rua João Pedro, 700 — Apt 203",
     tenant: "Fernanda Ribeira",
     gasto: "R$ 627,80",
@@ -54,6 +59,7 @@ const imoveis: Imovel[] = [
     ],
   },
   {
+    id: 7,
     title: "Av. Ribeiro, 861",
     tenant: "Carlos Mendes",
     gasto: "R$ 198,55",
@@ -66,6 +72,7 @@ const imoveis: Imovel[] = [
     ],
   },
   {
+    id: 7,
     title: "Rua Verde, 312 — Apt 12",
     tenant: "Marina Souza",
     gasto: "R$ 354,00",
@@ -84,6 +91,7 @@ function FilterBtn() {
 }
 
 function Card({ data }: { data: Imovel }) {
+  const navigate = useNavigate();
   return (
     <div className="card rel-card">
       <div className="rel-head">
@@ -91,7 +99,16 @@ function Card({ data }: { data: Imovel }) {
           <p className="rel-title">{data.title}</p>
           <p className="rel-tenant">Inquilino: {data.tenant}</p>
         </div>
-        <button className="btn-detalhes">Ver detalhes</button>
+        <button
+          className="btn-detalhes"
+          onClick={() =>
+            navigate(
+              `/imoveis/${encodeURIComponent(data.id)}`
+            )
+          }
+        >
+          Ver detalhes
+        </button>
       </div>
 
       <div className="rel-body">

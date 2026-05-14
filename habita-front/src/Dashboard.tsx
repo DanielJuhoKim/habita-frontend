@@ -40,9 +40,6 @@ const movimentacoes = [
   { dot: "late", title: "Multa atraso - Rua João Pedro, 700", value: "-R$ 22,40", date: "04/06/26" },
 ];
 
-function FilterBtn() {
-  return <button className="filtro-bt"><Filter size={14} /> Filtros</button>;
-}
 
 export default function Dashboard() {
   return (
@@ -61,7 +58,7 @@ export default function Dashboard() {
         <div className="card panel">
           <div className="objetos">
             <h2>Meus imóveis</h2>
-            <FilterBtn />
+            <button className="filtro-bt"><Filter size={14} /> Filtros</button>
           </div>
           <div className="scroll">
             {imoveis.map((it, i) => (
@@ -83,7 +80,7 @@ export default function Dashboard() {
         <div className="card panel">
           <div className="objetos">
             <h2>Alertas e Avisos</h2>
-            <FilterBtn />
+            <button className="filtro-bt"><Filter size={14} /> Filtros</button>
           </div>
           <div className="scroll">
             {alertas.map((a, i) => (
