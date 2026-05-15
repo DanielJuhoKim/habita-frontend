@@ -1,0 +1,328 @@
+:root {
+  --bg: oklch(0.97 0.02 175);
+  --card: oklch(1 0 0);
+  --border: oklch(0.9 0.02 175);
+  --text: oklch(0.27 0.045 200);
+  --muted: oklch(0.55 0.02 200);
+  --primary: oklch(0.55 0.13 175);
+  --primary-fg: oklch(0.99 0 0);
+  --ok-bg: oklch(0.94 0.06 175);
+  --ok-fg: oklch(0.35 0.1 175);
+  --late-bg: oklch(0.94 0.07 25);
+  --late-fg: oklch(0.45 0.15 25);
+  --pend-bg: oklch(0.95 0.06 80);
+  --pend-fg: oklch(0.45 0.13 70);
+}
+
+.card.panel {
+  background: var(--card);
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  color: var(--text);
+}
+
+.inq-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--border);
+  flex-wrap: wrap;
+}
+
+.btn-back {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+  font-size: 18px;
+}
+
+.inq-id {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex: 1;
+  min-width: 0;
+}
+
+.inq-avatar-lg {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--ok-bg);
+  color: var(--ok-fg);
+  display: grid;
+  place-items: center;
+  font-weight: 700;
+  font-size: 18px;
+}
+
+.inq-id h1 {
+  margin: 0;
+  font-size: 20px;
+}
+
+.muted {
+  color: var(--muted);
+  margin: 2px 0 0;
+  font-size: 13px;
+}
+
+.inq-badge {
+  font-size: 12px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-weight: 600;
+}
+.inq-badge--adimplente { background: var(--ok-bg); color: var(--ok-fg); }
+.inq-badge--atraso { background: var(--late-bg); color: var(--late-fg); }
+.inq-badge--pendente { background: var(--pend-bg); color: var(--pend-fg); }
+
+.inq-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-ghost {
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 8px 14px;
+  cursor: pointer;
+  color: var(--text);
+  font-weight: 500;
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: var(--primary-fg);
+  border: none;
+  border-radius: 10px;
+  padding: 9px 16px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.inq-scroll {
+  padding: 20px 24px;
+  overflow-y: auto;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.inq-metrics {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+
+.metric {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.metric-label {
+  font-size: 12px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: .04em;
+}
+
+.metric-value {
+  font-size: 20px;
+}
+
+.inq-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.box {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px 18px;
+}
+
+.box h3 {
+  margin: 0 0 12px;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  color: var(--muted);
+}
+
+.info-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.info-list li {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 6px 0;
+  border-bottom: 1px dashed var(--border);
+  font-size: 14px;
+}
+
+.info-list li:last-child { border-bottom: none; }
+.info-list span { color: var(--muted); }
+
+.obs {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.inq-tabs {
+  display: flex;
+  gap: 4px;
+  border-bottom: 1px solid var(--border);
+  flex-wrap: wrap;
+}
+
+.tab {
+  background: transparent;
+  border: none;
+  padding: 10px 14px;
+  cursor: pointer;
+  color: var(--muted);
+  font-weight: 500;
+  border-bottom: 2px solid transparent;
+}
+
+.tab--active {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+}
+
+.tab-content { padding-top: 4px; }
+
+.inq-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.inq-table th {
+  text-align: left;
+  font-size: 11px;
+  text-transform: uppercase;
+  color: var(--muted);
+  letter-spacing: .04em;
+  padding: 10px 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+.inq-table td {
+  padding: 12px 8px;
+  border-bottom: 1px dashed var(--border);
+}
+
+.pill {
+  display: inline-block;
+  font-size: 12px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+.pill--pago { background: var(--ok-bg); color: var(--ok-fg); }
+.pill--atraso { background: var(--late-bg); color: var(--late-fg); }
+.pill--pendente { background: var(--pend-bg); color: var(--pend-fg); }
+
+.imoveis-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.imovel-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  flex-wrap: wrap;
+}
+
+.imovel-row__right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.docs {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.docs li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+
+.timeline {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.timeline li {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-top: 6px;
+  flex-shrink: 0;
+}
+.dot--pagamento { background: var(--ok-fg); }
+.dot--mensagem { background: var(--primary); }
+.dot--manutencao { background: var(--pend-fg); }
+.dot--contrato { background: var(--late-fg); }
+
+@media (max-width: 900px) {
+  .inq-metrics { grid-template-columns: repeat(2, 1fr); }
+  .inq-grid { grid-template-columns: 1fr; }
+}

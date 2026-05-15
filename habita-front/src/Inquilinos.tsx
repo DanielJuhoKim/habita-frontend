@@ -99,10 +99,8 @@ function Card({ data }: { data: Inquilino }) {
         </ul>
       </div>
 
-      <div className="inq-actions">
-        <button className="btn-ghost">Mensagem</button>
-        <button className="btn-primary">Ver detalhes</button>
-      </div>
+          {/* <button className="btn-ghost">Mensagem</button> */}
+          <button className="btn-primary">Ver detalhes</button>
     </div>
   );
 }
@@ -132,10 +130,9 @@ export default function Inquilinos() {
 
           <div className="inq-tools">
             <div className="search">
-              <span className="search-ico">🔎</span>
               <input
                 type="text"
-                placeholder="Buscar por nome, e-mail ou telefone..."
+                placeholder=" 🔎 Buscar por nome, e-mail ou telefone..."
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
               />
@@ -143,7 +140,7 @@ export default function Inquilinos() {
 
             <button className="filtro-bt"><Filter size={14} /> Filtros</button>
 
-            <button className="btn-primary">+ Novo inquilino</button>
+            <button className="btn-novo-inq">+ Novo inquilino</button>
           </div>
         </div>
 

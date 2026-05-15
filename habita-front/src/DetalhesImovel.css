@@ -14,7 +14,7 @@
   border-bottom: 1px solid oklch(0.92 0.01 200);
 }
 
-.id-back {
+/* .voltar-tela {
   background: transparent;
   border: 1px solid oklch(0.9 0.01 200);
   border-radius: 8px;
@@ -26,7 +26,7 @@
   align-items: center;
   gap: 6px;
 }
-.id-back:hover { background: oklch(0.97 0.01 200); }
+.voltar-tela:hover { background: oklch(0.97 0.01 200); } */
 
 .id-title-block { min-width: 0; }
 .id-title-row { display: flex; align-items: center; gap: 12px; }
@@ -41,13 +41,27 @@
   text-transform: uppercase;
   letter-spacing: 0.4px;
 }
-.id-badge--ok { background: oklch(0.94 0.06 175); color: oklch(0.4 0.13 175); }
-.id-badge--atraso { background: oklch(0.94 0.07 25); color: oklch(0.45 0.18 25); }
-.id-badge--pendente { background: oklch(0.95 0.06 80); color: oklch(0.45 0.13 80); }
+.id-badge--ok { 
+  background: oklch(0.94 0.06 175);
+  color: oklch(0.4 0.13 175); 
+}
 
-.id-actions { display: flex; gap: 8px; }
+.id-badge--atraso { 
+  background: oklch(0.94 0.07 25);
+  color: oklch(0.45 0.18 25); 
+}
 
-.btn-primary {
+.id-badge--pendente { 
+  background: oklch(0.95 0.06 80);
+  color: oklch(0.45 0.13 80); 
+}
+
+.id-actions { display: flex; 
+  gap: 8px; 
+  justify-content: flex-end;
+}
+
+.btn-inquilino {
   background: oklch(0.55 0.13 175);
   color: white;
   border: none;
@@ -57,9 +71,10 @@
   cursor: pointer;
   font-size: 13px;
 }
-.btn-primary:hover { background: oklch(0.5 0.13 175); }
 
-.btn-ghost {
+.btn-inquilino:hover { background: oklch(0.5 0.13 175); }
+
+.btn-editar {
   background: transparent;
   color: oklch(0.4 0.03 200);
   border: 1px solid oklch(0.9 0.01 200);
@@ -69,7 +84,7 @@
   cursor: pointer;
   font-size: 13px;
 }
-.btn-ghost:hover { background: oklch(0.97 0.01 200); }
+.btn-editar:hover { background: oklch(0.97 0.01 200); }
 
 .id-scroll {
   display: flex;

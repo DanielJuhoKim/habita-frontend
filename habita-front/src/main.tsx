@@ -6,6 +6,7 @@ import Imoveis  from "./Imoveis";
 import DetalhesImovel from "./DetalhesImovel";
 import Login from "./Login";
 import Inquilinos from "./Inquilinos";
+import DetalhesInquilino from "./DetalhesInquilino";
 
 import {
   BrowserRouter,
@@ -25,6 +26,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
         <Route path="/imoveis" element={<Imoveis />} />
         <Route path="/imoveis/:id_imovel" element={<DetalhesImovel />} />
         <Route path="/inquilinos" element={<Inquilinos />} />
+        <Route path="/inquilinos/:id_inquilino" element={<DetalhesInquilino />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>
