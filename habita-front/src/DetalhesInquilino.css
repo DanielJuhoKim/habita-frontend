@@ -4,8 +4,8 @@
   --border: oklch(0.9 0.02 175);
   --text: oklch(0.27 0.045 200);
   --muted: oklch(0.55 0.02 200);
-  --primary: oklch(0.55 0.13 175);
-  --primary-fg: oklch(0.99 0 0);
+  --edit: oklch(0.55 0.13 175);
+  --edit-fg: oklch(0.99 0 0);
   --ok-bg: oklch(0.94 0.06 175);
   --ok-fg: oklch(0.35 0.1 175);
   --late-bg: oklch(0.94 0.07 25);
@@ -34,14 +34,14 @@
 }
 
 .btn-back {
-  width: 36px;
+  width: 70px;
   height: 36px;
   border-radius: 10px;
   border: 1px solid var(--border);
   background: transparent;
   color: var(--text);
   cursor: pointer;
-  font-size: 18px;
+  font-size: 13px;
 }
 
 .inq-id {
@@ -100,14 +100,14 @@
   font-weight: 500;
 }
 
-.btn-primary {
-  background: var(--primary);
-  color: var(--primary-fg);
+.btn-edit {
+  background: var(--edit);
+  color: var(--edit-fg);
   border: none;
   border-radius: 10px;
-  padding: 9px 16px;
+  padding: 7px 20px;
   cursor: pointer;
-  font-weight: 600;
+  font-weight: 370;
 }
 
 .inq-scroll {
@@ -213,8 +213,8 @@
 }
 
 .tab--active {
-  color: var(--primary);
-  border-bottom-color: var(--primary);
+  color: var(--edit);
+  border-bottom-color: var(--edit);
 }
 
 .tab-content { padding-top: 4px; }
@@ -318,7 +318,7 @@
   flex-shrink: 0;
 }
 .dot--pagamento { background: var(--ok-fg); }
-.dot--mensagem { background: var(--primary); }
+.dot--mensagem { background: var(--edit); }
 .dot--manutencao { background: var(--pend-fg); }
 .dot--contrato { background: var(--late-fg); }
 

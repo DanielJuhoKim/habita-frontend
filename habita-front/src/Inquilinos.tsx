@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import "./Inquilinos.css";
 import Base from "./Base";
 import {Filter} from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 type Inquilino = {
   nome: string;
@@ -66,6 +67,7 @@ function initials(name: string) {
 }
 
 function Card({ data }: { data: Inquilino }) {
+  const navigate = useNavigate();
   return (
     <div className="inq-card">
       <div className="inq-head">
@@ -98,9 +100,9 @@ function Card({ data }: { data: Inquilino }) {
           ))}
         </ul>
       </div>
-
-          {/* <button className="btn-ghost">Mensagem</button> */}
-          <button className="btn-primary">Ver detalhes</button>
+        <button className="btn-ghost">Mensagem</button>
+        <button className="btn-primary" onClick={() => navigate(`/inquilinos/7`)}>
+          Ver detalhes</button>
     </div>
   );
 }
@@ -121,7 +123,7 @@ export default function Inquilinos() {
 
   return (
     <Base>
-      <div className="card panel" style={{ flex: 1, minHeight: 0, display: "flex", flexDirection: "column", gap: 16 }}>
+      <div className="card panel" style={{ gap: 16 }}>
         <div className="inq-toolbar">
           <div className="inq-title">
             <h2>Inquilinos</h2>

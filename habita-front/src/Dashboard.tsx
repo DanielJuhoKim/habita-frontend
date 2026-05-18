@@ -97,7 +97,7 @@ export default function Dashboard() {
         </div>
       </div>
 
-      <div className="card panel" style={{ flex: 1, minHeight: 0 }}>
+      <div className="card panel">
         <div className="objetos"><h2>Movimentações recentes</h2></div>
         <div className="scroll" style={{ padding: 8 }}>
           <div className="mov-grid">

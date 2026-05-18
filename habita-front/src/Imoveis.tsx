@@ -157,7 +157,7 @@ function Card({ data }: { data: Imovel }) {
 export default function Imoveis() {
   return (
     <Base>
-      <div className="card panel" style={{ flex: 1, minHeight: 0 }}>
+      <div className="card panel">
         <div className="objetos">
           <h2>Relatórios por imóvel</h2>
           <FilterBtn />

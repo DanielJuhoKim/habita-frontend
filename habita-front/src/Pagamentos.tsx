@@ -57,14 +57,14 @@ function Section({
   items: Pagamento_info[]; 
   bg: "pendente" | "efetuado" 
   }) {
-  const [qtd_payment, qtd_payment_visivel] = useState(2);
+  const [qtd_payment, qtd_payment_visivel] = useState(4);
 
   function mostrarMaisPagamentos() {
-    qtd_payment_visivel((anterior) => anterior + 2);
+    qtd_payment_visivel((anterior) => anterior + 4);
   }
 
   function mostrarMenosPagamentos() {
-    qtd_payment_visivel((anterior) => anterior - 2);
+    qtd_payment_visivel((anterior) => anterior - 4);
   }
 
   const pagamentos_visiveis = items.slice(0, qtd_payment);

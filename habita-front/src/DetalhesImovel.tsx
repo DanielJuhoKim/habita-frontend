@@ -1,6 +1,7 @@
 import { useState } from "react";
 import "./DetalhesImovel.css";
 import Base from "./Base";
+import { useNavigate } from "react-router-dom";
 
 type Status = "ok" | "atraso" | "pendente";
 
@@ -116,14 +117,15 @@ type Aba = "visao" | "pagamentos" | "manutencoes" | "documentos";
 
 export default function DetalhesImovel() {
   const [aba, setAba] = useState<Aba>("visao");
-
+  const navigate = useNavigate();
+  
   return (
     <Base>
-      <div className="card panel id-panel" style={{ flex: 1, minHeight: 0 }}>
+      <div className="card panel id-panel" >
         <div className="id-header">
           {/* <button className="voltar-tela">
             ← Voltar
-          </button> */}
+            </button> */}
           <div className="id-title-block">
             <div className="id-title-row">
               <h2>{imovel.endereco}</h2>
@@ -139,7 +141,11 @@ export default function DetalhesImovel() {
           </div>
           <div className="id-actions">
             <button className="btn-editar">Editar</button>
-            <button className="btn-inquilino">Ver inquilino</button>
+            
+            <button className="btn-inquilino" onClick={() => navigate(
+              `/inquilinos/7`
+            )
+          }>Ver inquilino</button>
           </div>
         </div>
 

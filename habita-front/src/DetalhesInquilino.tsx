@@ -120,9 +120,9 @@ export default function DetalhesInquilino() {
 
   return (
     <Base>
-        <div className="card panel" style={{ flex: 1, minHeight: 0 }}>
+        <div className="card panel" >
         <div className="inq-header">
-            <button className="btn-back" aria-label="Voltar">←</button>
+            <button className="btn-back" aria-label="Voltar">← Voltar</button>
             <div className="inq-id">
             <div className="inq-avatar-lg">{inquilino.iniciais}</div>
             <div>
@@ -135,7 +135,7 @@ export default function DetalhesInquilino() {
             </div>
             <div className="inq-actions">
             <button className="btn-ghost">Mensagem</button>
-            <button className="btn-primary">Editar</button>
+            <button className="btn-edit">Editar</button>
             </div>
         </div>
 

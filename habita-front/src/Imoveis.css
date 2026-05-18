@@ -1,37 +1,60 @@
-.panel { display: flex; flex-direction: column; min-height: 0; }
+.panel { display: flex; flex-direction: column; min-height: 700px; flex: 1;}
 
 .objetos {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 16px 20px; border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border);
 }
-.objetos h2 { font-size: 16px; font-weight: 600; margin: 0; }
+.objetos h2 { font-size: 16px;
+  font-weight: 600;
+  margin: 0;
+}
 
-.scroll { flex: 1; overflow-y: auto; }
-.cards-scroll { padding: 16px; display: flex; flex-direction: column; gap: 16px; }
+.scroll { flex: 1;
+  overflow-y: auto;
+}
+.cards-scroll { padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
 
-.rel-card { padding: 18px 20px; }
+.rel-card {
+  padding: 18px 20px;
+  height: 260px;
+}
 .rel-head {
-  display: flex; align-items: flex-start; justify-content: space-between;
-  gap: 16px; padding-bottom: 14px; border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--border);
 }
-.rel-title { font-weight: 600; margin: 0; }
-.rel-tenant { font-size: 14px; color: var(--muted-foreground); margin: 2px 0 0; }
+.rel-title { font-weight: 600;
+  margin: 0;
+}
+.rel-tenant { 
+  font-size: 14px;
+  color: var(--muted-foreground);
+  margin: 2px 0 0;
+}
 
 .btn-detalhes {
-  padding: 8px 16px; border-radius: 6px; font-size: 13px; font-weight: 500;
-  background: oklch(0.55 0.13 175); color: #fff;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  background: oklch(0.55 0.13 175);
+  color: #fff;
 }
 .btn-detalhes:hover { background: oklch(0.5 0.13 175); }
 
 .rel-body {
   display: grid; grid-template-columns: repeat(3, 1fr) 1.4fr;
   gap: 20px; padding-top: 16px;
-}
-@media (max-width: 1100px) {
-  .rel-body { grid-template-columns: 1fr 1fr; }
-}
-@media (max-width: 700px) {
-  .rel-body { grid-template-columns: 1fr; }
 }
 
 .rel-metric { min-width: 0; background-color: #eff4f4; height: 100px; padding-left: 25px; padding-top: 15px; border-radius: 10px;}

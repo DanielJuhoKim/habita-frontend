@@ -26,7 +26,8 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
         <Route path="/imoveis" element={<Imoveis />} />
         <Route path="/imoveis/:id_imovel" element={<DetalhesImovel />} />
         <Route path="/inquilinos" element={<Inquilinos />} />
-        <Route path="/inquilinos/:id_inquilino" element={<DetalhesInquilino />} />
+        {/* <Route path="/inquilinos/:id_inquilino" element={<DetalhesInquilino />} /> */}
+        <Route path="/inquilinos/7" element={<DetalhesInquilino />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>
