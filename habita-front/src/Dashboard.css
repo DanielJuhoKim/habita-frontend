@@ -13,9 +13,6 @@
   --status-ok: oklch(0.78 0.13 175);
   --status-pending: oklch(0.86 0.13 90);
   --status-late: oklch(0.72 0.18 20);
-  --ok-text: oklch(0.55 0.13 175);
-  --pending-text: oklch(0.6 0.13 60);
-  --late-text: oklch(0.6 0.18 25);
 }
 
 * { box-sizing: border-box; }
@@ -62,13 +59,13 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
 
 .stat-note { font-size: 14px; margin: 0; }
 
-.tone-ok { color: var(--ok-text); }
+.corStat-ok { color: var(--ok-text); }
 
-.tone-pending { color: var(--pending-text); }
+.corStat-pending { color: var(--pending-text); }
 
-.tone-late { color: var(--late-text); }
+.corStat-late { color: var(--late-text); }
 
-.tone-muted { color: var(--muted-foreground); }
+.corStat-muted { color: var(--muted-foreground); }
 
 
 /* middle */

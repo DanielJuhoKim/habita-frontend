@@ -9,6 +9,8 @@ import {
   Settings,
 } from "lucide-react";
 
+import { dataAtual } from "./constantes";
+
 type LayoutProps = {
   children: React.ReactNode;
 };
@@ -104,7 +106,7 @@ export default function Base({ children }: LayoutProps) {
         <div className="header">
           <div>
             <h1>Bem vinda Silvia</h1>
-            <p>Terça-Feira, 13 de junho de 2026 - 13/06/26</p>
+            <p>Terça-Feira, {dataAtual.toLocaleDateString("pt-BR")}</p>
           </div>
 
           <button className="notif-btn">

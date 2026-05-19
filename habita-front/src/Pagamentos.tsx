@@ -8,7 +8,7 @@ import {
 
 import { useState } from "react";
 
-type Status = "pending-soon" | "late" | "paid";
+type Status = "pendente" | "atrasado" | "ok";
 
 type Pagamento_info = {
   title: string;
@@ -19,19 +19,19 @@ type Pagamento_info = {
 };
 
 const pendentes: Pagamento_info[] = [
-  { title: "Aluguel - R. das Palmeiras, 210/Casa", tenant: "João Silva", info: "Vence em 28/06/2026", status: "pending-soon", value: "R$ 3.795,15" },
-  { title: "Conta de luz - R. Floripa, 892/Apt 97 (Canva)", tenant: "Pedro Carvalho - Enel", info: "Vence em 28/06/2026", status: "pending-soon", value: "R$ 208,03" },
-  { title: "Conta de gás - R. Floripa, 892/Apt 61 (Jamal)", tenant: "Pedro Carvalho - ComGás", info: "Venceu em 03/06/2026", status: "late", value: "R$ 295,75" },
-  { title: "Aluguel - Av. Central, 890/Apt 45", tenant: "Ana Costa", info: "Vence em 21/07/2026", status: "pending-soon", value: "R$ 982,71" },
-  { title: "Condomínio - R. Bela Vista, 06", tenant: "Marina Souza", info: "Vence em 15/07/2026", status: "pending-soon", value: "R$ 420,00" },
-  { title: "IPTU - Av. Brasil, 1500", tenant: "Pedro Lima", info: "Venceu em 10/06/2026", status: "late", value: "R$ 612,40" },
+  { title: "Aluguel - R. das Palmeiras, 210/Casa", tenant: "João Silva", info: "Vence em 28/06/2026", status: "pendente", value: "R$ 3.795,15" },
+  { title: "Conta de luz - R. Floripa, 892/Apt 97 (Canva)", tenant: "Pedro Carvalho - Enel", info: "Vence em 28/06/2026", status: "pendente", value: "R$ 208,03" },
+  { title: "Conta de gás - R. Floripa, 892/Apt 61 (Jamal)", tenant: "Pedro Carvalho - ComGás", info: "Venceu em 03/06/2026", status: "atrasado", value: "R$ 295,75" },
+  { title: "Aluguel - Av. Central, 890/Apt 45", tenant: "Ana Costa", info: "Vence em 21/07/2026", status: "pendente", value: "R$ 982,71" },
+  { title: "Condomínio - R. Bela Vista, 06", tenant: "Marina Souza", info: "Vence em 15/07/2026", status: "pendente", value: "R$ 420,00" },
+  { title: "IPTU - Av. Brasil, 1500", tenant: "Pedro Lima", info: "Venceu em 10/06/2026", status: "atrasado", value: "R$ 612,40" },
 ];
 
 const efetuados: Pagamento_info[] = [
-  { title: "Aluguel - R. Bela Vista, 920/Casa", tenant: "Marcio Oliveira", info: "Data: 30/05/2026 - Pago em 28/05/2026", status: "paid", value: "R$ 2.481,06" },
-  { title: "Conta de luz - Av. Ribeiro, 861/Apt 97", tenant: "Carlos Mendes - Enel", info: "Data: 25/05/2026 - Pago em 22/05/2026", status: "paid", value: "R$ 187,32" },
-  { title: "Aluguel - Rua das Palmeiras, 210", tenant: "João Silva", info: "Data: 01/06/2026 - Pago em 31/05/2026", status: "paid", value: "R$ 1.087,91" },
-  { title: "Condomínio - Av. Central, 890", tenant: "Ana Costa", info: "Data: 05/06/2026 - Pago em 04/06/2026", status: "paid", value: "R$ 380,00" },
+  { title: "Aluguel - R. Bela Vista, 920/Casa", tenant: "Marcio Oliveira", info: "Data: 30/05/2026 - Pago em 28/05/2026", status: "ok", value: "R$ 2.481,06" },
+  { title: "Conta de luz - Av. Ribeiro, 861/Apt 97", tenant: "Carlos Mendes - Enel", info: "Data: 25/05/2026 - Pago em 22/05/2026", status: "ok", value: "R$ 187,32" },
+  { title: "Aluguel - Rua das Palmeiras, 210", tenant: "João Silva", info: "Data: 01/06/2026 - Pago em 31/05/2026", status: "ok", value: "R$ 1.087,91" },
+  { title: "Condomínio - Av. Central, 890", tenant: "Ana Costa", info: "Data: 05/06/2026 - Pago em 04/06/2026", status: "ok", value: "R$ 380,00" },
 ];
 
 function PagamentoCard({ pagamento }: { pagamento: Pagamento_info }) {
