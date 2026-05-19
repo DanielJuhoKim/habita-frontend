@@ -264,7 +264,7 @@ export default function DetalhesInquilino() {
                         <span className={`inq-badge inq-badge--${im.status}`}>
                         {statusLabel[im.status]}
                         </span>
-                        <button className="btn-ghost">Ver imóvel</button>
+                        <button className="btn-edit" onClick={() => navigate("/imoveis/7") }>Ver imóvel</button>
                     </div>
                     </div>
                 ))}

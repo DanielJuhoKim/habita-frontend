@@ -5,6 +5,7 @@ import {Filter} from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 type Inquilino = {
+  id: number,
   nome: string;
   email: string;
   telefone: string;
@@ -14,6 +15,7 @@ type Inquilino = {
 
 const inquilinos: Inquilino[] = [
   {
+    id: 1,
     nome: "Ana Beatriz Souza",
     email: "ana.souza@email.com",
     telefone: "(11) 98765-4321",
@@ -21,6 +23,7 @@ const inquilinos: Inquilino[] = [
     imoveis: ["Rua das Flores, 120 — Apto 32", "Av. Paulista, 1500 — Sala 8"],
   },
   {
+    id: 2,
     nome: "Carlos Henrique Lima",
     email: "carlos.lima@email.com",
     telefone: "(21) 99812-3344",
@@ -28,6 +31,7 @@ const inquilinos: Inquilino[] = [
     imoveis: ["Rua Marechal, 45 — Casa"],
   },
   {
+    id: 3,
     nome: "Marina Oliveira Costa",
     email: "marina.costa@email.com",
     telefone: "(31) 99700-1122",
@@ -35,6 +39,7 @@ const inquilinos: Inquilino[] = [
     imoveis: ["Edifício Aurora — Apto 1102"],
   },
   {
+    id: 6,
     nome: "Pedro Almeida Rocha",
     email: "pedro.rocha@email.com",
     telefone: "(48) 99123-7788",
@@ -42,6 +47,7 @@ const inquilinos: Inquilino[] = [
     imoveis: ["Rua das Acácias, 88", "Galpão Industrial — Distrito Sul"],
   },
   {
+    id: 5,
     nome: "Juliana Pereira Mendes",
     email: "juliana.mendes@email.com",
     telefone: "(11) 98800-5566",
@@ -49,6 +55,7 @@ const inquilinos: Inquilino[] = [
     imoveis: ["Cobertura Vista Verde — Apto 2001"],
   },
   {
+    id: 7,
     nome: "Rafael Nogueira",
     email: "rafael.nog@email.com",
     telefone: "(85) 99411-2200",
@@ -101,7 +108,7 @@ function Card({ data }: { data: Inquilino }) {
         </ul>
       </div>
         <button className="btn-ghost">Mensagem</button>
-        <button className="btn-primary" onClick={() => navigate(`/inquilinos/7`)}>
+        <button className="btn-primary" onClick={() => navigate(`/inquilinos/${data.id}`)}>
           Ver detalhes</button>
     </div>
   );
