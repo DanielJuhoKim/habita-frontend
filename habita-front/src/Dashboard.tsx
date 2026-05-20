@@ -3,7 +3,7 @@ import Base from "./Base";
 
 import { Filter } from "lucide-react";
 
-import { statsDashboard as stats, imoveis, alertas, movimentacoes, pendenciaTotal } from "./constantes"
+import { statsDashboard as stats, imoveis, alertas, movimentacoes, pendenciaTotal, getInquilino } from "./constantes"
 
 export default function Dashboard() {
   return (
@@ -35,7 +35,7 @@ export default function Dashboard() {
               <div key={i} className="row">
                 <div className="row-main">
                   <p className="titulo-objeto">{imovel.logradouro + " — " + imovel.complemento}</p>
-                  <p className="desc-objeto">Inquilino: {imovel.inquilino}</p>
+                  <p className="desc-objeto">Inquilino: {getInquilino(imovel.inquilino)?.nome}</p>
                 </div>
 
                 <span className={`badge badge-${imovel.dashboard.corStat}`}>{imovel.dashboard.status}</span>

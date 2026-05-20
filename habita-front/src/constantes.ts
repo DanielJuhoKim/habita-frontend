@@ -36,7 +36,7 @@ export type Imovel = {
 
   logradouro: string;
   complemento: string;
-  inquilino: string;
+  inquilino: number;
 
   pagamentos: PagamentoInfo[];
 
@@ -60,7 +60,7 @@ export const imoveis: Imovel[] = [
 
     logradouro: "Rua das Palmeiras, 210",
     complemento: "Casa",
-    inquilino: "João Silva",
+    inquilino: 1,
 
     pagamentos: [
       {
@@ -103,7 +103,7 @@ export const imoveis: Imovel[] = [
 
     logradouro: "Av. Central, 890",
     complemento: "Apt 45",
-    inquilino: "Ana Costa",
+    inquilino: 2,
 
     pagamentos: [
       {
@@ -158,7 +158,7 @@ export const imoveis: Imovel[] = [
 
     logradouro: "Rua João Pedro, 700",
     complemento: "Apt 203",
-    inquilino: "Fernanda Ribeira",
+    inquilino: 3,
 
     pagamentos: [
       {
@@ -213,7 +213,7 @@ export const imoveis: Imovel[] = [
 
     logradouro: "Av. Ribeiro, 861",
     complemento: "Apt 77",
-    inquilino: "Carlos Mendes",
+    inquilino: 4,
 
     pagamentos: [
       {
@@ -263,7 +263,7 @@ export const imoveis: Imovel[] = [
 
     logradouro: "Rua Verde, 312",
     complemento: "Apt 12",
-    inquilino: "Marina Souza",
+    inquilino: 5,
 
     pagamentos: [
       {
@@ -478,3 +478,79 @@ export const statsDashboard = [
     corStat: "muted",
   },
 ];
+
+
+type Inquilino = {
+  id: number,
+  nome: string;
+  email: string;
+  telefone: string;
+  desde: Date;
+  imoveis: number[];
+};
+
+export const inquilinos: Inquilino[] = [
+  {
+    id: 1,
+    nome: "Ana Beatriz Souza",
+    email: "ana.souza@email.com",
+    telefone: "(11) 98765-4321",
+    desde: corretorData("2025-05-04"),
+    imoveis: []
+  },
+  {
+    id: 2,
+    nome: "Carlos Henrique Lima",
+    email: "carlos.lima@email.com",
+    telefone: "(21) 99812-3344",
+    desde: corretorData("2022-08-21"),
+    imoveis: []
+  },
+  {
+    id: 3,
+    nome: "Marina Oliveira Costa",
+    email: "marina.costa@email.com",
+    telefone: "(31) 99700-1122",
+    desde: corretorData("2022-03-01"),
+    imoveis: []
+  },
+  {
+    id: 6,
+    nome: "Pedro Almeida Rocha",
+    email: "pedro.rocha@email.com",
+    telefone: "(48) 99123-7788",
+    desde: corretorData("2022-01-29"),
+    imoveis: []
+  },
+  {
+    id: 5,
+    nome: "Juliana Pereira Mendes",
+    email: "juliana.mendes@email.com",
+    telefone: "(11) 98800-5566",
+    desde: corretorData("2021-12-11"),
+    imoveis: []
+  },
+  {
+    id: 7,
+    nome: "Rafael Nogueira",
+    email: "rafael.nog@email.com",
+    telefone: "(85) 99411-2200",
+    desde: corretorData("2024-10-19"),
+    imoveis: []
+  },
+];
+
+export function initials(name: string) {
+  return name
+    .split(" ")
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((p) => p[0]?.toUpperCase() ?? "")
+    .join("");
+}
+
+export function getInquilino(idInquilino: number) {
+  return inquilinos.find(
+    (inquilino) => inquilino.id === idInquilino
+  )
+}

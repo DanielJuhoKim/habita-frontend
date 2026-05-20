@@ -8,7 +8,7 @@ import {
 
 import { useState } from "react";
 
-import { imoveis, type PagamentoInfo, totalPendencias } from "./constantes";
+import { imoveis, type PagamentoInfo, totalPendencias, getInquilino } from "./constantes";
 
 type Pag_imovel = 
   PagamentoInfo & {
@@ -16,7 +16,7 @@ type Pag_imovel =
 
   logradouro: string;
   complemento: string;
-  inquilino: string;
+  inquilino: number;
 };
 
 function PagamentoCard({ info }: { info: Pag_imovel }) {
@@ -24,7 +24,7 @@ function PagamentoCard({ info }: { info: Pag_imovel }) {
     <div className="pay-card">
       <div className="pay-info">
         <p className="pay-title">{info.desc} — {info.logradouro}/{info.complemento}</p>
-        <p className="pay-tenant">Inquilino: {info.inquilino}</p>
+        <p className="pay-tenant">Inquilino: {getInquilino(info.inquilino)?.nome}</p>
         <p className={`pay-date ${info.status}`}>Data de vencimento: {info.date.toLocaleDateString("pt-BR")}</p>
       </div>
       <div className="pay-actions">
