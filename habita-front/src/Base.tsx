@@ -16,7 +16,7 @@ type LayoutProps = {
 };
 
 export default function Base({ children }: LayoutProps) {
-  const navegador = useNavigate();
+  const navigate = useNavigate();
 
   const rotas_cima = [
     {
@@ -57,7 +57,7 @@ export default function Base({ children }: LayoutProps) {
   return (
     <div className="app">
       <aside className="barra_opcoes">
-        <button type="button" className="barra_opcoes-titulo" onClick={() => navegador("/dashboard")}>
+        <button type="button" className="barra_opcoes-titulo" onClick={() => navigate("/dashboard")}>
           <div className="logo_habita">H</div>
           <span className="titulo">Habita</span>
         </button>
@@ -69,7 +69,7 @@ export default function Base({ children }: LayoutProps) {
             <button
               key={it.label}
               className={`nav-item ${it.atual ? "atual" : ""}`}
-              onClick={() => navegador(it.path)}
+              onClick={() => navigate(it.path)}
             >
               <it.icone size={20} />
               {it.label}
@@ -82,7 +82,7 @@ export default function Base({ children }: LayoutProps) {
             <button
               key={it.label}
               className={`nav-item ${it.atual ? "atual" : ""}`}
-              onClick={() => navegador(it.path)}
+              onClick={() => navigate(it.path)}
             >
               <it.icone size={20} />
               {it.label}

@@ -6,6 +6,7 @@ import {
   AlertTriangle,
 } from "lucide-react";
 
+
 export const dataAtual = corretorData("2026-06-13")
 
 export type CorStat = "ok" | "pending" | "late" | "muted";
@@ -36,7 +37,6 @@ export type Imovel = {
   logradouro: string;
   complemento: string;
   inquilino: string;
-  pendenciaTotal: number;
 
   pagamentos: PagamentoInfo[];
 
@@ -54,36 +54,6 @@ export type Imovel = {
   };
 };
 
-export const statsDashboard = [
-  {
-    label: "Pagamento efetuado",
-    value: 7839.37,
-    note: "14 boletos pagos",
-    corStat: "ok",
-  },
-
-  {
-    label: "Pagamento pendente",
-    value: 3473.81,
-    note: "7 boletos pendentes",
-    corStat: "pending",
-  },
-
-  {
-    label: "Pagamento atrasado",
-    value: 621.34,
-    note: "3 boletos atrasados",
-    corStat: "late",
-  },
-
-  {
-    label: "Imóveis ativos",
-    value: 7,
-    note: "de 9 imóveis cadastrados",
-    corStat: "muted",
-  },
-];
-
 export const imoveis: Imovel[] = [
   {
     id: 1,
@@ -91,7 +61,6 @@ export const imoveis: Imovel[] = [
     logradouro: "Rua das Palmeiras, 210",
     complemento: "Casa",
     inquilino: "João Silva",
-    pendenciaTotal: 0,
 
     pagamentos: [
       {
@@ -135,7 +104,6 @@ export const imoveis: Imovel[] = [
     logradouro: "Av. Central, 890",
     complemento: "Apt 45",
     inquilino: "Ana Costa",
-    pendenciaTotal: 982.71,
 
     pagamentos: [
       {
@@ -191,7 +159,6 @@ export const imoveis: Imovel[] = [
     logradouro: "Rua João Pedro, 700",
     complemento: "Apt 203",
     inquilino: "Fernanda Ribeira",
-    pendenciaTotal: 1207.67,
 
     pagamentos: [
       {
@@ -247,7 +214,6 @@ export const imoveis: Imovel[] = [
     logradouro: "Av. Ribeiro, 861",
     complemento: "Apt 77",
     inquilino: "Carlos Mendes",
-    pendenciaTotal: 0,
 
     pagamentos: [
       {
@@ -298,7 +264,6 @@ export const imoveis: Imovel[] = [
     logradouro: "Rua Verde, 312",
     complemento: "Apt 12",
     inquilino: "Marina Souza",
-    pendenciaTotal: 890,
 
     pagamentos: [
       {
@@ -437,5 +402,79 @@ export const movimentacoes = [
     desc: "Multa atraso - Rua João Pedro, 700",
     value: -22.4,
     date: corretorData("2026-06-04"),
+  },
+];
+
+export function pendenciaTotal(imovel: Imovel) {
+  return imovel.pagamentos.filter(
+      (pagamento) =>
+        pagamento.status === "pendente"
+      ).reduce(
+        (total, pagamento) => total + pagamento.value, 0
+      )
+  };
+
+export function efetuadoTotal(imovel: Imovel) {
+  return imovel.pagamentos.filter(
+    (pagamento) => pagamento.status == "ok"
+  ).reduce(
+    (total, pagamento) => total + pagamento.value, 0
+  )
+}
+
+export function atrasoTotal(imovel: Imovel) {
+  return imovel.pagamentos.filter(
+    (pagamento) => pagamento.status == "atrasado"
+  ).reduce(
+    (total, pagamento) => total + pagamento.value, 0
+  )
+}
+
+export const totalPendencias = imoveis.reduce(
+  (total, imovel) => total + pendenciaTotal(imovel) + atrasoTotal(imovel), 0
+);
+
+const efetuadoDashboard = imoveis.reduce(
+  (total, imovel) => total + efetuadoTotal(imovel), 0
+  );
+
+const pendenteDashboard = imoveis.reduce(
+  (total, imovel) => total + pendenciaTotal(imovel), 0
+  );
+
+const atrasadoDashboard = imoveis.reduce(
+  (total, imovel) => total + atrasoTotal(imovel), 0
+  );
+
+const totalImoveis = imoveis.length
+
+
+export const statsDashboard = [
+  {
+    label: "Pagamento efetuado",
+    value: efetuadoDashboard.toFixed(2),
+    note: "14 boletos pagos",
+    corStat: "ok",
+  },
+
+  {
+    label: "Pagamento pendente",
+    value: pendenteDashboard.toFixed(2),
+    note: "7 boletos pendentes",
+    corStat: "pending",
+  },
+
+  {
+    label: "Pagamento atrasado",
+    value: atrasadoDashboard.toFixed(2),
+    note: "3 boletos atrasados",
+    corStat: "late",
+  },
+
+  {
+    label: "Imóveis ativos",
+    value: totalImoveis,
+    note: "de 9 imóveis cadastrados",
+    corStat: "muted",
   },
 ];

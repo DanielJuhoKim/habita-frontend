@@ -180,7 +180,6 @@ export default function DetalhesImovel() {
                 <div className="id-avatar">{imovel.inquilino.nome.split(" ").map(n => n[0]).slice(0,2).join("")}</div>
                 <div>
                   <strong>{imovel.inquilino.nome}</strong>
-                  <span>Inquilino desde {imovel.inquilino.desde}</span>
                 </div>
               </div>
               <ul className="id-list">

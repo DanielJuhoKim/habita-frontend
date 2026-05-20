@@ -8,42 +8,27 @@ import {
 
 import { useState } from "react";
 
-type Status = "pendente" | "atrasado" | "ok";
+import { imoveis, type PagamentoInfo, totalPendencias } from "./constantes";
 
-type Pagamento_info = {
-  title: string;
-  tenant: string;
-  info: string;
-  status: Status;
-  value: string;
+type Pag_imovel = 
+  PagamentoInfo & {
+  id: number;
+
+  logradouro: string;
+  complemento: string;
+  inquilino: string;
 };
 
-const pendentes: Pagamento_info[] = [
-  { title: "Aluguel - R. das Palmeiras, 210/Casa", tenant: "João Silva", info: "Vence em 28/06/2026", status: "pendente", value: "R$ 3.795,15" },
-  { title: "Conta de luz - R. Floripa, 892/Apt 97 (Canva)", tenant: "Pedro Carvalho - Enel", info: "Vence em 28/06/2026", status: "pendente", value: "R$ 208,03" },
-  { title: "Conta de gás - R. Floripa, 892/Apt 61 (Jamal)", tenant: "Pedro Carvalho - ComGás", info: "Venceu em 03/06/2026", status: "atrasado", value: "R$ 295,75" },
-  { title: "Aluguel - Av. Central, 890/Apt 45", tenant: "Ana Costa", info: "Vence em 21/07/2026", status: "pendente", value: "R$ 982,71" },
-  { title: "Condomínio - R. Bela Vista, 06", tenant: "Marina Souza", info: "Vence em 15/07/2026", status: "pendente", value: "R$ 420,00" },
-  { title: "IPTU - Av. Brasil, 1500", tenant: "Pedro Lima", info: "Venceu em 10/06/2026", status: "atrasado", value: "R$ 612,40" },
-];
-
-const efetuados: Pagamento_info[] = [
-  { title: "Aluguel - R. Bela Vista, 920/Casa", tenant: "Marcio Oliveira", info: "Data: 30/05/2026 - Pago em 28/05/2026", status: "ok", value: "R$ 2.481,06" },
-  { title: "Conta de luz - Av. Ribeiro, 861/Apt 97", tenant: "Carlos Mendes - Enel", info: "Data: 25/05/2026 - Pago em 22/05/2026", status: "ok", value: "R$ 187,32" },
-  { title: "Aluguel - Rua das Palmeiras, 210", tenant: "João Silva", info: "Data: 01/06/2026 - Pago em 31/05/2026", status: "ok", value: "R$ 1.087,91" },
-  { title: "Condomínio - Av. Central, 890", tenant: "Ana Costa", info: "Data: 05/06/2026 - Pago em 04/06/2026", status: "ok", value: "R$ 380,00" },
-];
-
-function PagamentoCard({ pagamento }: { pagamento: Pagamento_info }) {
+function PagamentoCard({ info }: { info: Pag_imovel }) {
   return (
     <div className="pay-card">
       <div className="pay-info">
-        <p className="pay-title">{pagamento.title}</p>
-        <p className="pay-tenant">Inquilino: {pagamento.tenant}</p>
-        <p className={`pay-date ${pagamento.status}`}>{pagamento.info}</p>
+        <p className="pay-title">{info.desc} — {info.logradouro}/{info.complemento}</p>
+        <p className="pay-tenant">Inquilino: {info.inquilino}</p>
+        <p className={`pay-date ${info.status}`}>Data de vencimento: {info.date.toLocaleDateString("pt-BR")}</p>
       </div>
       <div className="pay-actions">
-        <p className="pay-value">{pagamento.value}</p>
+        <p className="pay-value">R$ {info.value}</p>
         <button className="pay-btn">Pagar agora</button>
       </div>
     </div>
@@ -54,7 +39,7 @@ function Section({
   title, items, bg,
 }: { 
   title: string; 
-  items: Pagamento_info[]; 
+  items: Pag_imovel[]; 
   bg: "pendente" | "efetuado" 
   }) {
   const [qtd_payment, qtd_payment_visivel] = useState(4);
@@ -77,8 +62,8 @@ function Section({
 
       <div className="section-list">
         {
-        pagamentos_visiveis.map((p, i) => (
-          <PagamentoCard key={i} pagamento={p} />
+        pagamentos_visiveis.map((info_p, i) => (
+          <PagamentoCard key={i} info={info_p} />
         ))
         }
 
@@ -106,12 +91,33 @@ function Section({
 }
 
 export default function Pagamentos() {
+// pagamento.status == "pendente" || pagamento.status == "atrasado"
+  const pendentes = imoveis.flatMap((imovel) => imovel.pagamentos.map(
+    (pagamento) => ({
+    ...pagamento,
+    id: imovel.id,
+    logradouro: imovel.logradouro,
+    complemento: imovel.complemento,
+    inquilino: imovel.inquilino
+
+  }))).filter((pagamento) => pagamento.status == "pendente" || pagamento.status == "atrasado")
+
+  const efetuados = imoveis.flatMap((imovel) => imovel.pagamentos.map(
+    (pagamento) => ({
+    ...pagamento,
+    id: imovel.id,
+    logradouro: imovel.logradouro,
+    complemento: imovel.complemento,
+    inquilino: imovel.inquilino
+    
+  }))).filter((pagamento) => pagamento.status == "ok")
+  
   return (
     <Base>
         <div className="banner">
           <div>
             <p className="banner-label">Total a pagar</p>
-            <p className="banner-value">R$ 6.095,15</p>
+            <p className="banner-value">R$ {totalPendencias}</p>
             <p className="banner-desc">10 pagamentos pendentes - 14 pagamentos efetuados</p>
           </div>
           <div className="progress-block">
@@ -134,8 +140,8 @@ export default function Pagamentos() {
           </div>
 
           <div className="lista-pagamentos">
-            <Section title="Pendente" items={pendentes} bg="pendente" />
-            <Section title="Efetuado" items={efetuados} bg="efetuado" />
+            <Section title="Pendente" items = {pendentes} bg="pendente" />
+            <Section title="Efetuado" items = {efetuados} bg="efetuado" />
           </div>
         </div>
     </Base>

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import "./DetalhesInquilino.css";
 import Base from "./Base";
+import { useNavigate } from "react-router-dom";
 
 type Status = "adimplente" | "atraso" | "pendente";
 
@@ -117,6 +118,7 @@ const statusLabel: Record<Status, string> = {
 
 export default function DetalhesInquilino() {
   const [aba, setAba] = useState<Aba>("visao");
+  const navigate = useNavigate();
 
   return (
     <Base>

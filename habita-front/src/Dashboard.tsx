@@ -3,7 +3,7 @@ import Base from "./Base";
 
 import { Filter } from "lucide-react";
 
-import { statsDashboard as stats, imoveis, alertas, movimentacoes } from "./constantes"
+import { statsDashboard as stats, imoveis, alertas, movimentacoes, pendenciaTotal } from "./constantes"
 
 export default function Dashboard() {
   return (
@@ -12,7 +12,12 @@ export default function Dashboard() {
         {stats.map((stat) => (
           <div key={stat.label} className="card stat">
             <p className="stat-label">{stat.label}</p>
-            <p className="stat-value">{"R$ " + stat.value}</p>
+            <p className="stat-value">
+              {
+              stat.label !== "Imóveis ativos"
+              ? `R$ ${stat.value}`
+              : stat.value
+              }</p>
             <p className={`stat-note corStat-${stat.corStat}`}>{stat.note}</p>
           </div>
         ))}
@@ -35,7 +40,7 @@ export default function Dashboard() {
 
                 <span className={`badge badge-${imovel.dashboard.corStat}`}>{imovel.dashboard.status}</span>
                 <div className="valor-imovel">
-                  <p className="v">{"R$ " + imovel.pendenciaTotal}</p>
+                  <p className="v">{"R$ " + pendenciaTotal(imovel)}</p>
                   <p className="d">{imovel.dashboard.date.toLocaleDateString("pt-BR")}</p>
                 </div>
               </div>
