@@ -84,9 +84,9 @@ export default function DTImoveis() {
 
   const iniciais = getInitials(inquilino?.nome);
 
-  const totalPendente = pendenciaTotal(imovel);
+  const totalPago = efetuadoTotal(imovel);
 
-  const totalAtraso = atrasoTotal(imovel);
+  const totalPendente = pendenciaTotal(imovel) + atrasoTotal(imovel);
 
   return (
     <Base>
@@ -101,7 +101,7 @@ export default function DTImoveis() {
 
           <div className="imv-id">
             <div>
-              <h1> ({formatarId(imovel.id)}) {imovel.logradouro}</h1>
+              <h1>{imovel.logradouro}</h1>
 
               <p className="muted">
                 {imovel.complemento}
@@ -145,6 +145,16 @@ export default function DTImoveis() {
 
             <div className="metric">
               <span className="metric-label">
+                Total pago
+              </span>
+
+              <strong className="metric-value">
+                {brl(totalPago)}
+              </strong>
+            </div>
+
+            <div className="metric">
+              <span className="metric-label">
                 Pendente
               </span>
 
@@ -157,20 +167,10 @@ export default function DTImoveis() {
               <span className="metric-label">
                 Em atraso
               </span>
-
+{/* 
               <strong className="metric-value">
                 {brl(totalAtraso)}
-              </strong>
-            </div>
-
-            <div className="metric">
-              <span className="metric-label">
-                ADIMPLÊNCIA
-              </span>
-
-              <strong className="metric-value">
-                97%
-              </strong>
+              </strong> */}
             </div>
           </div>
 
@@ -224,7 +224,9 @@ export default function DTImoveis() {
                 <li>
                   <span>Pagamentos</span>
 
-                  <strong> {imovel.pagamentos.length} </strong>
+                  <p>
+                    ID: {formatarId(imovel.id)}
+                  </p>
                 </li>
 
                 <li>

@@ -6,6 +6,9 @@ import {
   AlertTriangle,
 } from "lucide-react";
 
+export function formatarId(id: number) {
+  return id.toString().padStart(4, "0");
+}
 
 export const dataAtual = corretorData("2026-06-13")
 
@@ -114,14 +117,14 @@ export const imoveis: Imovel[] = [
       },
 
       {
-        desc: "Conta Enel",
+        desc: "Conta ComGás",
         status: "pendente",
         value: 214.09,
         date: corretorData("2026-07-18"),
       },
 
       {
-        desc: "Conta Comgás",
+        desc: "Aluguel",
         status: "atrasado",
         value: 298.44,
         date: corretorData("2026-06-09"),
@@ -169,14 +172,14 @@ export const imoveis: Imovel[] = [
       },
 
       {
-        desc: "Conta Sabesp",
+        desc: "Aluguel",
         status: "pendente",
         value: 144.88,
         date: corretorData("2026-07-24"),
       },
 
       {
-        desc: "Conta Sabesp",
+        desc: "Conta Enel",
         status: "atrasado",
         value: 176.51,
         date: corretorData("2026-06-01"),
@@ -217,7 +220,7 @@ export const imoveis: Imovel[] = [
 
     pagamentos: [
       {
-        desc: "Conta Comgás",
+        desc: "Conta Aluguel",
         status: "ok",
         value: 74.21,
         date: corretorData("2026-06-07"),
@@ -231,7 +234,7 @@ export const imoveis: Imovel[] = [
       },
 
       {
-        desc: "Conta Comgás",
+        desc: "Claro",
         status: "atrasado",
         value: 120.75,
         date: corretorData("2026-06-03"),
@@ -405,7 +408,34 @@ export const movimentacoes = [
   },
 ];
 
-export function pendenciaTotal(imovel: Imovel) {
+export function statusImovel(imovel?: Imovel): Status | undefined {
+  if (!imovel) {
+    return undefined;
+  }
+  if (
+    imovel.pagamentos.some(
+      (pagamento) => pagamento.status === "atrasado"
+    )
+  ) {
+    return "atrasado";
+  }
+
+  if (
+    imovel.pagamentos.some(
+      (pagamento) => pagamento.status === "pendente"
+    )
+  ) {
+    return "pendente";
+  }
+
+  return "ok";
+}
+
+export function pendenciaTotal(imovel: Imovel | undefined) {
+  if (!imovel) {
+    return 0;
+  }
+
   return imovel.pagamentos.filter(
       (pagamento) =>
         pagamento.status === "pendente"
@@ -414,7 +444,11 @@ export function pendenciaTotal(imovel: Imovel) {
       )
   };
 
-export function efetuadoTotal(imovel: Imovel) {
+export function efetuadoTotal(imovel: Imovel | undefined) {
+  if (!imovel) {
+    return 0;
+  }
+
   return imovel.pagamentos.filter(
     (pagamento) => pagamento.status == "ok"
   ).reduce(
@@ -422,7 +456,11 @@ export function efetuadoTotal(imovel: Imovel) {
   )
 }
 
-export function atrasoTotal(imovel: Imovel) {
+export function atrasoTotal(imovel: Imovel | undefined) {
+  if (!imovel) {
+    return 0;
+  }
+
   return imovel.pagamentos.filter(
     (pagamento) => pagamento.status == "atrasado"
   ).reduce(
@@ -430,9 +468,25 @@ export function atrasoTotal(imovel: Imovel) {
   )
 }
 
+export function gastoMensal(imovel: Imovel | undefined) {
+  if (!imovel) {
+    return 0;
+  }
+
+  return (
+    pendenciaTotal(imovel) +
+    atrasoTotal(imovel) +
+    efetuadoTotal(imovel)
+  );
+}
+
 export const totalPendencias = imoveis.reduce(
   (total, imovel) => total + pendenciaTotal(imovel) + atrasoTotal(imovel), 0
 );
+
+export const gastoTotal = imoveis.reduce(
+  (total, imovel) => total + pendenciaTotal(imovel) + atrasoTotal(imovel) + efetuadoTotal(imovel), 0
+)
 
 const efetuadoDashboard = imoveis.reduce(
   (total, imovel) => total + efetuadoTotal(imovel), 0
@@ -479,24 +533,49 @@ export const statsDashboard = [
   },
 ];
 
+export function getInitials(name: string | undefined) {
+  if (name) {
+  return name
+    .split(" ")
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((p) => p[0]?.toUpperCase() ?? "")
+    .join("");
+  }
+  return ""
+}
 
-type Inquilino = {
+export type Inquilino = {
   id: number,
   nome: string;
   email: string;
   telefone: string;
   desde: Date;
+  cpf: string;
+  observacoes: string;
   imoveis: number[];
 };
 
 export const inquilinos: Inquilino[] = [
+  {
+    id: 0,
+    nome: "Cheila Nogueira",
+    email: "cheila.nog@email.com",
+    telefone: "(85) 992981-2160",
+    desde: corretorData("2024-07-30"),
+    cpf: "000-000-000-00",
+    observacoes: "------------------------------------",
+    imoveis: [3]
+  },
   {
     id: 1,
     nome: "Ana Beatriz Souza",
     email: "ana.souza@email.com",
     telefone: "(11) 98765-4321",
     desde: corretorData("2025-05-04"),
-    imoveis: []
+    cpf: "000-000-000-00",
+    observacoes: "------------------------------------",
+    imoveis: [1]
   },
   {
     id: 2,
@@ -504,7 +583,9 @@ export const inquilinos: Inquilino[] = [
     email: "carlos.lima@email.com",
     telefone: "(21) 99812-3344",
     desde: corretorData("2022-08-21"),
-    imoveis: []
+    cpf: "000-000-000-00",
+    observacoes: "------------------------------------",
+    imoveis: [1, 2]
   },
   {
     id: 3,
@@ -512,7 +593,9 @@ export const inquilinos: Inquilino[] = [
     email: "marina.costa@email.com",
     telefone: "(31) 99700-1122",
     desde: corretorData("2022-03-01"),
-    imoveis: []
+    cpf: "000-000-000-00",
+    observacoes: "------------------------------------",
+    imoveis: [3]
   },
   {
     id: 6,
@@ -520,7 +603,9 @@ export const inquilinos: Inquilino[] = [
     email: "pedro.rocha@email.com",
     telefone: "(48) 99123-7788",
     desde: corretorData("2022-01-29"),
-    imoveis: []
+    cpf: "000-000-000-00",
+    observacoes: "------------------------------------",
+    imoveis: [4]
   },
   {
     id: 5,
@@ -528,7 +613,9 @@ export const inquilinos: Inquilino[] = [
     email: "juliana.mendes@email.com",
     telefone: "(11) 98800-5566",
     desde: corretorData("2021-12-11"),
-    imoveis: []
+    cpf: "000-000-000-00",
+    observacoes: "------------------------------------",
+    imoveis: [5]
   },
   {
     id: 7,
@@ -536,21 +623,20 @@ export const inquilinos: Inquilino[] = [
     email: "rafael.nog@email.com",
     telefone: "(85) 99411-2200",
     desde: corretorData("2024-10-19"),
-    imoveis: []
+    cpf: "000-000-000-00",
+    observacoes: "------------------------------------",
+    imoveis: [3]
   },
 ];
 
-export function initials(name: string) {
-  return name
-    .split(" ")
-    .filter(Boolean)
-    .slice(0, 2)
-    .map((p) => p[0]?.toUpperCase() ?? "")
-    .join("");
-}
-
-export function getInquilino(idInquilino: number) {
+export function getInquilino(idInquilino: number | undefined) {
   return inquilinos.find(
     (inquilino) => inquilino.id === idInquilino
+  )
+}
+
+export function getImovel(idImovel: number) {
+  return imoveis.find(
+    (imovel) => imovel.id === idImovel
   )
 }

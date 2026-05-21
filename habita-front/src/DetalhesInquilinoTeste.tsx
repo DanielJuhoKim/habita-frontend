@@ -3,7 +3,7 @@ import "./DetalhesInquilino.css";
 import Base from "./Base";
 import { useNavigate, useParams } from "react-router-dom";
 
-import { getInquilino, getInitials, getImovel, formatarId } from "./constantes";
+import { getInquilino, getInitials, getImovel } from "./constantes";
 
 type Status = "adimplente" | "atraso" | "pendente";
 
@@ -105,7 +105,7 @@ const inquilino_: Inquilino = {
     "Inquilino pontual, sem histórico de atrasos. Prefere contato por WhatsApp. Solicita reparos via portal.",
 };
 
-type Aba = "visao" | "imoveis" | "documentos" | "historico";
+type Aba = "visao" | "pagamentos" | "imoveis" | "documentos" | "historico";
 
 export default function DetalhesInquilino() {
   const [aba, setAba] = useState<Aba>("visao");
@@ -122,7 +122,7 @@ export default function DetalhesInquilino() {
     <Base>
         <div className="card panel" >
         <div className="inq-header">
-            <button className="btn-back" aria-label="Voltar" onClick={() => navigate(-1)}>← Voltar</button>
+            <button className="btn-back" aria-label="Voltar">← Voltar</button>
             <div className="inq-id">
             <div className="inq-avatar-lg">{getInitials(inquilino.nome)}</div>
             <div>
@@ -138,25 +138,25 @@ export default function DetalhesInquilino() {
 
         <div className="inq-scroll">
             <div className="inq-metrics">
-                <div className="metric">
-                    <span className="metric-label">Total pago</span>
-                    {/* <strong className="metric-value">{fmtBRL(inquilino.totalPago)}</strong> */}
-                    <strong className="metric-value">77</strong>
-                </div>
-                <div className="metric">
-                    <span className="metric-label">Pendente</span>
-                    {/* <strong className="metric-value">{fmtBRL(inquilino.pendente)}</strong> */}
-                    <strong className="metric-value">77</strong>
-                </div>
-                <div className="metric">
-                    <span className="metric-label">Imóveis vinculados</span>
-                    <strong className="metric-value">{inquilino.imoveis.length}</strong>
-                </div>
-                <div className="metric">
-                    <span className="metric-label">Adimplência</span>
-                    {/* <strong className="metric-value">{inquilino.scoreAdimplencia}%</strong> */}
-                    <strong className="metric-value">97%</strong>
-                </div>
+            <div className="metric">
+                <span className="metric-label">Adimplência</span>
+                {/* <strong className="metric-value">{inquilino.scoreAdimplencia}%</strong> */}
+                <strong className="metric-value">97%</strong>
+            </div>
+            <div className="metric">
+                <span className="metric-label">Total pago</span>
+                {/* <strong className="metric-value">{fmtBRL(inquilino.totalPago)}</strong> */}
+                <strong className="metric-value">77</strong>
+            </div>
+            <div className="metric">
+                <span className="metric-label">Pendente</span>
+                {/* <strong className="metric-value">{fmtBRL(inquilino.pendente)}</strong> */}
+                <strong className="metric-value">77</strong>
+            </div>
+            <div className="metric">
+                <span className="metric-label">Imóveis vinculados</span>
+                <strong className="metric-value">{inquilino.imoveis.length}</strong>
+            </div>
             </div>
 
             <div className="inq-grid">
@@ -195,19 +195,23 @@ export default function DetalhesInquilino() {
 
             <section className="tab-content">
             {aba === "visao" && (
-                <div className="box full-width">
-                    <h3>Últimos eventos</h3>
-                    <ul className="timeline">
-                        {inquilino_.eventos.slice(0, 3).map((e, i) => (
-                            <li key={i}>
-                            <span className={`dot dot--${e.tipo}`} />
-                            <div>
-                                <strong>{e.titulo}</strong>
-                                <p className="muted">{e.data} — {e.descricao}</p>
-                            </div>
-                            </li>
-                        ))}
-                    </ul>
+                <div className="inq-grid">
+                    <div className="box">
+                    </div>
+                    <div className="box">
+                        <h3>Últimos eventos</h3>
+                        <ul className="timeline">
+                            {inquilino_.eventos.slice(0, 3).map((e, i) => (
+                                <li key={i}>
+                                <span className={`dot dot--${e.tipo}`} />
+                                <div>
+                                    <strong>{e.titulo}</strong>
+                                    <p className="muted">{e.data} — {e.descricao}</p>
+                                </div>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
                 </div>
             )}
 
@@ -221,9 +225,13 @@ export default function DetalhesInquilino() {
                     return (
                         <div key={imovel.id} className="imovel-row">
                         <div>
-                            <strong>({formatarId(imovel.id)}) - {imovel.logradouro}</strong>
+                            <strong>
+                            {imovel.logradouro}
+                            </strong>
 
-                            <p className="muted"> {imovel.complemento} </p>
+                            <p className="muted">
+                            {imovel.complemento}
+                            </p>
                         </div>
 
                         <div className="imovel-row__right">

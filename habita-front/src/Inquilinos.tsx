@@ -4,84 +4,17 @@ import Base from "./Base";
 import {Filter} from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
-type Inquilino = {
-  id: number,
-  nome: string;
-  email: string;
-  telefone: string;
-  desde: string;
-  imoveis: string[];
-};
-
-const inquilinos: Inquilino[] = [
-  {
-    id: 1,
-    nome: "Ana Beatriz Souza",
-    email: "ana.souza@email.com",
-    telefone: "(11) 98765-4321",
-    desde: "Mar 2023",
-    imoveis: ["Rua das Flores, 120 — Apto 32", "Av. Paulista, 1500 — Sala 8"],
-  },
-  {
-    id: 2,
-    nome: "Carlos Henrique Lima",
-    email: "carlos.lima@email.com",
-    telefone: "(21) 99812-3344",
-    desde: "Ago 2022",
-    imoveis: ["Rua Marechal, 45 — Casa"],
-  },
-  {
-    id: 3,
-    nome: "Marina Oliveira Costa",
-    email: "marina.costa@email.com",
-    telefone: "(31) 99700-1122",
-    desde: "Jan 2024",
-    imoveis: ["Edifício Aurora — Apto 1102"],
-  },
-  {
-    id: 6,
-    nome: "Pedro Almeida Rocha",
-    email: "pedro.rocha@email.com",
-    telefone: "(48) 99123-7788",
-    desde: "Mai 2023",
-    imoveis: ["Rua das Acácias, 88", "Galpão Industrial — Distrito Sul"],
-  },
-  {
-    id: 5,
-    nome: "Juliana Pereira Mendes",
-    email: "juliana.mendes@email.com",
-    telefone: "(11) 98800-5566",
-    desde: "Out 2021",
-    imoveis: ["Cobertura Vista Verde — Apto 2001"],
-  },
-  {
-    id: 7,
-    nome: "Rafael Nogueira",
-    email: "rafael.nog@email.com",
-    telefone: "(85) 99411-2200",
-    desde: "Fev 2024",
-    imoveis: ["Studio Centro — 504"],
-  },
-];
-
-function initials(name: string) {
-  return name
-    .split(" ")
-    .filter(Boolean)
-    .slice(0, 2)
-    .map((p) => p[0]?.toUpperCase() ?? "")
-    .join("");
-}
+import { inquilinos, type Inquilino, getImovel, getInitials } from "./constantes";
 
 function Card({ data }: { data: Inquilino }) {
   const navigate = useNavigate();
   return (
     <div className="inq-card">
       <div className="inq-head">
-        <div className="inq-avatar">{initials(data.nome)}</div>
+        <div className="inq-avatar">{getInitials(data.nome)}</div>
         <div className="inq-id">
           <div className="inq-name">{data.nome}</div>
-          <div className="inq-since">Inquilino desde {data.desde}</div>
+          <div className="inq-since">Inquilino desde {data.desde.toLocaleDateString("pt-br")}</div>
         </div>
       </div>
 
@@ -99,12 +32,17 @@ function Card({ data }: { data: Inquilino }) {
       <div className="inq-imoveis">
         <div className="imoveis-label">Imóveis vinculados ({data.imoveis.length})</div>
         <ul className="imoveis-list">
-          {data.imoveis.map((im, i) => (
-            <li key={i}>
-              <span className="imovel-ico">⌂</span>
-              {im}
-            </li>
-          ))}
+          {data.imoveis.map((idImovel) => {
+            const imovel = getImovel(idImovel);
+
+            return (
+              <li key={idImovel}>
+                <span className="imovel-ico">⌂</span>
+
+                {imovel?.logradouro} — {imovel?.complemento}
+              </li>
+            );
+          })}
         </ul>
       </div>
         <button className="btn-ghost">Mensagem</button>
