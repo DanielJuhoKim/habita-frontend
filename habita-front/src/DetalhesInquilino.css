@@ -33,17 +33,6 @@
   flex-wrap: wrap;
 }
 
-.btn-back {
-  width: 70px;
-  height: 36px;
-  border-radius: 10px;
-  border: 1px solid var(--border);
-  background: transparent;
-  color: var(--text);
-  cursor: pointer;
-  font-size: 13px;
-}
-
 .inq-id {
   display: flex;
   align-items: center;

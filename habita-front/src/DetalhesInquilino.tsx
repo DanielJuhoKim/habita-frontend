@@ -3,6 +3,8 @@ import "./DetalhesInquilino.css";
 import Base from "./Base";
 import { useNavigate, useParams } from "react-router-dom";
 
+import { ArrowLeft } from "lucide-react";
+
 import { getInquilino, getInitials, getImovel, formatarId } from "./constantes";
 
 type Status = "adimplente" | "atraso" | "pendente";
@@ -122,7 +124,14 @@ export default function DetalhesInquilino() {
     <Base>
         <div className="card panel" >
         <div className="inq-header">
-            <button className="btn-back" aria-label="Voltar" onClick={() => navigate(-1)}>← Voltar</button>
+            <button
+                type="button"
+                className="btn-back"
+                onClick={() => navigate(-1)}
+                aria-label="Voltar"
+            >
+                <ArrowLeft size={18} />
+            </button>
             <div className="inq-id">
             <div className="inq-avatar-lg">{getInitials(inquilino.nome)}</div>
             <div>

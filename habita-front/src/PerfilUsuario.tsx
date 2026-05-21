@@ -84,7 +84,7 @@ export default function PerfilUsuario() {
         <div className="perfil-head">
           <button
             type="button"
-            className="back-btn"
+            className="btn-back"
             onClick={() => navigate(-1)}
             aria-label="Voltar"
           >
