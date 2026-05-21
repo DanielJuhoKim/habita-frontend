@@ -8,28 +8,54 @@ import {
 
 import { useState } from "react";
 
-import { imoveis, type PagamentoInfo, totalPendencias, custoTotal, getInquilino, formatarId, qtd_atrasados, qtd_pendentes, qtd_efetuados } from "./constantes";
+import { imoveis, type PagamentoInfo, totalPendencias, custoTotal, getInquilino, formatarId, qtd_atrasados, qtd_pendentes, qtd_efetuados, pagamentoStatus } from "./constantes";
 
 type Pag_imovel = 
-  PagamentoInfo & {
+  PagamentoInfo 
+  & {
   id: number;
 
   logradouro: string;
+  numero: number
   complemento: string;
   inquilino: number;
 };
 
 function PagamentoCard({ info }: { info: Pag_imovel }) {
+  const status = pagamentoStatus(info);
+
   return (
     <div className="pay-card">
       <div className="pay-info">
-        <p className="pay-title">({formatarId(info.id)}) {info.desc} - {info.logradouro}/{info.complemento}</p>
-        <p className="pay-tenant">Inquilino: {getInquilino(info.inquilino)?.nome}</p>
-        <p className={`pay-date ${info.status}`}>Data de vencimento: {info.date.toLocaleDateString("pt-BR")}</p>
+        <p className="pay-title">
+          ({formatarId(info.id)}) {info.tipo_pagamento} - {info.logradouro}, {info.numero}/{info.complemento}
+        </p>
+
+        <p className="pay-tenant">
+          Inquilino: {getInquilino(info.inquilino)?.nome}
+        </p>
+
+        {
+          status !== "ok" ? (
+            <p className={`pay-date ${status}`}>
+              Data de vencimento: {info.data_vencimento.toLocaleDateString("pt-BR")}
+            </p>
+          ) : (
+            <p className={`pay-date ${status}`}>
+              Data do pagamento: {info.data_pagamento?.toLocaleDateString("pt-BR")}
+            </p>
+          )
+        }
       </div>
+
       <div className="pay-actions">
-        <p className="pay-value">R$ {info.value}</p>
-        <button className="pay-btn">Pagar agora</button>
+        <p className="pay-value">R$ {info.total}</p>
+
+        {status !== "ok" && (
+          <button className="pay-btn">
+            Pagar agora
+          </button>
+        )}
       </div>
     </div>
   );
@@ -91,33 +117,34 @@ function Section({
 }
 
 export default function Pagamentos() {
-// pagamento.status == "pendente" || pagamento.status == "atrasado"
   const pendentes = imoveis.flatMap((imovel) => imovel.pagamentos.map(
     (pagamento) => ({
     ...pagamento,
     id: imovel.id,
     logradouro: imovel.logradouro,
+    numero: imovel.numero,
     complemento: imovel.complemento,
     inquilino: imovel.inquilino
 
-  }))).filter((pagamento) => pagamento.status == "pendente" || pagamento.status == "atrasado")
+  }))).filter((pagamento) => pagamentoStatus(pagamento) == "pendente" || pagamentoStatus(pagamento) == "atrasado")
 
   const efetuados = imoveis.flatMap((imovel) => imovel.pagamentos.map(
     (pagamento) => ({
     ...pagamento,
     id: imovel.id,
     logradouro: imovel.logradouro,
+    numero: imovel.numero,
     complemento: imovel.complemento,
     inquilino: imovel.inquilino
     
-  }))).filter((pagamento) => pagamento.status == "ok")
+  }))).filter((pagamento) => pagamentoStatus(pagamento) == "ok")
   
   return (
     <Base>
         <div className="banner">
           <div>
             <p className="banner-label">Total a pagar</p>
-            <p className="banner-value">R$ {totalPendencias}</p>
+            <p className="banner-value">R$ {totalPendencias.toFixed(2)}</p>
             <p className="banner-desc">{qtd_efetuados}/{qtd_atrasados + qtd_pendentes + qtd_efetuados} pagamentos efetuados</p>
           </div>
           <div className="progress-block">

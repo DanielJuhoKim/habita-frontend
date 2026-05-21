@@ -36,14 +36,14 @@ export default function Dashboard() {
 
               <div key={i} className="row">
                 <div className="row-main">
-                  <p className="titulo-objeto">{imovel.logradouro + " — " + imovel.complemento}</p>
+                  <p className="titulo-objeto">{imovel.logradouro}, {imovel.numero} — {imovel.complemento}</p>
                   <p className="desc-objeto">Inquilino: {getInquilino(imovel.inquilino)?.nome}</p>
                 </div>
 
                 <span className={`badge badge-${getStatusColor(getStatusImovel(imovel))}`}>{getStatusImovel(imovel)}</span>
                 <div className="valor-imovel">
                   <p className="v">{"R$ " + pendenciaTotal(imovel)}</p>
-                  <p className="d">{getPagamentoPrioridade(imovel)?.date.toLocaleDateString("pt-BR")}</p>
+                  <p className="d">{getPagamentoPrioridade(imovel)?.data_vencimento.toLocaleDateString("pt-BR")}</p>
                 </div>
               </div>
             ))}

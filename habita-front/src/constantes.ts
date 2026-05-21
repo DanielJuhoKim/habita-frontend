@@ -10,7 +10,7 @@ export function formatarId(id: number) {
 
 export const dataAtual = corretorData("2026-06-13")
 
-export type CorStat = "ok" | "pending" | "late" | "muted";
+export type CorStat = "ok" | "pendente" | "late" | "muted";
 
 export type Status = "pendente" | "atrasado" | "ok";
 
@@ -21,270 +21,126 @@ function corretorData(date: string): Date {
 }
 
 export type Prioridade = {
-  corStat: "late" | "pending";
+  corStat: "late" | "pendente";
   text: string;
 };
 
 export type PagamentoInfo = {
-  desc: string;
-  status: Status;
-  value: number;
-  date: Date;
+  emissora: string;
+  total: number;
+  data_emissao: Date;
+  data_vencimento: Date;
+  data_pagamento: Date | null;
+  tipo_pagamento: string;
+  codigo_barra: string | null;
+  n_boleto: string | null;
 };
+
+export function pagamentoStatus(pagamento: PagamentoInfo): Status | undefined {
+  if (pagamento.data_pagamento) {
+    return "ok"
+  }
+
+  if (dataAtual > pagamento.data_vencimento) {
+    return "atrasado"
+  }
+
+  return "pendente"
+}
 
 export type Imovel = {
   id: number;
 
   logradouro: string;
   complemento: string;
+  numero: number
+
+  CEP: string;
+
+  cidade: string;
+  estado: string;
+  n_interfone: string
+
   descricao: string;
   inquilino: number;
 
   pagamentos: PagamentoInfo[];
-
-  relatorio: {
-    gasto: number;
-    gastoStatus: "atraso" | "ok";
-    prioridades: Prioridade[];
-  };
 };
 
 export const imoveis: Imovel[] = [
   {
     id: 1,
-
-    logradouro: "Rua das Palmeiras, 210",
+    logradouro: "Rua das Palmeiras",
+    numero: 210,
     complemento: "Casa",
-    descricao: "dddddddddddddd",
+    CEP: "00000-000",
+    cidade: "São Paulo",
+    estado: "SP",
+    n_interfone: "1",
+    descricao:
+      "Imóvel com baixo volume de despesas mensais, com contas principais de energia e aluguel em dia, apresentando baixa incidência de pendências financeiras.",
     inquilino: 1,
-
-    pagamentos: [
-      {
-        desc: "Conta de luz",
-        status: "ok",
-        value: 200,
-        date: corretorData("2026-05-27"),
-      },
-
-      {
-        desc: "Aluguel",
-        status: "ok",
-        value: 3150,
-        date: corretorData("2026-06-01"),
-      },
-    ],
-
-    relatorio: {
-      gasto: 312.4,
-      gastoStatus: "ok",
-
-      prioridades: [
-        {
-          corStat: "pending",
-          text: "Conta de água vence em 8 dias",
-        },
-      ],
-    },
+    pagamentos: [],
   },
 
   {
     id: 2,
-
-    logradouro: "Av. Central, 890",
+    logradouro: "Av. Central",
+    numero: 890,
     complemento: "Apt 45",
-    descricao: "aaaaaaaaaa",
+    CEP: "00000-000",
+    cidade: "São Paulo",
+    estado: "SP",
+    n_interfone: "45",
+    descricao:
+      "Imóvel com fluxo moderado de pagamentos mensais, apresentando algumas contas de serviços recorrentes como gás e aluguel com histórico recente de pendências.",
     inquilino: 2,
-
-    pagamentos: [
-      {
-        desc: "Conta Enel",
-        status: "ok",
-        value: 187.32,
-        date: corretorData("2026-05-28"),
-      },
-
-      {
-        desc: "Conta ComGás",
-        status: "pendente",
-        value: 214.09,
-        date: corretorData("2026-07-18"),
-      },
-
-      {
-        desc: "Aluguel",
-        status: "atrasado",
-        value: 298.44,
-        date: corretorData("2026-06-09"),
-      },
-    ],
-
-    relatorio: {
-      gasto: 482.12,
-      gastoStatus: "atraso",
-
-      prioridades: [
-        {
-          corStat: "late",
-          text: "Aluguel atrasado há 3 dias",
-        },
-
-        {
-          corStat: "pending",
-          text: "Conta de luz vence amanhã",
-        },
-      ],
-    },
+    pagamentos: [],
   },
 
   {
     id: 3,
-
-    logradouro: "Rua João Pedro, 700",
+    logradouro: "Rua João Pedro",
+    numero: 700,
     complemento: "Apt 203",
-    descricao: "xxxxxxxxxx",
-    inquilino: 3,
-
-    pagamentos: [
-      {
-        desc: "Conta Sabesp",
-        status: "ok",
-        value: 92.14,
-        date: corretorData("2026-06-02"),
-      },
-
-      {
-        desc: "Aluguel",
-        status: "pendente",
-        value: 144.88,
-        date: corretorData("2026-07-24"),
-      },
-
-      {
-        desc: "Conta Enel",
-        status: "pendente",
-        value: 176.51,
-        date: corretorData("2026-06-01"),
-      },
-
-      {
-        desc: "Conta Água",
-        status: "ok",
-        value: 176.51,
-        date: corretorData("2026-06-01"),
-      },
-    ],
-
-    relatorio: {
-      gasto: 627.8,
-      gastoStatus: "atraso",
-
-      prioridades: [
-        {
-          corStat: "late",
-          text: "Aluguel vencido em 03/06/26",
-        },
-
-        {
-          corStat: "late",
-          text: "Multa por atraso aplicada",
-        },
-      ],
-    },
+    CEP: "00000-000",
+    cidade: "São Paulo",
+    estado: "SP",
+    n_interfone: "203",
+    descricao:
+      "Imóvel com alto volume de contas mensais, incluindo múltiplos serviços como água, energia e aluguel, com histórico de atrasos e pagamentos pendentes recorrentes.",
+    inquilino: 7,
+    pagamentos: [],
   },
 
   {
     id: 4,
-
-    logradouro: "Av. Ribeiro, 861",
+    logradouro: "Av. Ribeiro",
+    numero: 861,
     complemento: "Apt 77",
-    descricao: "ttttttttttttt",
+    CEP: "00000-000",
+    cidade: "São Paulo",
+    estado: "SP",
+    n_interfone: "77",
+    descricao:
+      "Imóvel com custo mensal controlado, concentrado principalmente em aluguel e serviços de internet e gás, com pagamentos majoritariamente em dia.",
     inquilino: 6,
-
-    pagamentos: [
-      {
-        desc: "Conta Aluguel",
-        status: "ok",
-        value: 74.21,
-        date: corretorData("2026-06-07"),
-      },
-
-      {
-        desc: "Conta Comgás",
-        status: "pendente",
-        value: 98.1,
-        date: corretorData("2026-07-13"),
-      },
-
-      {
-        desc: "Claro",
-        status: "pendente",
-        value: 120.75,
-        date: corretorData("2026-06-03"),
-      },
-    ],
-
-    relatorio: {
-      gasto: 198.55,
-      gastoStatus: "ok",
-
-      prioridades: [
-        {
-          corStat: "pending",
-          text: "Manutenção agendada para 22/07",
-        },
-      ],
-    },
+    pagamentos: [],
   },
 
   {
     id: 7,
-
-    logradouro: "Rua Verde, 312",
+    logradouro: "Rua Verde",
+    numero: 312,
     complemento: "Apt 12",
-    descricao: "DDDDDDDDDDDDD",
+    CEP: "00000-000",
+    cidade: "São Paulo",
+    estado: "SP",
+    n_interfone: "12",
+    descricao:
+      "Imóvel de alto custo mensal devido à soma de aluguel e múltiplas contas de consumo, apresentando variação entre pagamentos efetuados e algumas pendências pontuais.",
     inquilino: 7,
-
-    pagamentos: [
-      {
-        desc: "Aluguel",
-        status: "ok",
-        value: 420,
-        date: corretorData("2026-06-03"),
-      },
-
-      {
-        desc: "Conta Enel",
-        status: "ok",
-        value: 220,
-        date: corretorData("2026-05-30"),
-      },
-
-      {
-        desc: "Conta ComGás",
-        status: "pendente",
-        value: 380,
-        date: corretorData("2026-07-29"),
-      },
-
-      {
-        desc: "Conta VIVO",
-        status: "ok",
-        value: 1700,
-        date: corretorData("2026-06-01"),
-      },
-    ],
-
-    relatorio: {
-      gasto: 354,
-      gastoStatus: "ok",
-
-      prioridades: [
-        {
-          corStat: "pending",
-          text: "Aluguel vence em 15/07/26",
-        },
-      ],
-    },
+    pagamentos: [],
   },
 ];
 
@@ -308,7 +164,7 @@ export const alertas = [
     icon: AlertTriangle,
     title: "Vencimento em 9 dias - R. Bela Vista, 06",
     desc: "Conta de gás do apt 97 pendente",
-    corStat: "pending",
+    corStat: "pendente",
   },
 
   {
@@ -322,7 +178,7 @@ export const alertas = [
     icon: AlertTriangle,
     title: "Manutenção agendada - Av. Central, 890",
     desc: "Visita técnica marcada para 22/07/26",
-    corStat: "pending",
+    corStat: "pendente",
   },
 ];
 
@@ -356,7 +212,7 @@ export const movimentacoes = [
   },
 
   {
-    dot: "pending",
+    dot: "pendente",
     desc: "Pagamento Enel - Av. Ribeiro, 861/Apt 97",
     value: -68.38,
     date: corretorData("2026-06-06"),
@@ -390,7 +246,7 @@ export function getStatusImovel(imovel?: Imovel): Status | undefined {
   }
   if (
     imovel.pagamentos.some(
-      (pagamento) => pagamento.status === "atrasado"
+      (pagamento) => pagamentoStatus(pagamento) === "atrasado"
     )
   ) {
     return "atrasado";
@@ -398,7 +254,7 @@ export function getStatusImovel(imovel?: Imovel): Status | undefined {
 
   if (
     imovel.pagamentos.some(
-      (pagamento) => pagamento.status === "pendente"
+      (pagamento) => pagamentoStatus(pagamento) === "pendente"
     )
   ) {
     return "pendente";
@@ -412,7 +268,7 @@ export function getStatusColor(stats?: Status): CorStat {
     return "late";
   }
   if (stats == "pendente") {
-    return "pending";
+    return "pendente";
   }
   return "ok";
 }
@@ -424,9 +280,9 @@ export function pendenciaTotal(imovel: Imovel | undefined) {
 
   return imovel.pagamentos.filter(
       (pagamento) =>
-        pagamento.status === "pendente"
+        pagamentoStatus(pagamento) === "pendente"
       ).reduce(
-        (total, pagamento) => total + pagamento.value, 0
+        (total, pagamento) => total + pagamento.total, 0
       )
   };
 
@@ -436,9 +292,9 @@ export function efetuadoTotal(imovel: Imovel | undefined) {
   }
 
   return imovel.pagamentos.filter(
-    (pagamento) => pagamento.status == "ok"
+    (pagamento) => pagamentoStatus(pagamento) == "ok"
   ).reduce(
-    (total, pagamento) => total + pagamento.value, 0
+    (total, pagamento) => total + pagamento.total, 0
   )
 }
 
@@ -448,9 +304,9 @@ export function atrasoTotal(imovel: Imovel | undefined) {
   }
 
   return imovel.pagamentos.filter(
-    (pagamento) => pagamento.status == "atrasado"
+    (pagamento) => pagamentoStatus(pagamento) == "atrasado"
   ).reduce(
-    (total, pagamento) => total + pagamento.value, 0
+    (total, pagamento) => total + pagamento.total, 0
   )
 }
 
@@ -480,15 +336,15 @@ export const gastoTotal = imoveis.reduce(
 
 export const qtd_atrasados = imoveis
   .flatMap((imovel) => imovel.pagamentos)
-  .filter((p) => p.status === "atrasado").length;
+  .filter((p) => pagamentoStatus(p) === "atrasado").length;
 
 export const qtd_pendentes = imoveis
   .flatMap((imovel) => imovel.pagamentos)
-  .filter((p) => p.status === "pendente").length;
+  .filter((p) => pagamentoStatus(p) === "pendente").length;
 
 export const qtd_efetuados = imoveis
   .flatMap((imovel) => imovel.pagamentos)
-  .filter((p) => p.status === "ok").length;
+  .filter((p) => pagamentoStatus(p) === "ok").length;
 
 const custoEfetuadoDashboard = imoveis.reduce(
   (total, imovel) => total + efetuadoTotal(imovel), 0
@@ -521,10 +377,9 @@ export type Inquilino = {
   nome: string;
   email: string;
   telefone: string;
-  desde: Date;
+  dt_cadastrado: Date;
   cpf: string;
   observacoes: string;
-  imoveis: number[];
 };
 
 export const inquilinos: Inquilino[] = [
@@ -533,70 +388,70 @@ export const inquilinos: Inquilino[] = [
     nome: "Cheila Nogueira",
     email: "cheila.nog@email.com",
     telefone: "(85) 992981-2160",
-    desde: corretorData("2024-07-30"),
+    dt_cadastrado: corretorData("2024-07-30"),
     cpf: "000-000-000-00",
-    observacoes: "------------------------------------",
-    imoveis: [3]
+    observacoes:
+      "Inquilina com histórico estável de pagamentos, sem registros recentes de atraso e baixa incidência de pendências financeiras.",
   },
   {
     id: 1,
     nome: "Ana Beatriz Souza",
     email: "ana.souza@email.com",
     telefone: "(11) 98765-4321",
-    desde: corretorData("2025-05-04"),
+    dt_cadastrado: corretorData("2025-05-04"),
     cpf: "000-000-000-00",
-    observacoes: "--------dadwdwa-----------",
-    imoveis: [1]
+    observacoes:
+      "Apresenta leve histórico de atrasos em contas de consumo, mas mantém regularização dos pagamentos de aluguel em dia.",
   },
   {
     id: 2,
     nome: "Carlos Henrique Lima",
     email: "carlos.lima@email.com",
     telefone: "(21) 99812-3344",
-    desde: corretorData("2022-08-21"),
+    dt_cadastrado: corretorData("2022-08-21"),
     cpf: "000-000-000-00",
-    observacoes: "---------------iiiwa-----------",
-    imoveis: [1, 2]
+    observacoes:
+      "Perfil com recorrência de atrasos em contas mensais, exigindo monitoramento constante de pendências financeiras.",
   },
   {
     id: 3,
     nome: "Marina Oliveira Costa",
     email: "marina.costa@email.com",
     telefone: "(31) 99700-1122",
-    desde: corretorData("2022-03-01"),
+    dt_cadastrado: corretorData("2022-03-01"),
     cpf: "000-000-000-00",
-    observacoes: "-----------eeee-------------------------",
-    imoveis: [3]
+    observacoes:
+      "Histórico consistente de pagamentos, com baixa frequência de atrasos e boa organização financeira geral.",
   },
   {
     id: 6,
     nome: "Pedro Almeida Rocha",
     email: "pedro.rocha@email.com",
     telefone: "(48) 99123-7788",
-    desde: corretorData("2022-01-29"),
+    dt_cadastrado: corretorData("2022-01-29"),
     cpf: "000-000-000-00",
-    observacoes: "x-",
-    imoveis: [4]
+    observacoes:
+      "Inquilino com bom histórico de adimplência, apresentando apenas atrasos pontuais já regularizados.",
   },
   {
     id: 5,
     nome: "Juliana Pereira Mendes",
     email: "juliana.mendes@email.com",
     telefone: "(11) 98800-5566",
-    desde: corretorData("2021-12-11"),
+    dt_cadastrado: corretorData("2021-12-11"),
     cpf: "000-000-000-00",
-    observacoes: "-----awdas------------------",
-    imoveis: [7]
+    observacoes:
+      "Possui histórico misto de pagamentos, com períodos de atraso intercalados com regularizações completas.",
   },
   {
     id: 7,
     nome: "Rafael Nogueira",
     email: "rafael.nog@email.com",
     telefone: "(85) 99411-2200",
-    desde: corretorData("2024-10-19"),
+    dt_cadastrado: corretorData("2024-10-19"),
     cpf: "000-000-000-00",
-    observacoes: "------------------------------------",
-    imoveis: [3]
+    observacoes:
+      "Perfil recente com bom comportamento inicial de pagamentos, ainda em fase de consolidação de histórico financeiro.",
   },
 ];
 
@@ -618,7 +473,7 @@ export function getAdimplencia(imovel: Imovel) {
   if (total === 0) return "0%";
 
   const pagos = imovel.pagamentos.filter(
-    (pagamento) => pagamento.status === "ok"
+    (pagamento) => pagamentoStatus(pagamento) === "ok"
   ).length;
 
   const porcentagem = Math.round((pagos / total) * 100);
@@ -670,7 +525,7 @@ export const statsDashboard = [
     label: "Pagamento pendente",
     value: custoPendenteDashboard.toFixed(2),
     note: qtd_pendentes + " boletos pendentes",
-    corStat: "pending",
+    corStat: "pendente",
   },
 
   {
@@ -694,42 +549,38 @@ export function getPagamentoPrioridade(imovel: Imovel | undefined) {
   const pagamentos = imovel.pagamentos;
 
   const pagos = pagamentos
-    .filter((p) => p.status === "ok")
-    .sort((a, b) => b.date.getTime() - a.date.getTime());
+    .filter((p) => pagamentoStatus(p) === "ok")
+    .sort((a, b) => b.data_vencimento.getTime() - a.data_vencimento.getTime());
 
   if (pagos.length > 0) return pagos[0];
 
   const pendentes = pagamentos
-    .filter((p) => p.status === "pendente")
-    .sort((a, b) => a.date.getTime() - b.date.getTime());
+    .filter((p) => pagamentoStatus(p) === "pendente")
+    .sort((a, b) => a.data_vencimento.getTime() - b.data_vencimento.getTime());
 
   if (pendentes.length > 0) return pendentes[0];
 
   const atrasados = pagamentos
-    .filter((p) => p.status === "atrasado")
-    .sort((a, b) => b.date.getTime() - a.date.getTime());
+    .filter((p) => pagamentoStatus(p) === "atrasado")
+    .sort((a, b) => b.data_vencimento.getTime() - a.data_vencimento.getTime());
 
   if (atrasados.length > 0) return atrasados[0];
 
   return undefined;
 }
 
-export function getPagamentosPrioridadeLista(imovel: Imovel | undefined) {
+export function getPagamentosPrioridadeLista(imovel: Imovel | undefined, n: number | null = null) {
   if (!imovel || imovel.pagamentos.length === 0) return [];
 
   const pagamentos = [...imovel.pagamentos];
 
-  const pagos = pagamentos
-    .filter((p) => p.status === "ok")
-    .sort((a, b) => b.date.getTime() - a.date.getTime());
-
   const pendentes = pagamentos
-    .filter((p) => p.status === "pendente")
-    .sort((a, b) => a.date.getTime() - b.date.getTime());
+    .filter((p) => pagamentoStatus(p) === "pendente")
+    .sort((a, b) => a.data_vencimento.getTime() - b.data_vencimento.getTime());
 
   const atrasados = pagamentos
-    .filter((p) => p.status === "atrasado")
-    .sort((a, b) => b.date.getTime() - a.date.getTime());
+    .filter((p) => pagamentoStatus(p) === "atrasado")
+    .sort((a, b) => b.data_vencimento.getTime() - a.data_vencimento.getTime());
 
   const resultado: PagamentoInfo[] = [];
 
@@ -737,7 +588,81 @@ export function getPagamentosPrioridadeLista(imovel: Imovel | undefined) {
 
   resultado.push(...pendentes);
 
-  resultado.push(...pagos);
-
-  return resultado.slice(0, 4);
+  if (!n) {
+    return resultado;
+  }
+  
+  return resultado.slice(0, n);
 }
+
+export function getImoveis_fromInquilino(idInquilino: number) {
+  return imoveis.filter(
+    (imovel) => imovel.inquilino === idInquilino
+  )
+}
+
+type Plano = "Solo" | "Starter" | "Prêmium" | "Custom";
+
+type User = {
+  id: number;
+  nome: string;
+  cpf: string;
+  telefone: string;
+  email: string;
+  dt_cadastro: Date;
+  descricao: string;
+  plano: Plano;
+};
+
+export const usuarios: User[] = [
+  {
+    id: 101,
+    nome: "Gabriel Martins Ferreira",
+    cpf: "111.222.333-10",
+    telefone: "(11) 94567-8890",
+    email: "gabriel.martins@gmail.com",
+    dt_cadastro: corretorData("2025-02-14"),
+    descricao: "Administrador de carteira de imóveis comerciais.",
+    plano: "Prêmium",
+  },
+  {
+    id: 102,
+    nome: "Camila Rocha Almeida",
+    cpf: "222.333.444-21",
+    telefone: "(11) 98877-6655",
+    email: "camila.rocha@gmail.com",
+    dt_cadastro: corretorData("2024-10-03"),
+    descricao: "Especialista em gestão de locações residenciais.",
+    plano: "Starter",
+  },
+  {
+    id: 103,
+    nome: "Felipe Andrade Souza",
+    cpf: "333.444.555-32",
+    telefone: "(11) 97766-4433",
+    email: "felipe.andrade@gmail.com",
+    dt_cadastro: corretorData("2023-06-18"),
+    descricao: "Focado em análise financeira de contratos imobiliários.",
+    plano: "Solo",
+  },
+  {
+    id: 104,
+    nome: "Larissa Teixeira Costa",
+    cpf: "444.555.666-43",
+    telefone: "(11) 99654-2211",
+    email: "larissa.teixeira@gmail.com",
+    dt_cadastro: corretorData("2025-01-09"),
+    descricao: "Consultora de expansão imobiliária e investimentos.",
+    plano: "Custom",
+  },
+  {
+    id: 105,
+    nome: "Silvia Yendes",
+    cpf: "111.333.777-88",
+    telefone: "(11) 817171-7018",
+    email: "silvia.Y@gmail.com",
+    dt_cadastro: corretorData("2024-08-27"),
+    descricao: "CEO de imobiliária de alto padrão e atendimento VIP.",
+    plano: "Prêmium",
+  },
+];

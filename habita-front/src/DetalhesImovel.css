@@ -300,7 +300,7 @@
   background: var(--ok-fg);
 }
 
-.dot--pending {
+.dot--pendente {
   background: var(--pend-fg);
 }
 

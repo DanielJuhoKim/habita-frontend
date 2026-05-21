@@ -10,10 +10,10 @@
   --barra_opcoes-muted: #bdfbff;
   --brand-mint: oklch(0.78 0.13 175);
   --status-ok: oklch(0.78 0.13 175);
-  --status-pending: oklch(0.86 0.13 90);
+  --status-pendente: oklch(0.86 0.13 90);
   --status-late: oklch(0.72 0.18 20);
   --ok-text: oklch(0.55 0.13 175);
-  --pending-text: oklch(0.6 0.13 60);
+  --pendente-text: oklch(0.6 0.13 60);
   --late-text: oklch(0.6 0.18 25);
 }
 
@@ -29,7 +29,6 @@ body {
 }
 
 button { font: inherit; cursor: pointer; border: none; background: none; color: inherit; }
-
 
 .barra_opcoes {
   position: fixed;
@@ -81,6 +80,10 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
   padding: 20px 24px;
 
   margin-top: auto;
+}
+
+.barra_opcoes-user:hover {
+  background: rgba(255,255,255,0.05); color: var(--barra_opcoes-foreground);
 }
 
 .avatar {

@@ -11,7 +11,7 @@
   --barra_opcoes-muted: oklch(0.7 0.04 200);
   --brand-mint: oklch(0.78 0.13 175);
   --status-ok: oklch(0.78 0.13 175);
-  --status-pending: oklch(0.86 0.13 90);
+  --status-pendente: oklch(0.86 0.13 90);
   --status-late: oklch(0.72 0.18 20);
 }
 
@@ -61,7 +61,7 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
 
 .corStat-ok { color: var(--ok-text); }
 
-.corStat-pending { color: var(--pending-text); }
+.corStat-pendente { color: var(--pendente-text); }
 
 .corStat-late { color: var(--late-text); }
 
@@ -124,7 +124,7 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
 
 .badge-ok { background: var(--status-ok);  color: color-mix(in srgb, black 60%, transparent);}
 
-.badge-pending { background: var(--status-pending); color: color-mix(in srgb, black 60%, transparent);}
+.badge-pendente { background: var(--status-pendente); color: color-mix(in srgb, black 60%, transparent);}
 
 .badge-late { background: var(--status-late);  color: color-mix(in srgb, black 60%, transparent);}
 
@@ -140,7 +140,7 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
 
 .alert-icon.late { background: color-mix(in oklch, var(--status-late) 15%, transparent); color: var(--status-late); }
 
-.alert-icon.pending { background: color-mix(in oklch, var(--status-pending) 30%, transparent); color: oklch(0.55 0.15 70); }
+.alert-icon.pendente { background: color-mix(in oklch, var(--status-pendente) 30%, transparent); color: oklch(0.55 0.15 70); }
 
 .alert-icon.muted { background: var(--muted); color: var(--muted-foreground); }
 
@@ -166,7 +166,7 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
 
 .dot-ok { background: var(--status-ok); }
 
-.dot-pending { background: var(--status-pending); }
+.dot-pendente { background: var(--status-pendente); }
 
 .dot-late { background: var(--status-late); }
 

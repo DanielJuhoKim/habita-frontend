@@ -14,7 +14,7 @@
   --brand-strong: oklch(0.42 0.09 210);
   --brand-mint: oklch(0.78 0.13 175);
 
-  --pending-bg: oklch(0.92 0.04 175);
+  --pendente-bg: oklch(0.92 0.04 175);
   --paid-bg: oklch(0.92 0.04 175);
 
   --pay-btn: oklch(0.55 0.14 240);
@@ -77,7 +77,7 @@ h1, h2, h3, p { margin: 0; }
   display: flex; flex-direction: column; gap: 24px;
 }
 .section { border-radius: 12px; padding: 8px 16px 16px; }
-.section-pendente, .section-efetuado { background: var(--pending-bg); }
+.section-pendente, .section-efetuado { background: var(--pendente-bg); }
 .section-head { padding: 12px 4px; }
 .section-head h3 { font-size: 16px; font-weight: 700; color: var(--muted-foreground); }
 .section-list { display: flex; flex-direction: column; gap: 12px; max-height: 400px;
@@ -96,7 +96,7 @@ h1, h2, h3, p { margin: 0; }
 .pay-title { font-weight: 700; font-size: 15px; }
 .pay-tenant { font-size: 13px; color: var(--muted-foreground); margin-top: 2px; }
 .pay-date { font-size: 13px; font-weight: 600; margin-top: 4px; }
-.pay-date.pendente { color: var(--pending-text); }
+.pay-date.pendente { color: var(--pendente-text); }
 .pay-date.atrasado { color: var(--late-text); }
 .pay-date.ok { color: var(--ok-text); }
 

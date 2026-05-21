@@ -5,7 +5,7 @@ import { useNavigate, useParams } from "react-router-dom";
 
 import { ArrowLeft } from "lucide-react";
 
-import { getInquilino, getInitials, getImovel, formatarId } from "./constantes";
+import { getInquilino, getInitials, formatarId, getImoveis_fromInquilino } from "./constantes";
 
 type Status = "adimplente" | "atraso" | "pendente";
 
@@ -120,6 +120,8 @@ export default function DetalhesInquilino() {
         </Base>
   }
 
+  const imoveis = getImoveis_fromInquilino(inquilino.id)
+
   return (
     <Base>
         <div className="card panel" >
@@ -136,7 +138,7 @@ export default function DetalhesInquilino() {
             <div className="inq-avatar-lg">{getInitials(inquilino.nome)}</div>
             <div>
                 <h1>{inquilino.nome}</h1>
-                <p className="muted">Inquilino desde {inquilino.desde.toLocaleDateString("pt-br")}</p>
+                <p className="muted">Cadastrado em {inquilino.dt_cadastrado.toLocaleDateString("pt-br")}</p>
             </div>
             </div>
             <div className="inq-actions">
@@ -159,7 +161,7 @@ export default function DetalhesInquilino() {
                 </div>
                 <div className="metric">
                     <span className="metric-label">Imóveis vinculados</span>
-                    <strong className="metric-value">{inquilino.imoveis.length}</strong>
+                    <strong className="metric-value">{imoveis.length}</strong>
                 </div>
                 <div className="metric">
                     <span className="metric-label">Adimplência</span>
@@ -222,33 +224,31 @@ export default function DetalhesInquilino() {
 
             {aba === "imoveis" && (
                 <div className="imoveis-list">
-                    {inquilino.imoveis.map((idImovel) => {
-                    const imovel = getImovel(idImovel);
+                    {imoveis.map((imovel) => {
+                        if (!imovel) return null;
 
-                    if (!imovel) return null;
+                        return (
+                            <div key={imovel.id} className="imovel-row">
+                            <div>
+                                <strong>({formatarId(imovel.id)}) {imovel.logradouro}, {imovel.numero} - {imovel.complemento}</strong>
 
-                    return (
-                        <div key={imovel.id} className="imovel-row">
-                        <div>
-                            <strong>({formatarId(imovel.id)}) {imovel.logradouro} - {imovel.complemento}</strong>
+                                <p className="muted"> {imovel.complemento} </p>
+                            </div>
 
-                            <p className="muted"> {imovel.complemento} </p>
-                        </div>
-
-                        <div className="imovel-row__right">
-                            <button
-                            className="btn-edit"
-                            onClick={() =>
-                                navigate(`/imoveis/${imovel.id}`)
-                            }>
-                            Ver imóvel
-                            </button>
-                        </div>
-                        </div>
-                    );
-                    })}
-                </div>
-                )}
+                            <div className="imovel-row__right">
+                                <button
+                                className="btn-edit"
+                                onClick={() =>
+                                    navigate(`/imoveis/${imovel.id}`)
+                                }>
+                                Ver imóvel
+                                </button>
+                            </div>
+                            </div>
+                        );
+                        })}
+                    </div>
+                    )}
 
             {aba === "documentos" && (
                 <ul className="docs">

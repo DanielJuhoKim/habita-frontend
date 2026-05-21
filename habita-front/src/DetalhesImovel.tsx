@@ -13,9 +13,13 @@ import {
   atrasoTotal,
   formatarId,
   getAdimplencia,
+  getPagamentosPrioridadeLista,
+  pagamentoStatus,
 } from "./constantes";
 
-type Aba = "visao" | "pagamentos" | "documentos";
+import { ArrowLeft } from "lucide-react";
+
+type Aba = "informacoes" | "prioridades" | "pagamentos" | "documentos";
 
 type Documento = {
   nome: string;
@@ -51,7 +55,7 @@ function brl(v: number) {
 }
 
 export default function DTImoveis() {
-  const [aba, setAba] = useState<Aba>("visao");
+  const [aba, setAba] = useState<Aba>("informacoes");
 
   const navigate = useNavigate();
 
@@ -67,10 +71,12 @@ export default function DTImoveis() {
             <h2>Imóvel não encontrado</h2>
 
             <button
-              className="btn-back"
-              onClick={() => navigate(-1)}
+                type="button"
+                className="btn-back"
+                onClick={() => navigate(-1)}
+                aria-label="Voltar"
             >
-              ← Voltar
+                <ArrowLeft size={18} />
             </button>
           </div>
         </div>
@@ -93,15 +99,16 @@ export default function DTImoveis() {
       <div className="card panel imv-panel">
         <div className="imv-header">
           <button
-            className="btn-back"
-            onClick={() => navigate(-1)}
-          >
-            ← Voltar
+              type="button"
+              className="btn-back"
+              onClick={() => navigate(-1)}
+              aria-label="Voltar">
+              <ArrowLeft size={18} />
           </button>
 
           <div className="imv-id">
             <div>
-              <h1> ({formatarId(imovel.id)}) {imovel.logradouro}</h1>
+              <h1> ({formatarId(imovel.id)}) {imovel.logradouro}, {imovel.numero}</h1>
 
               <p className="muted">
                 {imovel.complemento}
@@ -211,9 +218,15 @@ export default function DTImoveis() {
 
           <div className="imv-tabs">
             <button
-              className={aba === "visao" ? "tab--active" : ""}
-              onClick={() => setAba("visao")}>
-              Visão geral
+              className={aba === "informacoes" ? "tab--active" : ""}
+              onClick={() => setAba("informacoes")}>
+              Informações
+            </button>
+
+            <button
+              className={aba === "prioridades" ? "tab--active" : ""}
+              onClick={() => setAba("prioridades")}>
+              Prioridades
             </button>
 
             <button
@@ -230,26 +243,26 @@ export default function DTImoveis() {
           </div>
 
           <section className="tab-content">
-            {aba === "visao" && (
+            {aba === "prioridades" && (
               <div className="box full-width">
                 <h3>Prioridades</h3>
 
                 <ul className="timeline">
-                  {imovel.relatorio.prioridades.map(
-                    (prioridade, i) => (
-                      <li key={i}>
-                        <span
-                          className={`dot dot--${prioridade.corStat}`}
-                        />
+                  {getPagamentosPrioridadeLista(imovel)?.map((p, i) => (
+                    <li key={i}>
+                      <span
+                        className={`dot dot-${
+                          pagamentoStatus(p) === "atrasado"
+                            ? "late"
+                            : pagamentoStatus(p)
+                        }`}
+                      />
 
-                        <div>
-                          <strong>
-                            {prioridade.text}
-                          </strong>
-                        </div>
-                      </li>
-                    )
-                  )}
+                      <div>
+                        <strong>{p.tipo_pagamento}</strong>
+                      </div>
+                    </li>
+                  ))}
                 </ul>
               </div>
             )}
@@ -269,27 +282,27 @@ export default function DTImoveis() {
                   <tbody>
                     {imovel.pagamentos.map((p, i) => (
                       <tr key={i}>
-                        <td>{p.desc}</td>
+                        <td>{p.tipo_pagamento} - {p.emissora}</td>
 
-                        <td>{brl(p.value)}</td>
+                        <td>{brl(p.total)}</td>
 
                         <td>
-                          {p.date.toLocaleDateString(
+                          {p.data_vencimento.toLocaleDateString(
                             "pt-BR"
                           )}
                         </td>
 
                         <td>
                           <span
-                            className={`pill pill--${p.status}`}>
-                            {p.status === "ok" &&
+                            className={`pill pill--${pagamentoStatus(p)}`}>
+                            {pagamentoStatus(p) === "ok" &&
                               "Pago"}
 
-                            {p.status ===
+                            {pagamentoStatus(p) ===
                               "pendente" &&
                               "Pendente"}
 
-                            {p.status ===
+                            {pagamentoStatus(p) ===
                               "atrasado" &&
                               "Atrasado"}
                           </span>

@@ -172,7 +172,12 @@
   border-radius: 10px;
   font-size: 13px;
   cursor: pointer;
-  }
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .btn-ghost:hover { border-color: var(--primary); color: var(--primary); }
 
 .empty {

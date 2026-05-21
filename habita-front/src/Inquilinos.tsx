@@ -4,17 +4,19 @@ import Base from "./Base";
 import {Filter} from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
-import { inquilinos, type Inquilino, getImovel, getInitials } from "./constantes";
+import { inquilinos, type Inquilino, getInitials, getImoveis_fromInquilino } from "./constantes";
 
 function Card({ data }: { data: Inquilino }) {
   const navigate = useNavigate();
+  const imoveisInq = getImoveis_fromInquilino(data.id);
+  
   return (
     <div className="inq-card">
       <div className="inq-head">
         <div className="inq-avatar">{getInitials(data.nome)}</div>
         <div className="inq-id">
           <div className="inq-name">{data.nome}</div>
-          <div className="inq-since">Inquilino desde {data.desde.toLocaleDateString("pt-br")}</div>
+          <div className="inq-since">Cadastrado em {data.dt_cadastrado.toLocaleDateString("pt-br")}</div>
         </div>
       </div>
 
@@ -30,24 +32,23 @@ function Card({ data }: { data: Inquilino }) {
       </div>
 
       <div className="inq-imoveis">
-        <div className="imoveis-label">Imóveis vinculados ({data.imoveis.length})</div>
+        <div className="imoveis-label">
+          Imóveis vinculados ({imoveisInq.length})
+        </div>
+
         <ul className="imoveis-list">
-          {data.imoveis.map((idImovel) => {
-            const imovel = getImovel(idImovel);
-
-            return (
-              <li key={idImovel}>
-                <span className="imovel-ico">⌂</span>
-
-                {imovel?.logradouro} — {imovel?.complemento}
-              </li>
-            );
-          })}
+          {imoveisInq.map((imovel) => (
+            <li key={imovel.id}>
+              <span className="imovel-ico">⌂</span>
+              {imovel.logradouro}, {imovel.numero} — {imovel.complemento}
+            </li>
+          ))}
         </ul>
       </div>
-        <button className="btn-ghost">Mensagem</button>
-        <button className="btn-primary" onClick={() => navigate(`/inquilinos/${data.id}`)}>
-          Ver detalhes</button>
+
+      <button className="btn-ghost" >Mensagem</button>
+      <button className="btn-primary" onClick={() => navigate(`/inquilinos/${data.id}`)}>
+        Ver detalhes</button>
     </div>
   );
 }

@@ -12,7 +12,8 @@ import {
   getAdimplencia,
   gastoMensal,
   getStatusImovel,
-  getPagamentosPrioridadeLista
+  getPagamentosPrioridadeLista,
+  pagamentoStatus
 } from "./constantes";
 
 function FilterBtn() {
@@ -27,11 +28,11 @@ function Card({ data }: { data: Imovel }) {
   const navigate = useNavigate();
 
   const qtd_atrasados = data.pagamentos.filter(
-    (pag) => pag.status === "atrasado"
+    (pag) => pagamentoStatus(pag) === "atrasado"
   ).length;
 
   const qtd_pendentes = data.pagamentos.filter(
-    (pag) => pag.status === "pendente"
+    (pag) => pagamentoStatus(pag) === "pendente"
   ).length;
 
   return (
@@ -39,7 +40,7 @@ function Card({ data }: { data: Imovel }) {
       <div className="rel-head">
         <div>
           <p className="rel-title">
-            ({formatarId(data.id)}) {data.logradouro + " - " + data.complemento}
+            ({formatarId(data.id)}) {data.logradouro}, {data.numero} - {data.complemento}
           </p>
           <p className="rel-tenant">
             Inquilino: {getInquilino(data.inquilino)?.nome}
@@ -55,7 +56,6 @@ function Card({ data }: { data: Imovel }) {
       </div>
 
       <div className="rel-body">
-        {/* GASTO MÊS */}
         <div className="rel-metric">
           <p className="metric-label">Gasto no mês</p>
           <p className="metric-value">R$ {gastoMensal(data).toFixed(2)}</p>
@@ -72,12 +72,10 @@ function Card({ data }: { data: Imovel }) {
           </p>
         </div>
 
-        {/* PENDÊNCIAS */}
         <div className="rel-metric">
           <p className="metric-label">Pendente</p>
           <p className="metric-value">R$ {pendenciaTotal(data)}</p>
 
-          {/* 👇 AQUI FOI A MUDANÇA */}
           <div className="metric-inline">
             <p className={qtd_atrasados === 0 ? "metric-ok" : "metric-atraso"}>
               {qtd_atrasados} atrasos
@@ -93,22 +91,26 @@ function Card({ data }: { data: Imovel }) {
           </div>
         </div>
 
-        {/* ADIMPLÊNCIA */}
         <div className="rel-metric">
           <p className="metric-label">Adimplência</p>
           <p className="metric-value">{getAdimplencia(data)}</p>
           <p className="metric-note">Últimos 12 meses</p>
         </div>
 
-        {/* PRIORIDADES */}
         <div className="prioridades">
           <p className="metric-label">Prioridades</p>
 
           <ul>
-            {getPagamentosPrioridadeLista(data).map((p, i) => (
+            {getPagamentosPrioridadeLista(data, 4).map((p, i) => (
               <li key={i}>
-                <span className={`dot dot-${p.status}`} />
-                {p.desc}
+                <span
+                  className={`dot dot-${
+                    pagamentoStatus(p) === "atrasado"
+                      ? "late"
+                      : pagamentoStatus(p)
+                  }`}
+                />
+                {p.tipo_pagamento}
               </li>
             ))}
           </ul>
