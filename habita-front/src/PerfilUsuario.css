@@ -1,0 +1,351 @@
+.perfil-panel {
+  background: #fff;
+  border-radius: 16px;
+  padding: 24px;
+  min-height: 700px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+}
+
+/* HEADER */
+.perfil-panel .perfil-head {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.perfil-panel .perfil-head h2 {
+  margin: 0;
+  font-size: 22px;
+  color: #1f1f1f;
+}
+
+.perfil-panel .perfil-head p {
+  margin: 2px 0 0;
+  font-size: 13px;
+  color: #777;
+}
+
+/* BACK BUTTON */
+.perfil-panel .back-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid #e6e6e6;
+  background: #fff;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  color: #555;
+  transition: background 0.2s;
+}
+
+.perfil-panel .back-btn:hover {
+  background: #f5f5f5;
+}
+
+/* ACTIONS */
+.perfil-panel .perfil-actions {
+  margin-left: auto;
+  display: flex;
+  gap: 8px;
+}
+
+.perfil-panel .btn-primary,
+.perfil-panel .btn-ghost,
+.perfil-panel .btn-logout {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 16px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: all 0.2s;
+}
+
+.perfil-panel .btn-primary {
+  background: #6c5ce7;
+  color: #fff;
+}
+
+.perfil-panel .btn-primary:hover {
+  background: #5a4bd1;
+}
+
+.perfil-panel .btn-ghost {
+  background: #fff;
+  color: #555;
+  border-color: #e6e6e6;
+}
+
+.perfil-panel .btn-ghost:hover {
+  background: #f7f7f7;
+}
+
+.perfil-panel .btn-logout {
+  width: 100%;
+  justify-content: center;
+  background: #fff;
+  color: #d63031;
+  border-color: #f5c6c8;
+  margin-top: 18px;
+}
+
+.perfil-panel .btn-logout:hover {
+  background: #fdecee;
+}
+
+/* GRID */
+.perfil-panel .perfil-grid {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 24px;
+}
+
+/* CARD */
+.perfil-panel .perfil-card {
+  background: linear-gradient(160deg, #f9f8ff 0%, #fff 100%);
+  border: 1px solid #eee;
+  border-radius: 14px;
+  padding: 22px;
+  text-align: center;
+  height: fit-content;
+}
+
+/* AVATAR */
+.perfil-panel .avatar-wrap {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  margin: 0 auto 14px;
+}
+
+.perfil-panel .avatar-circle {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #6c5ce7, #a29bfe);
+  color: #fff;
+  display: grid;
+  place-items: center;
+  font-size: 32px;
+  font-weight: 600;
+  overflow: hidden;
+}
+
+.perfil-panel .avatar-circle img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.perfil-panel .avatar-edit {
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: #fff;
+  border: 1px solid #e6e6e6;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  color: #6c5ce7;
+}
+
+/* TEXTOS */
+.perfil-panel .perfil-nome {
+  margin: 0;
+  font-size: 18px;
+  color: #1f1f1f;
+}
+
+.perfil-panel .perfil-email {
+  margin: 4px 0 12px;
+  font-size: 13px;
+  color: #777;
+}
+
+/* BADGES */
+.perfil-panel .badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.perfil-panel .badge-premium {
+  background: #fff4d6;
+  color: #b8860b;
+}
+
+.perfil-panel .badge-free {
+  background: #eef0f3;
+  color: #555;
+}
+
+.perfil-panel .badge-pro {
+  background: #e7e3ff;
+  color: #6c5ce7;
+}
+
+/* LISTA INFO */
+.perfil-panel .perfil-info-lista {
+  list-style: none;
+  padding: 0;
+  margin: 18px 0 0;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.perfil-panel .perfil-info-lista li {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 13px;
+  color: #555;
+}
+
+.perfil-panel .perfil-info-lista svg {
+  color: #6c5ce7;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+/* STATS */
+.perfil-panel .perfil-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-top: 20px;
+  padding-top: 18px;
+  border-top: 1px solid #eee;
+}
+
+.perfil-panel .perfil-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  color: #555;
+  font-size: 11px;
+}
+
+.perfil-panel .perfil-stat svg {
+  color: #6c5ce7;
+  margin-bottom: 4px;
+}
+
+.perfil-panel .perfil-stat strong {
+  font-size: 15px;
+  color: #1f1f1f;
+}
+
+/* CONTEÚDO */
+.perfil-panel .perfil-conteudo {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.perfil-panel .bloco {
+  background: #fafafa;
+  border: 1px solid #eee;
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.perfil-panel .bloco h3 {
+  margin: 0 0 16px;
+  font-size: 15px;
+  color: #1f1f1f;
+}
+
+/* FORM */
+.perfil-panel .grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
+.perfil-panel .campo {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.perfil-panel .campo label {
+  font-size: 12px;
+  color: #777;
+  font-weight: 500;
+}
+
+.perfil-panel .campo input,
+.perfil-panel .campo textarea {
+  border: 1px solid #e6e6e6;
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 14px;
+  background: #fff;
+  color: #1f1f1f;
+  font-family: inherit;
+  transition: border 0.2s;
+}
+
+.perfil-panel .campo input:focus,
+.perfil-panel .campo textarea:focus {
+  outline: none;
+  border-color: #6c5ce7;
+}
+
+.perfil-panel .campo input[readonly],
+.perfil-panel .campo textarea[readonly] {
+  background: #f5f5f7;
+  color: #555;
+}
+
+/* PLANO */
+.perfil-panel .plano-box {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 10px;
+  padding: 14px 16px;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+/* SEGURANÇA */
+.perfil-panel .acoes-seg {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* RESPONSIVO */
+@media (max-width: 900px) {
+  .perfil-panel .perfil-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .perfil-panel .grid-2 {
+    grid-template-columns: 1fr;
+  }
+
+  .perfil-panel .perfil-actions {
+    width: 100%;
+  }
+}

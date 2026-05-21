@@ -185,10 +185,6 @@ export default function DTImoveis() {
 
                 <div>
                   <strong>{inquilino?.nome}</strong>
-
-                  <p className="muted">
-                    Inquilino ativo
-                  </p>
                 </div>
               </div>
 

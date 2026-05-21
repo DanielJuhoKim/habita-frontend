@@ -103,14 +103,14 @@ export default function Base({ children }: LayoutProps) {
 
         <div className="barra_opcoes-divider" />
 
-        <div className="barra_opcoes-user">
+        <button className="barra_opcoes-user" onClick={() => navigate("/usuario")}>
           <div className="avatar">S</div>
 
           <div>
             <p className="user-name">Silvia</p>
             <p className="user-plan">Plano Premium</p>
           </div>
-        </div>
+        </button>
       </aside>
 
       <main className="main">

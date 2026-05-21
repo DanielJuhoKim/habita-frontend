@@ -526,49 +526,19 @@ export const qtd_efetuados = imoveis
   .flatMap((imovel) => imovel.pagamentos)
   .filter((p) => p.status === "ok").length;
 
-const efetuadoDashboard = imoveis.reduce(
+const custoEfetuadoDashboard = imoveis.reduce(
   (total, imovel) => total + efetuadoTotal(imovel), 0
   );
 
-const pendenteDashboard = imoveis.reduce(
+const custoPendenteDashboard = imoveis.reduce(
   (total, imovel) => total + pendenciaTotal(imovel), 0
   );
 
-const atrasadoDashboard = imoveis.reduce(
+const custoAtrasadoDashboard = imoveis.reduce(
   (total, imovel) => total + atrasoTotal(imovel), 0
   );
 
 const totalImoveis = imoveis.length
-
-export const statsDashboard = [
-  {
-    label: "Pagamento efetuado",
-    value: efetuadoDashboard.toFixed(2),
-    note: "14 boletos pagos",
-    corStat: "ok",
-  },
-
-  {
-    label: "Pagamento pendente",
-    value: pendenteDashboard.toFixed(2),
-    note: "7 boletos pendentes",
-    corStat: "pending",
-  },
-
-  {
-    label: "Pagamento atrasado",
-    value: atrasadoDashboard.toFixed(2),
-    note: "3 boletos atrasados",
-    corStat: "late",
-  },
-
-  {
-    label: "Imóveis cadastrados",
-    value: totalImoveis,
-    note: "",
-    corStat: "muted",
-  },
-];
 
 export function getInitials(name: string | undefined) {
   if (name) {
@@ -720,5 +690,36 @@ export const notificacoes: Notificacao[] = [
     titulo: "Mensagem enviada para: rafael.nog@email.com",
     data: corretorData("2026-06-12"),
     tipo: "pendente",
+  },
+];
+
+
+export const statsDashboard = [
+  {
+    label: "Pagamento efetuado",
+    value: custoEfetuadoDashboard.toFixed(2),
+    note: qtd_efetuados + " boletos pagos",
+    corStat: "ok",
+  },
+
+  {
+    label: "Pagamento pendente",
+    value: custoPendenteDashboard.toFixed(2),
+    note: qtd_pendentes + " boletos pendentes",
+    corStat: "pending",
+  },
+
+  {
+    label: "Pagamento atrasado",
+    value: custoAtrasadoDashboard.toFixed(2),
+    note: qtd_atrasados + " boletos atrasados",
+    corStat: "late",
+  },
+
+  {
+    label: "Imóveis cadastrados",
+    value: totalImoveis,
+    note: "",
+    corStat: "muted",
   },
 ];

@@ -18,7 +18,9 @@ export default function Dashboard() {
               ? `R$ ${stat.value}`
               : stat.value
               }</p>
-            <p className={`stat-note corStat-${stat.corStat}`}>{stat.note}</p>
+            <p className={`stat-note corStat-${stat.corStat}`}>{
+              stat.note
+            }</p>
           </div>
         ))}
       </div>
