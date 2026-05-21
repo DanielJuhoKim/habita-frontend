@@ -2,7 +2,7 @@ import { useState } from "react";
 import "./DetalhesImovel.css";
 import Base from "./Base";
 import { useNavigate, useParams } from "react-router-dom";
-import { getImovel, statusImovel, pendenciaTotal, gastoMensal, getInitials, getInquilino } from "./constantes";
+import { getImovel, getStatusImovel, pendenciaTotal, gastoMensal, getInitials, getInquilino } from "./constantes";
 
 type Status = "ok" | "atraso" | "pendente";
 
@@ -122,7 +122,7 @@ export default function DetalhesImovel() {
   const navigate = useNavigate();
   const { id_imovel } = useParams();
   const imovel = getImovel(Number(id_imovel));
-  const status = statusImovel(imovel);
+  const status = getStatusImovel(imovel);
   const inquilino = getInquilino(imovel?.inquilino)
   const iniciais = getInitials(inquilino?.nome)
 

@@ -1,5 +1,3 @@
-// constantes.ts
-
 import {
   Crosshair,
   AlertOctagon,
@@ -39,6 +37,7 @@ export type Imovel = {
 
   logradouro: string;
   complemento: string;
+  descricao: string;
   inquilino: number;
 
   pagamentos: PagamentoInfo[];
@@ -52,7 +51,6 @@ export type Imovel = {
   relatorio: {
     gasto: number;
     gastoStatus: "atraso" | "ok";
-    adimplencia: string;
     prioridades: Prioridade[];
   };
 };
@@ -63,6 +61,7 @@ export const imoveis: Imovel[] = [
 
     logradouro: "Rua das Palmeiras, 210",
     complemento: "Casa",
+    descricao: "dddddddddddddd",
     inquilino: 1,
 
     pagamentos: [
@@ -90,7 +89,6 @@ export const imoveis: Imovel[] = [
     relatorio: {
       gasto: 312.4,
       gastoStatus: "ok",
-      adimplencia: "98%",
 
       prioridades: [
         {
@@ -106,6 +104,7 @@ export const imoveis: Imovel[] = [
 
     logradouro: "Av. Central, 890",
     complemento: "Apt 45",
+    descricao: "dddddddddddddd",
     inquilino: 2,
 
     pagamentos: [
@@ -140,7 +139,6 @@ export const imoveis: Imovel[] = [
     relatorio: {
       gasto: 482.12,
       gastoStatus: "atraso",
-      adimplencia: "82%",
 
       prioridades: [
         {
@@ -161,6 +159,7 @@ export const imoveis: Imovel[] = [
 
     logradouro: "Rua João Pedro, 700",
     complemento: "Apt 203",
+    descricao: "dddddddddddddd",
     inquilino: 3,
 
     pagamentos: [
@@ -195,7 +194,6 @@ export const imoveis: Imovel[] = [
     relatorio: {
       gasto: 627.8,
       gastoStatus: "atraso",
-      adimplencia: "61%",
 
       prioridades: [
         {
@@ -216,6 +214,7 @@ export const imoveis: Imovel[] = [
 
     logradouro: "Av. Ribeiro, 861",
     complemento: "Apt 77",
+    descricao: "dddddddddddddd",
     inquilino: 4,
 
     pagamentos: [
@@ -250,7 +249,6 @@ export const imoveis: Imovel[] = [
     relatorio: {
       gasto: 198.55,
       gastoStatus: "ok",
-      adimplencia: "100%",
 
       prioridades: [
         {
@@ -266,6 +264,7 @@ export const imoveis: Imovel[] = [
 
     logradouro: "Rua Verde, 312",
     complemento: "Apt 12",
+    descricao: "dddddddddddddd",
     inquilino: 5,
 
     pagamentos: [
@@ -300,7 +299,6 @@ export const imoveis: Imovel[] = [
     relatorio: {
       gasto: 354,
       gastoStatus: "ok",
-      adimplencia: "91%",
 
       prioridades: [
         {
@@ -408,7 +406,7 @@ export const movimentacoes = [
   },
 ];
 
-export function statusImovel(imovel?: Imovel): Status | undefined {
+export function getStatusImovel(imovel?: Imovel): Status | undefined {
   if (!imovel) {
     return undefined;
   }
@@ -428,6 +426,16 @@ export function statusImovel(imovel?: Imovel): Status | undefined {
     return "pendente";
   }
 
+  return "ok";
+}
+
+export function getStatusColor(stats: Status): CorStat {
+  if (stats == "atrasado") {
+    return "late";
+  }
+  if (stats == "pendente") {
+    return "pending";
+  }
   return "ok";
 }
 
@@ -501,7 +509,6 @@ const atrasadoDashboard = imoveis.reduce(
   );
 
 const totalImoveis = imoveis.length
-
 
 export const statsDashboard = [
   {
@@ -640,3 +647,38 @@ export function getImovel(idImovel: number) {
     (imovel) => imovel.id === idImovel
   )
 }
+
+export function getAdimplencia(imovel: Imovel) {
+  const total = imovel.pagamentos.length;
+
+  if (total === 0) return "0%";
+
+  const pagos = imovel.pagamentos.filter(
+    (pagamento) => pagamento.status === "ok"
+  ).length;
+
+  const porcentagem = Math.round((pagos / total) * 100);
+
+  return `${porcentagem}%`;
+}
+
+type Evento = {
+  titulo: string;
+  data: Date;
+}
+
+export const eventos: Evento[] = [
+  {
+    titulo: "Novo imóvel: Rua Oliveira - Apt 76 cadastrado",
+    data: corretorData("2026-06-11")
+  },
+  {
+    titulo: "Novo inquilino: Arthur da Silva cadastrado",
+    data: corretorData("2026-06-12")
+  },
+  {
+    titulo: "Mensagem enviada para: rafael.nog@email.com",
+    data: corretorData("2026-06-12")
+  },
+]
+

@@ -7,6 +7,7 @@ import DetalhesImovel from "./DetalhesImovel";
 import Login from "./Login";
 import Inquilinos from "./Inquilinos";
 import DetalhesInquilino from "./DetalhesInquilino";
+import AdicionarImovel from "./AdicionarImovel";
 
 import {
   BrowserRouter,
@@ -22,11 +23,16 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/dashboard" element={<Dashboard />} />
+
         <Route path="/pagamentos" element={<Pagamentos />} />
+
         <Route path="/imoveis" element={<Imoveis />} />
         <Route path="/imoveis/:id_imovel" element={<DetalhesImovel />} />
+        <Route path="/imoveis/new" element={<AdicionarImovel />} />
+
         <Route path="/inquilinos" element={<Inquilinos />} />
         <Route path="/inquilinos/:id_inquilino" element={<DetalhesInquilino />} />
+
       </Routes>
     </BrowserRouter>
   </React.StrictMode>

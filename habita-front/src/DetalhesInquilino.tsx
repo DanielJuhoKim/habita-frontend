@@ -221,7 +221,7 @@ export default function DetalhesInquilino() {
                     return (
                         <div key={imovel.id} className="imovel-row">
                         <div>
-                            <strong>({formatarId(imovel.id)}) - {imovel.logradouro}</strong>
+                            <strong>({formatarId(imovel.id)}) {imovel.logradouro} - {imovel.complemento}</strong>
 
                             <p className="muted"> {imovel.complemento} </p>
                         </div>

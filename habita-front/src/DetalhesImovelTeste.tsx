@@ -5,7 +5,7 @@ import { useNavigate, useParams } from "react-router-dom";
 
 import {
   getImovel,
-  statusImovel,
+  getStatusImovel,
   pendenciaTotal,
   gastoMensal,
   getInitials,
@@ -80,7 +80,7 @@ export default function DTImoveis() {
 
   const inquilino = getInquilino(imovel.inquilino);
 
-  const status = statusImovel(imovel);
+  const status = getStatusImovel(imovel);
 
   const iniciais = getInitials(inquilino?.nome);
 

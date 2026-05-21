@@ -3,7 +3,7 @@ import Base from "./Base";
 import { Filter } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
-import { imoveis, type Imovel, pendenciaTotal, getInquilino, formatarId } from "./constantes"
+import { imoveis, type Imovel, pendenciaTotal, getInquilino, formatarId, getAdimplencia } from "./constantes"
 
 function FilterBtn() {
   return <button className="filtro-bt"><Filter size={14} /> Filtros</button>;
@@ -78,7 +78,7 @@ const qtd_pendentes = data.pagamentos.filter(
         </div>
         <div className="rel-metric">
           <p className="metric-label">Adimplência</p>
-          <p className="metric-value">{data.relatorio.adimplencia}</p>
+          <p className="metric-value">{getAdimplencia(data)}</p>
           <p className="metric-note">Últimos 12 meses</p>
         </div>
 

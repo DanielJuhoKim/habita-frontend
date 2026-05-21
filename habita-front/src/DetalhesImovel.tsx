@@ -5,14 +5,14 @@ import { useNavigate, useParams } from "react-router-dom";
 
 import {
   getImovel,
-  statusImovel,
+  getStatusImovel,
   pendenciaTotal,
   gastoMensal,
   getInitials,
   getInquilino,
   atrasoTotal,
-  efetuadoTotal,
   formatarId,
+  getAdimplencia,
 } from "./constantes";
 
 type Aba = "visao" | "pagamentos" | "documentos";
@@ -80,7 +80,7 @@ export default function DTImoveis() {
 
   const inquilino = getInquilino(imovel.inquilino);
 
-  const status = statusImovel(imovel);
+  const status = getStatusImovel(imovel);
 
   const iniciais = getInitials(inquilino?.nome);
 
@@ -169,7 +169,7 @@ export default function DTImoveis() {
               </span>
 
               <strong className="metric-value">
-                97%
+                {getAdimplencia(imovel)}
               </strong>
             </div>
           </div>
@@ -208,33 +208,8 @@ export default function DTImoveis() {
             </section>
 
             <section className="box">
-              <h3>Resumo</h3>
-
-              <ul className="info-list">
-                <li>
-                  <span>Status</span>
-
-                  <strong>
-                    {status === "ok" && "Em dia"}
-                    {status === "pendente" && "Pendente"}
-                    {status === "atrasado" && "Atrasado"}
-                  </strong>
-                </li>
-
-                <li>
-                  <span>Pagamentos</span>
-
-                  <strong> {imovel.pagamentos.length} </strong>
-                </li>
-
-                <li>
-                  <span>Adimplência</span>
-
-                  <strong>
-                    {imovel.relatorio.adimplencia}
-                  </strong>
-                </li>
-              </ul>
+              <h3>Descrição</h3>
+                {imovel.descricao}
             </section>
           </div>
 
