@@ -104,7 +104,7 @@ export const imoveis: Imovel[] = [
 
     logradouro: "Av. Central, 890",
     complemento: "Apt 45",
-    descricao: "dddddddddddddd",
+    descricao: "aaaaaaaaaa",
     inquilino: 2,
 
     pagamentos: [
@@ -159,7 +159,7 @@ export const imoveis: Imovel[] = [
 
     logradouro: "Rua João Pedro, 700",
     complemento: "Apt 203",
-    descricao: "dddddddddddddd",
+    descricao: "xxxxxxxxxx",
     inquilino: 3,
 
     pagamentos: [
@@ -180,6 +180,13 @@ export const imoveis: Imovel[] = [
       {
         desc: "Conta Enel",
         status: "atrasado",
+        value: 176.51,
+        date: corretorData("2026-06-01"),
+      },
+
+      {
+        desc: "Conta Água",
+        status: "ok",
         value: 176.51,
         date: corretorData("2026-06-01"),
       },
@@ -214,8 +221,8 @@ export const imoveis: Imovel[] = [
 
     logradouro: "Av. Ribeiro, 861",
     complemento: "Apt 77",
-    descricao: "dddddddddddddd",
-    inquilino: 4,
+    descricao: "ttttttttttttt",
+    inquilino: 6,
 
     pagamentos: [
       {
@@ -260,12 +267,12 @@ export const imoveis: Imovel[] = [
   },
 
   {
-    id: 5,
+    id: 7,
 
     logradouro: "Rua Verde, 312",
     complemento: "Apt 12",
-    descricao: "dddddddddddddd",
-    inquilino: 5,
+    descricao: "DDDDDDDDDDDDD",
+    inquilino: 7,
 
     pagamentos: [
       {
@@ -276,17 +283,24 @@ export const imoveis: Imovel[] = [
       },
 
       {
-        desc: "Condomínio",
+        desc: "Conta Enel",
+        status: "ok",
+        value: 220,
+        date: corretorData("2026-05-30"),
+      },
+
+      {
+        desc: "Conta ComGás",
         status: "pendente",
         value: 380,
         date: corretorData("2026-07-29"),
       },
 
       {
-        desc: "Condomínio",
-        status: "pendente",
-        value: 510,
-        date: corretorData("2026-06-30"),
+        desc: "Conta VIVO",
+        status: "ok",
+        value: 1700,
+        date: corretorData("2026-06-01"),
       },
     ],
 
@@ -486,15 +500,31 @@ export function gastoMensal(imovel: Imovel | undefined) {
     atrasoTotal(imovel) +
     efetuadoTotal(imovel)
   );
-}
+} // Gasto de mês por mês
 
 export const totalPendencias = imoveis.reduce(
   (total, imovel) => total + pendenciaTotal(imovel) + atrasoTotal(imovel), 0
 );
 
-export const gastoTotal = imoveis.reduce(
+export const custoTotal = imoveis.reduce(
   (total, imovel) => total + pendenciaTotal(imovel) + atrasoTotal(imovel) + efetuadoTotal(imovel), 0
+);
+
+export const gastoTotal = imoveis.reduce(
+  (total, imovel) => total + pendenciaTotal(imovel) + atrasoTotal(imovel) + efetuadoTotal(imovel), 0 // Gasto de todos imóveis
 )
+
+export const qtd_atrasados = imoveis
+  .flatMap((imovel) => imovel.pagamentos)
+  .filter((p) => p.status === "atrasado").length;
+
+export const qtd_pendentes = imoveis
+  .flatMap((imovel) => imovel.pagamentos)
+  .filter((p) => p.status === "pendente").length;
+
+export const qtd_efetuados = imoveis
+  .flatMap((imovel) => imovel.pagamentos)
+  .filter((p) => p.status === "ok").length;
 
 const efetuadoDashboard = imoveis.reduce(
   (total, imovel) => total + efetuadoTotal(imovel), 0
@@ -533,9 +563,9 @@ export const statsDashboard = [
   },
 
   {
-    label: "Imóveis ativos",
+    label: "Imóveis cadastrados",
     value: totalImoveis,
-    note: "de 9 imóveis cadastrados",
+    note: "",
     corStat: "muted",
   },
 ];
@@ -581,7 +611,7 @@ export const inquilinos: Inquilino[] = [
     telefone: "(11) 98765-4321",
     desde: corretorData("2025-05-04"),
     cpf: "000-000-000-00",
-    observacoes: "------------------------------------",
+    observacoes: "--------dadwdwa-----------",
     imoveis: [1]
   },
   {
@@ -591,7 +621,7 @@ export const inquilinos: Inquilino[] = [
     telefone: "(21) 99812-3344",
     desde: corretorData("2022-08-21"),
     cpf: "000-000-000-00",
-    observacoes: "------------------------------------",
+    observacoes: "---------------iiiwa-----------",
     imoveis: [1, 2]
   },
   {
@@ -601,7 +631,7 @@ export const inquilinos: Inquilino[] = [
     telefone: "(31) 99700-1122",
     desde: corretorData("2022-03-01"),
     cpf: "000-000-000-00",
-    observacoes: "------------------------------------",
+    observacoes: "-----------eeee-------------------------",
     imoveis: [3]
   },
   {
@@ -611,7 +641,7 @@ export const inquilinos: Inquilino[] = [
     telefone: "(48) 99123-7788",
     desde: corretorData("2022-01-29"),
     cpf: "000-000-000-00",
-    observacoes: "------------------------------------",
+    observacoes: "x-",
     imoveis: [4]
   },
   {
@@ -621,8 +651,8 @@ export const inquilinos: Inquilino[] = [
     telefone: "(11) 98800-5566",
     desde: corretorData("2021-12-11"),
     cpf: "000-000-000-00",
-    observacoes: "------------------------------------",
-    imoveis: [5]
+    observacoes: "-----awdas------------------",
+    imoveis: [7]
   },
   {
     id: 7,
@@ -661,24 +691,34 @@ export function getAdimplencia(imovel: Imovel) {
 
   return `${porcentagem}%`;
 }
-
-type Evento = {
+type Notificacao = {
   titulo: string;
   data: Date;
-}
+  tipo: "ok" | "pendente" | "atrasado";
+};
 
-export const eventos: Evento[] = [
+export const notificacoes: Notificacao[] = [
+  {
+    titulo: "Pagamento de: Ana Costa recebido",
+    data: corretorData("2026-06-13"),
+    tipo: "ok",
+  },
+
   {
     titulo: "Novo imóvel: Rua Oliveira - Apt 76 cadastrado",
-    data: corretorData("2026-06-11")
+    data: corretorData("2026-06-11"),
+    tipo: "pendente",
   },
+
   {
     titulo: "Novo inquilino: Arthur da Silva cadastrado",
-    data: corretorData("2026-06-12")
+    data: corretorData("2026-06-12"),
+    tipo: "atrasado",
   },
+
   {
     titulo: "Mensagem enviada para: rafael.nog@email.com",
-    data: corretorData("2026-06-12")
+    data: corretorData("2026-06-12"),
+    tipo: "pendente",
   },
-]
-
+];

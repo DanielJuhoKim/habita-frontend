@@ -14,7 +14,7 @@ export default function Dashboard() {
             <p className="stat-label">{stat.label}</p>
             <p className="stat-value">
               {
-              stat.label !== "Imóveis ativos"
+              stat.label !== "Imóveis cadastrados"
               ? `R$ ${stat.value}`
               : stat.value
               }</p>

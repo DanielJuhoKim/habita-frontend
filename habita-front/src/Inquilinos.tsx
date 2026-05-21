@@ -87,7 +87,7 @@ export default function Inquilinos() {
 
             <button className="filtro-bt"><Filter size={14} /> Filtros</button>
 
-            <button className="btn-novo-inq">+ Novo inquilino</button>
+            {/* <button className="btn-novo-inq">+ Novo inquilino</button> */}
           </div>
         </div>
 

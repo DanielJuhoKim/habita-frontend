@@ -216,22 +216,19 @@ export default function DTImoveis() {
           <div className="imv-tabs">
             <button
               className={aba === "visao" ? "tab--active" : ""}
-              onClick={() => setAba("visao")}
-            >
+              onClick={() => setAba("visao")}>
               Visão geral
             </button>
 
             <button
               className={aba === "pagamentos" ? "tab--active" : ""}
-              onClick={() => setAba("pagamentos")}
-            >
+              onClick={() => setAba("pagamentos")}>
               Pagamentos
             </button>
 
             <button
               className={aba === "documentos" ? "tab--active" : ""}
-              onClick={() => setAba("documentos")}
-            >
+              onClick={() => setAba("documentos")}>
               Documentos
             </button>
           </div>
@@ -288,8 +285,7 @@ export default function DTImoveis() {
 
                         <td>
                           <span
-                            className={`pill pill--${p.status}`}
-                          >
+                            className={`pill pill--${p.status}`}>
                             {p.status === "ok" &&
                               "Pago"}
 

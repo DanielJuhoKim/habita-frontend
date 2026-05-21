@@ -141,12 +141,12 @@ export default function DetalhesInquilino() {
                 <div className="metric">
                     <span className="metric-label">Total pago</span>
                     {/* <strong className="metric-value">{fmtBRL(inquilino.totalPago)}</strong> */}
-                    <strong className="metric-value">77</strong>
+                    <strong className="metric-value">R$ 7281.01</strong>
                 </div>
                 <div className="metric">
                     <span className="metric-label">Pendente</span>
                     {/* <strong className="metric-value">{fmtBRL(inquilino.pendente)}</strong> */}
-                    <strong className="metric-value">77</strong>
+                    <strong className="metric-value">R$ 1082.12</strong>
                 </div>
                 <div className="metric">
                     <span className="metric-label">Imóveis vinculados</span>

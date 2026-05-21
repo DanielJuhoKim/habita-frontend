@@ -8,6 +8,7 @@ import Login from "./Login";
 import Inquilinos from "./Inquilinos";
 import DetalhesInquilino from "./DetalhesInquilino";
 import AdicionarImovel from "./AdicionarImovel";
+import Notificacoes from "./Notificacao";
 
 import {
   BrowserRouter,
@@ -33,6 +34,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
         <Route path="/inquilinos" element={<Inquilinos />} />
         <Route path="/inquilinos/:id_inquilino" element={<DetalhesInquilino />} />
 
+        <Route path="/notificacao" element={<Notificacoes />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>

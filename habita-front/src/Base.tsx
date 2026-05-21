@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 import {
   Bell,
@@ -7,6 +7,7 @@ import {
   Building2,
   Users,
   Settings,
+  Plus
 } from "lucide-react";
 
 import { dataAtual } from "./constantes";
@@ -36,15 +37,21 @@ export default function Base({ children }: LayoutProps) {
       path: "/imoveis",
       atual: false,
       icone: Building2,
-    }
-  ];
-
-  const rotas_baixo = [
+    },
     {
       label: "Inquilinos",
       path: "/inquilinos",
       atual: false,
       icone: Users,
+    }
+  ];
+
+  const rotas_baixo = [
+    {
+      label: "Novo imóvel",
+      path: "/imoveis/new",
+      atual: false,
+      icone: Plus,
     },
     {
       label: "Configurações",
@@ -53,6 +60,7 @@ export default function Base({ children }: LayoutProps) {
       icone: Settings,
     }
   ];
+  const location = useLocation();
 
   return (
     <div className="app">
@@ -68,7 +76,8 @@ export default function Base({ children }: LayoutProps) {
           {rotas_cima.map((it) => (
             <button
               key={it.label}
-              className={`nav-item ${it.atual ? "atual" : ""}`}
+              className={`nav-item ${location.pathname === it.path ? "atual" : ""
+            }`}
               onClick={() => navigate(it.path)}
             >
               <it.icone size={20} />
@@ -81,7 +90,9 @@ export default function Base({ children }: LayoutProps) {
           {rotas_baixo.map((it) => (
             <button
               key={it.label}
-              className={`nav-item ${it.atual ? "atual" : ""}`}
+              className={`nav-item ${
+              location.pathname === it.path ? "atual" : ""
+            }`}
               onClick={() => navigate(it.path)}
             >
               <it.icone size={20} />
@@ -109,7 +120,7 @@ export default function Base({ children }: LayoutProps) {
             <p>Terça-Feira, {dataAtual.toLocaleDateString("pt-BR")}</p>
           </div>
 
-          <button className="notif-btn">
+          <button className="notif-btn" onClick={ () => navigate(`/notificacao`) }>
             Notificações <Bell size={16} />
           </button>
         </div>

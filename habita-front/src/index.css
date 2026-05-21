@@ -6,7 +6,7 @@
   --muted-foreground: oklch(0.5 0.02 200);
   --barra_opcoes: #005f6d;
   --barra_opcoes-foreground: oklch(0.97 0.01 180);
-  --barra_opcoes-accent: oklch(0.32 0.05 200);
+  --barra_opcoes-accent: oklch(51.399% 0.0872 198.988);
   --barra_opcoes-muted: #bdfbff;
   --brand-mint: oklch(0.78 0.13 175);
   --status-ok: oklch(0.78 0.13 175);
@@ -70,7 +70,7 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
 
 .nav-item:hover { background: rgba(255,255,255,0.05); color: var(--barra_opcoes-foreground); }
 
-.nav-item.active { background: var(--barra_opcoes-accent); color: var(--barra_opcoes-foreground); }
+.nav-item.atual { background: var(--barra_opcoes-accent); color: var(--barra_opcoes-foreground); }
 
 .nav-sep { margin: 16px 8px; border-bottom: 1px solid rgba(255,255,255,0.1); }
 

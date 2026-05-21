@@ -90,13 +90,6 @@ export default function AdicionarImovel() {
       <form className="card add-panel" onSubmit={handleSubmit}>
         <div className="add-head">
           <div>
-            <button
-              type="button"
-              className="btn-voltar"
-              onClick={() => navigate(-1)}
-            >
-              ← Voltar
-            </button>
           </div>
           <div className="add-title-wrap">
             <h2 className="add-title">Adicionar imóvel</h2>

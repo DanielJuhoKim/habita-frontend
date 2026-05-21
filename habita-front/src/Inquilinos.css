@@ -28,7 +28,7 @@
 }
 .search input:focus { border-color: var(--primary); background: var(--card); }
 
-.filtro-bt { transform: scale(1.07); }
+.filtro-bt { transform: scale(1.07); margin-right: 27px;}
 
 .filters { display: flex; gap: 6px; flex-wrap: wrap; }
 .chip {
@@ -63,7 +63,7 @@
   flex-direction: column;
   gap: 17px;
   background: oklch(0.99 0.005 180);
-  transform: scale(0.99);
+  transform: scale(0.96);
   transition: box-shadow 0.15s, transform 0.15s;
   margin: 10px;
 }

@@ -8,7 +8,7 @@ import {
 
 import { useState } from "react";
 
-import { imoveis, type PagamentoInfo, totalPendencias, getInquilino, formatarId } from "./constantes";
+import { imoveis, type PagamentoInfo, totalPendencias, custoTotal, getInquilino, formatarId, qtd_atrasados, qtd_pendentes, qtd_efetuados } from "./constantes";
 
 type Pag_imovel = 
   PagamentoInfo & {
@@ -118,14 +118,14 @@ export default function Pagamentos() {
           <div>
             <p className="banner-label">Total a pagar</p>
             <p className="banner-value">R$ {totalPendencias}</p>
-            <p className="banner-desc">10 pagamentos pendentes - 14 pagamentos efetuados</p>
+            <p className="banner-desc">{qtd_efetuados}/{qtd_atrasados + qtd_pendentes + qtd_efetuados} pagamentos efetuados</p>
           </div>
           <div className="progress-block">
             <p className="progress-label">Progresso</p>
             <div className="progress-bar">
               <div className="progress-fill" style={{ width: "63%" }} />
             </div>
-            <p className="progress-sub">R$ 3.876,90 pago de R$ 4.095,15</p>
+            <p className="progress-sub">R$ {(custoTotal - totalPendencias).toFixed(2)} pago de R$ {custoTotal.toFixed(2)}</p>
           </div>
         </div>
 
