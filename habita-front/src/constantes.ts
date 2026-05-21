@@ -42,12 +42,6 @@ export type Imovel = {
 
   pagamentos: PagamentoInfo[];
 
-  dashboard: {
-    status: string;
-    corStat: "ok" | "pending" | "late";
-    date: Date;
-  };
-
   relatorio: {
     gasto: number;
     gastoStatus: "atraso" | "ok";
@@ -79,12 +73,6 @@ export const imoveis: Imovel[] = [
         date: corretorData("2026-06-01"),
       },
     ],
-
-    dashboard: {
-      status: "Em dia",
-      corStat: "ok",
-      date: corretorData("2026-06-01"),
-    },
 
     relatorio: {
       gasto: 312.4,
@@ -130,12 +118,6 @@ export const imoveis: Imovel[] = [
       },
     ],
 
-    dashboard: {
-      status: "Pendente",
-      corStat: "pending",
-      date: corretorData("2026-07-21"),
-    },
-
     relatorio: {
       gasto: 482.12,
       gastoStatus: "atraso",
@@ -179,7 +161,7 @@ export const imoveis: Imovel[] = [
 
       {
         desc: "Conta Enel",
-        status: "atrasado",
+        status: "pendente",
         value: 176.51,
         date: corretorData("2026-06-01"),
       },
@@ -191,12 +173,6 @@ export const imoveis: Imovel[] = [
         date: corretorData("2026-06-01"),
       },
     ],
-
-    dashboard: {
-      status: "Atrasado",
-      corStat: "late",
-      date: corretorData("2026-06-03"),
-    },
 
     relatorio: {
       gasto: 627.8,
@@ -241,17 +217,11 @@ export const imoveis: Imovel[] = [
 
       {
         desc: "Claro",
-        status: "atrasado",
+        status: "pendente",
         value: 120.75,
         date: corretorData("2026-06-03"),
       },
     ],
-
-    dashboard: {
-      status: "Em dia",
-      corStat: "ok",
-      date: corretorData("2026-05-28"),
-    },
 
     relatorio: {
       gasto: 198.55,
@@ -303,12 +273,6 @@ export const imoveis: Imovel[] = [
         date: corretorData("2026-06-01"),
       },
     ],
-
-    dashboard: {
-      status: "Pendente",
-      corStat: "pending",
-      date: corretorData("2026-07-15"),
-    },
 
     relatorio: {
       gasto: 354,
@@ -443,7 +407,7 @@ export function getStatusImovel(imovel?: Imovel): Status | undefined {
   return "ok";
 }
 
-export function getStatusColor(stats: Status): CorStat {
+export function getStatusColor(stats?: Status): CorStat {
   if (stats == "atrasado") {
     return "late";
   }
@@ -723,3 +687,57 @@ export const statsDashboard = [
     corStat: "muted",
   },
 ];
+
+export function getPagamentoPrioridade(imovel: Imovel | undefined) {
+  if (!imovel || imovel.pagamentos.length === 0) return undefined;
+
+  const pagamentos = imovel.pagamentos;
+
+  const pagos = pagamentos
+    .filter((p) => p.status === "ok")
+    .sort((a, b) => b.date.getTime() - a.date.getTime());
+
+  if (pagos.length > 0) return pagos[0];
+
+  const pendentes = pagamentos
+    .filter((p) => p.status === "pendente")
+    .sort((a, b) => a.date.getTime() - b.date.getTime());
+
+  if (pendentes.length > 0) return pendentes[0];
+
+  const atrasados = pagamentos
+    .filter((p) => p.status === "atrasado")
+    .sort((a, b) => b.date.getTime() - a.date.getTime());
+
+  if (atrasados.length > 0) return atrasados[0];
+
+  return undefined;
+}
+
+export function getPagamentosPrioridadeLista(imovel: Imovel | undefined) {
+  if (!imovel || imovel.pagamentos.length === 0) return [];
+
+  const pagamentos = [...imovel.pagamentos];
+
+  const pagos = pagamentos
+    .filter((p) => p.status === "ok")
+    .sort((a, b) => b.date.getTime() - a.date.getTime());
+
+  const pendentes = pagamentos
+    .filter((p) => p.status === "pendente")
+    .sort((a, b) => a.date.getTime() - b.date.getTime());
+
+  const atrasados = pagamentos
+    .filter((p) => p.status === "atrasado")
+    .sort((a, b) => b.date.getTime() - a.date.getTime());
+
+  const resultado: PagamentoInfo[] = [];
+
+  resultado.push(...atrasados);
+
+  resultado.push(...pendentes);
+
+  resultado.push(...pagos);
+
+  return resultado.slice(0, 4);
+}

@@ -9,7 +9,10 @@ import {
   pendenciaTotal,
   getInquilino,
   formatarId,
-  getAdimplencia
+  getAdimplencia,
+  gastoMensal,
+  getStatusImovel,
+  getPagamentosPrioridadeLista
 } from "./constantes";
 
 function FilterBtn() {
@@ -55,15 +58,15 @@ function Card({ data }: { data: Imovel }) {
         {/* GASTO MÊS */}
         <div className="rel-metric">
           <p className="metric-label">Gasto no mês</p>
-          <p className="metric-value">R$ {data.relatorio.gasto}</p>
+          <p className="metric-value">R$ {gastoMensal(data).toFixed(2)}</p>
           <p
             className={
-              data.relatorio.gastoStatus === "atraso"
+              getStatusImovel(data) === "atrasado"
                 ? "metric-atraso"
                 : "metric-ok"
             }
           >
-            {data.relatorio.gastoStatus === "atraso"
+            {getStatusImovel(data) === "atrasado"
               ? "Acima da média"
               : "Dentro do previsto"}
           </p>
@@ -100,11 +103,12 @@ function Card({ data }: { data: Imovel }) {
         {/* PRIORIDADES */}
         <div className="prioridades">
           <p className="metric-label">Prioridades</p>
+
           <ul>
-            {data.relatorio.prioridades.map((p, i) => (
+            {getPagamentosPrioridadeLista(data).map((p, i) => (
               <li key={i}>
-                <span className={`dot dot-${p.corStat}`} />
-                {p.text}
+                <span className={`dot dot-${p.status}`} />
+                {p.desc}
               </li>
             ))}
           </ul>
