@@ -138,6 +138,10 @@ export default function Pagamentos() {
     inquilino: imovel.inquilino
     
   }))).filter((pagamento) => pagamentoStatus(pagamento) == "ok")
+
+  const valorPago = custoTotal - totalPendencias;
+
+  const progresso = (valorPago / custoTotal) * 100;
   
   return (
     <Base>
@@ -150,7 +154,10 @@ export default function Pagamentos() {
           <div className="progress-block">
             <p className="progress-label">Progresso</p>
             <div className="progress-bar">
-              <div className="progress-fill" style={{ width: "63%" }} />
+              <div
+                className="progress-fill"
+                style={{ width: `${progresso}%` }}
+              />
             </div>
             <p className="progress-sub">R$ {(custoTotal - totalPendencias).toFixed(2)} pago de R$ {custoTotal.toFixed(2)}</p>
           </div>

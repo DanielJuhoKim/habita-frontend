@@ -222,32 +222,10 @@ export default function PerfilUsuario() {
                     onChange={(e) => setRascunho({ ...rascunho, telefone: e.target.value })}
                   />
                 </div>
-
-                <div className="campo">
-                  <label>Data de nascimento</label>
-                  <input
-                    type="date"
-                    value={dados.dataNascimento}
-                    readOnly={!editando}
-                    onChange={(e) =>
-                      setRascunho({ ...rascunho, dataNascimento: e.target.value })
-                    }
-                  />
-                </div>
-
-                <div className="campo">
-                  <label>Endereço</label>
-                  <input
-                    type="text"
-                    value={dados.endereco}
-                    readOnly={!editando}
-                    onChange={(e) => setRascunho({ ...rascunho, endereco: e.target.value })}
-                  />
-                </div>
               </div>
 
               <div className="campo">
-                <label>Bio</label>
+                <label>Descrição</label>
                 <textarea
                   rows={3}
                   value={dados.bio}

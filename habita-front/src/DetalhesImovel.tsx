@@ -243,6 +243,51 @@ export default function DTImoveis() {
           </div>
 
           <section className="tab-content">
+            {aba === "informacoes" && (
+              <div className="info-grid">
+                <section className="box">
+                  <h3>Endereço</h3>
+
+                  <ul className="info-list">
+                    <li>
+                      <span>Logradouro</span>
+                      <strong>{imovel.logradouro}</strong>
+                    </li>
+
+                    <li>
+                      <span>Número</span>
+                      <strong>{imovel.numero}</strong>
+                    </li>
+
+                    <li>
+                      <span>Complemento</span>
+                      <strong>{imovel.complemento}</strong>
+                    </li>
+
+                    <li>
+                      <span>CEP</span>
+                      <strong>{imovel.CEP}</strong>
+                    </li>
+
+                    <li>
+                      <span>Cidade</span>
+                      <strong>{imovel.cidade}</strong>
+                    </li>
+
+                    <li>
+                      <span>Estado</span>
+                      <strong>{imovel.estado}</strong>
+                    </li>
+
+                    <li>
+                      <span>Interfone</span>
+                      <strong>{imovel.n_interfone}</strong>
+                    </li>
+                  </ul>
+                </section>
+              </div>
+            )}
+
             {aba === "prioridades" && (
               <div className="box full-width">
                 <h3>Prioridades</h3>

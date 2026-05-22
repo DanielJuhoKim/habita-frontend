@@ -80,7 +80,30 @@ export const imoveis: Imovel[] = [
     descricao:
       "Imóvel com baixo volume de despesas mensais, com contas principais de energia e aluguel em dia, apresentando baixa incidência de pendências financeiras.",
     inquilino: 1,
-    pagamentos: [],
+
+    pagamentos: [
+      {
+        emissora: "ENEL",
+        total: 184.9,
+        data_emissao: corretorData("2026-06-01"),
+        data_vencimento: corretorData("2026-06-10"),
+        data_pagamento: corretorData("2026-06-09"),
+        tipo_pagamento: "Conta de energia",
+        codigo_barra: "846700000018449000240209624061000001000000001",
+        n_boleto: "ENL-10001",
+      },
+
+      {
+        emissora: "ALUGUEL",
+        total: 3200,
+        data_emissao: corretorData("2026-06-01"),
+        data_vencimento: corretorData("2026-06-05"),
+        data_pagamento: corretorData("2026-06-05"),
+        tipo_pagamento: "Aluguel",
+        codigo_barra: null,
+        n_boleto: "ALG-10001",
+      },
+    ],
   },
 
   {
@@ -95,7 +118,41 @@ export const imoveis: Imovel[] = [
     descricao:
       "Imóvel com fluxo moderado de pagamentos mensais, apresentando algumas contas de serviços recorrentes como gás e aluguel com histórico recente de pendências.",
     inquilino: 2,
-    pagamentos: [],
+
+    pagamentos: [
+      {
+        emissora: "COMGÁS",
+        total: 210.45,
+        data_emissao: corretorData("2026-06-03"),
+        data_vencimento: corretorData("2026-06-15"),
+        data_pagamento: null,
+        tipo_pagamento: "Gás",
+        codigo_barra: "846100000021104500240206615000000000000000001",
+        n_boleto: "CMG-20001",
+      },
+
+      {
+        emissora: "ALUGUEL",
+        total: 2850,
+        data_emissao: corretorData("2026-06-01"),
+        data_vencimento: corretorData("2026-06-08"),
+        data_pagamento: null,
+        tipo_pagamento: "Aluguel",
+        codigo_barra: null,
+        n_boleto: "ALG-20001",
+      },
+
+      {
+        emissora: "ENEL",
+        total: 167.32,
+        data_emissao: corretorData("2026-05-28"),
+        data_vencimento: corretorData("2026-06-06"),
+        data_pagamento: corretorData("2026-06-06"),
+        tipo_pagamento: "Conta de energia",
+        codigo_barra: null,
+        n_boleto: "ENL-20001",
+      },
+    ],
   },
 
   {
@@ -110,7 +167,52 @@ export const imoveis: Imovel[] = [
     descricao:
       "Imóvel com alto volume de contas mensais, incluindo múltiplos serviços como água, energia e aluguel, com histórico de atrasos e pagamentos pendentes recorrentes.",
     inquilino: 7,
-    pagamentos: [],
+
+    pagamentos: [
+      {
+        emissora: "SABESP",
+        total: 98.12,
+        data_emissao: corretorData("2026-05-25"),
+        data_vencimento: corretorData("2026-06-02"),
+        data_pagamento: corretorData("2026-06-02"),
+        tipo_pagamento: "Água",
+        codigo_barra: null,
+        n_boleto: "SAB-30001",
+      },
+
+      {
+        emissora: "ENEL",
+        total: 220.54,
+        data_emissao: corretorData("2026-05-22"),
+        data_vencimento: corretorData("2026-06-01"),
+        data_pagamento: null,
+        tipo_pagamento: "Energia",
+        codigo_barra: null,
+        n_boleto: "ENL-30001",
+      },
+
+      {
+        emissora: "ALUGUEL",
+        total: 4100,
+        data_emissao: corretorData("2026-06-01"),
+        data_vencimento: corretorData("2026-06-05"),
+        data_pagamento: null,
+        tipo_pagamento: "Aluguel",
+        codigo_barra: null,
+        n_boleto: "ALG-30001",
+      },
+
+      {
+        emissora: "VIVO",
+        total: 149.9,
+        data_emissao: corretorData("2026-05-20"),
+        data_vencimento: corretorData("2026-05-29"),
+        data_pagamento: corretorData("2026-05-30"),
+        tipo_pagamento: "Internet",
+        codigo_barra: null,
+        n_boleto: "VIV-30001",
+      },
+    ],
   },
 
   {
@@ -125,7 +227,41 @@ export const imoveis: Imovel[] = [
     descricao:
       "Imóvel com custo mensal controlado, concentrado principalmente em aluguel e serviços de internet e gás, com pagamentos majoritariamente em dia.",
     inquilino: 6,
-    pagamentos: [],
+
+    pagamentos: [
+      {
+        emissora: "CLARO",
+        total: 129.99,
+        data_emissao: corretorData("2026-06-01"),
+        data_vencimento: corretorData("2026-06-10"),
+        data_pagamento: corretorData("2026-06-09"),
+        tipo_pagamento: "Internet",
+        codigo_barra: null,
+        n_boleto: "CLR-40001",
+      },
+
+      {
+        emissora: "COMGÁS",
+        total: 94.75,
+        data_emissao: corretorData("2026-06-02"),
+        data_vencimento: corretorData("2026-06-13"),
+        data_pagamento: null,
+        tipo_pagamento: "Gás",
+        codigo_barra: null,
+        n_boleto: "CMG-40001",
+      },
+
+      {
+        emissora: "ALUGUEL",
+        total: 2600,
+        data_emissao: corretorData("2026-06-01"),
+        data_vencimento: corretorData("2026-06-06"),
+        data_pagamento: corretorData("2026-06-06"),
+        tipo_pagamento: "Aluguel",
+        codigo_barra: null,
+        n_boleto: "ALG-40001",
+      },
+    ],
   },
 
   {
@@ -140,7 +276,52 @@ export const imoveis: Imovel[] = [
     descricao:
       "Imóvel de alto custo mensal devido à soma de aluguel e múltiplas contas de consumo, apresentando variação entre pagamentos efetuados e algumas pendências pontuais.",
     inquilino: 7,
-    pagamentos: [],
+
+    pagamentos: [
+      {
+        emissora: "ALUGUEL",
+        total: 5200,
+        data_emissao: corretorData("2026-06-01"),
+        data_vencimento: corretorData("2026-06-05"),
+        data_pagamento: corretorData("2026-06-05"),
+        tipo_pagamento: "Aluguel",
+        codigo_barra: null,
+        n_boleto: "ALG-70001",
+      },
+
+      {
+        emissora: "ENEL",
+        total: 312.48,
+        data_emissao: corretorData("2026-05-29"),
+        data_vencimento: corretorData("2026-06-08"),
+        data_pagamento: null,
+        tipo_pagamento: "Energia",
+        codigo_barra: null,
+        n_boleto: "ENL-70001",
+      },
+
+      {
+        emissora: "COMGÁS",
+        total: 201.7,
+        data_emissao: corretorData("2026-06-02"),
+        data_vencimento: corretorData("2026-06-14"),
+        data_pagamento: null,
+        tipo_pagamento: "Gás",
+        codigo_barra: null,
+        n_boleto: "CMG-70001",
+      },
+
+      {
+        emissora: "VIVO",
+        total: 179.9,
+        data_emissao: corretorData("2026-05-25"),
+        data_vencimento: corretorData("2026-06-02"),
+        data_pagamento: corretorData("2026-06-01"),
+        tipo_pagamento: "Internet",
+        codigo_barra: null,
+        n_boleto: "VIV-70001",
+      },
+    ],
   },
 ];
 
@@ -606,7 +787,6 @@ type Plano = "Solo" | "Starter" | "Prêmium" | "Custom";
 type User = {
   id: number;
   nome: string;
-  cpf: string;
   telefone: string;
   email: string;
   dt_cadastro: Date;
@@ -618,7 +798,6 @@ export const usuarios: User[] = [
   {
     id: 101,
     nome: "Gabriel Martins Ferreira",
-    cpf: "111.222.333-10",
     telefone: "(11) 94567-8890",
     email: "gabriel.martins@gmail.com",
     dt_cadastro: corretorData("2025-02-14"),
@@ -628,7 +807,6 @@ export const usuarios: User[] = [
   {
     id: 102,
     nome: "Camila Rocha Almeida",
-    cpf: "222.333.444-21",
     telefone: "(11) 98877-6655",
     email: "camila.rocha@gmail.com",
     dt_cadastro: corretorData("2024-10-03"),
@@ -638,7 +816,6 @@ export const usuarios: User[] = [
   {
     id: 103,
     nome: "Felipe Andrade Souza",
-    cpf: "333.444.555-32",
     telefone: "(11) 97766-4433",
     email: "felipe.andrade@gmail.com",
     dt_cadastro: corretorData("2023-06-18"),
@@ -648,7 +825,6 @@ export const usuarios: User[] = [
   {
     id: 104,
     nome: "Larissa Teixeira Costa",
-    cpf: "444.555.666-43",
     telefone: "(11) 99654-2211",
     email: "larissa.teixeira@gmail.com",
     dt_cadastro: corretorData("2025-01-09"),
@@ -658,7 +834,6 @@ export const usuarios: User[] = [
   {
     id: 105,
     nome: "Silvia Yendes",
-    cpf: "111.333.777-88",
     telefone: "(11) 817171-7018",
     email: "silvia.Y@gmail.com",
     dt_cadastro: corretorData("2024-08-27"),
