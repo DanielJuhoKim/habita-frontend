@@ -1,31 +1,36 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./DetalhesImovel.css";
 import Base from "./Base";
-import { useNavigate, useParams } from "react-router-dom";
-
 import {
-  getImovel,
-  getStatusImovel,
-  pendenciaTotal,
-  gastoMensal,
-  getInitials,
-  getInquilino,
-  atrasoTotal,
-  formatarId,
-  getAdimplencia,
-  getPagamentosPrioridadeLista,
-  pagamentoStatus,
-} from "./constantes";
+  useNavigate,
+  useParams,
+} from "react-router-dom";
 
 import { ArrowLeft } from "lucide-react";
 
-type Aba = "informacoes" | "prioridades" | "pagamentos" | "documentos";
+import { api } from "./apiService/api";
+
+import type {
+  Property,
+  Bill,
+} from "./types";
+
+type Aba =
+  | "informacoes"
+  | "prioridades"
+  | "pagamentos"
+  | "documentos";
 
 type Documento = {
   nome: string;
   tipo: string;
   tamanho: string;
 };
+
+type Status =
+  | "ok"
+  | "pendente"
+  | "atrasado";
 
 const documentos: Documento[] = [
   {
@@ -48,35 +53,261 @@ const documentos: Documento[] = [
 ];
 
 function brl(v: number) {
-  return v.toLocaleString("pt-BR", {
-    style: "currency",
-    currency: "BRL",
-  });
+  return v.toLocaleString(
+    "pt-BR",
+    {
+      style: "currency",
+      currency: "BRL",
+    }
+  );
+}
+
+function formatarId(id?: number) {
+  return String(id ?? 0).padStart(
+    4,
+    "0"
+  );
+}
+
+function getInitials(
+  nome?: string
+) {
+  if (!nome) {
+    return "--";
+  }
+
+  return nome
+    .split(" ")
+    .map((n) => n[0])
+    .join("")
+    .slice(0, 2)
+    .toUpperCase();
+}
+
+function pagamentoStatus(
+  bill: Bill
+): Status {
+  if (bill.payment_date) {
+    return "ok";
+  }
+
+  const hoje = new Date();
+
+  const vencimento = new Date(
+    bill.due_date
+  );
+
+  if (hoje > vencimento) {
+    return "atrasado";
+  }
+
+  return "pendente";
+}
+
+function getStatusImovel(
+  imovel: Property
+): Status {
+  const bills = imovel.bills ?? [];
+
+  if (
+    bills.some(
+      (bill) =>
+        pagamentoStatus(
+          bill
+        ) === "atrasado"
+    )
+  ) {
+    return "atrasado";
+  }
+
+  if (
+    bills.some(
+      (bill) =>
+        pagamentoStatus(
+          bill
+        ) === "pendente"
+    )
+  ) {
+    return "pendente";
+  }
+
+  return "ok";
+}
+
+function pendenciaTotal(
+  imovel: Property
+) {
+  return (
+    imovel.bills
+      ?.filter((bill) => {
+        const status =
+          pagamentoStatus(
+            bill
+          );
+
+        return (
+          status ===
+            "pendente" ||
+          status ===
+            "atrasado"
+        );
+      })
+      .reduce(
+        (total, bill) =>
+          total + bill.total,
+        0
+      ) ?? 0
+  );
+}
+
+function atrasoTotal(
+  imovel: Property
+) {
+  return (
+    imovel.bills
+      ?.filter(
+        (bill) =>
+          pagamentoStatus(
+            bill
+          ) === "atrasado"
+      )
+      .reduce(
+        (total, bill) =>
+          total + bill.total,
+        0
+      ) ?? 0
+  );
+}
+
+function gastoMensal(
+  imovel: Property
+) {
+  return (
+    imovel.bills?.reduce(
+      (total, bill) =>
+        total + bill.total,
+      0
+    ) ?? 0
+  );
+}
+
+function getAdimplencia(
+  imovel: Property
+) {
+  const bills =
+    imovel.bills ?? [];
+
+  if (bills.length === 0) {
+    return "0%";
+  }
+
+  const pagos = bills.filter(
+    (bill) =>
+      pagamentoStatus(
+        bill
+      ) === "ok"
+  ).length;
+
+  return `${Math.round(
+    (pagos / bills.length) * 100
+  )}%`;
+}
+
+function getPagamentosPrioridadeLista(
+  imovel: Property
+) {
+  return (
+    imovel.bills
+      ?.filter(
+        (bill) =>
+          pagamentoStatus(
+            bill
+          ) !== "ok"
+      )
+      .sort(
+        (a, b) =>
+          new Date(
+            a.due_date
+          ).getTime() -
+          new Date(
+            b.due_date
+          ).getTime()
+      ) ?? []
+  );
 }
 
 export default function DTImoveis() {
-  const [aba, setAba] = useState<Aba>("informacoes");
+  const [aba, setAba] =
+    useState<Aba>(
+      "informacoes"
+    );
 
-  const navigate = useNavigate();
+  const [
+    imovel,
+    setImovel,
+  ] = useState<Property | null>(
+    null
+  );
 
-  const { id_imovel } = useParams();
+  const [loading, setLoading] =
+    useState(true);
 
-  const imovel = getImovel(Number(id_imovel));
+  const navigate =
+    useNavigate();
+
+  const { id_imovel } =
+    useParams();
+
+  useEffect(() => {
+    async function carregar() {
+      try {
+        const response =
+          await api.get(
+            `/property/${id_imovel}`
+          );
+
+        setImovel(
+          response.data
+        );
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    carregar();
+  }, [id_imovel]);
+
+  if (loading) {
+    return (
+      <Base>
+        <p>Carregando...</p>
+      </Base>
+    );
+  }
 
   if (!imovel) {
     return (
       <Base>
         <div className="card panel imv-panel">
           <div className="imv-empty">
-            <h2>Imóvel não encontrado</h2>
+            <h2>
+              Imóvel não
+              encontrado
+            </h2>
 
             <button
-                type="button"
-                className="btn-back"
-                onClick={() => navigate(-1)}
-                aria-label="Voltar"
+              type="button"
+              className="btn-back"
+              onClick={() =>
+                navigate(-1)
+              }
+              aria-label="Voltar"
             >
-                <ArrowLeft size={18} />
+              <ArrowLeft
+                size={18}
+              />
             </button>
           </div>
         </div>
@@ -84,43 +315,82 @@ export default function DTImoveis() {
     );
   }
 
-  const inquilino = getInquilino(imovel.inquilino);
+  const owner =
+    imovel.owner;
 
-  const status = getStatusImovel(imovel);
+  const status =
+    getStatusImovel(
+      imovel
+    );
 
-  const iniciais = getInitials(inquilino?.nome);
+  const iniciais =
+    getInitials(owner?.name);
 
-  const totalPendente = pendenciaTotal(imovel);
+  const totalPendente =
+    pendenciaTotal(
+      imovel
+    );
 
-  const totalAtraso = atrasoTotal(imovel);
+  const totalAtraso =
+    atrasoTotal(imovel);
 
   return (
     <Base>
       <div className="card panel imv-panel">
         <div className="imv-header">
           <button
-              type="button"
-              className="btn-back"
-              onClick={() => navigate(-1)}
-              aria-label="Voltar">
-              <ArrowLeft size={18} />
+            type="button"
+            className="btn-back"
+            onClick={() =>
+              navigate(-1)
+            }
+            aria-label="Voltar"
+          >
+            <ArrowLeft
+              size={18}
+            />
           </button>
 
           <div className="imv-id">
             <div>
-              <h1> ({formatarId(imovel.id)}) {imovel.logradouro}, {imovel.numero}</h1>
+              <h1>
+                (
+                {formatarId(
+                  imovel.id
+                )}
+                ){" "}
+                {
+                  imovel.street
+                }
+                ,{" "}
+                {
+                  imovel.number
+                }
+              </h1>
 
               <p className="muted">
-                {imovel.complemento}
+                {
+                  imovel.complement
+                }
               </p>
             </div>
           </div>
 
           <div className="imv-actions">
-            <span className={`imv-badge imv-badge--${status}`}>
-              {status === "ok" && "Em dia"}
-              {status === "pendente" && "Pendente"}
-              {status === "atrasado" && "Em atraso"}
+            <span
+              className={`imv-badge imv-badge--${status}`}
+            >
+              {status ===
+                "ok" &&
+                "Em dia"}
+
+              {status ===
+                "pendente" &&
+                "Pendente"}
+
+              {status ===
+                "atrasado" &&
+                "Em atraso"}
             </span>
 
             <button className="btn-ghost">
@@ -130,7 +400,9 @@ export default function DTImoveis() {
             <button
               className="btn-edit"
               onClick={() =>
-                navigate(`/inquilinos/${imovel.inquilino}`)
+                navigate(
+                  `/inquilinos/${imovel.owner_id}`
+                )
               }
             >
               Ver inquilino
@@ -146,7 +418,11 @@ export default function DTImoveis() {
               </span>
 
               <strong className="metric-value">
-                {brl(gastoMensal(imovel))}
+                {brl(
+                  gastoMensal(
+                    imovel
+                  )
+                )}
               </strong>
             </div>
 
@@ -156,7 +432,9 @@ export default function DTImoveis() {
               </span>
 
               <strong className="metric-value">
-                {brl(totalPendente)}
+                {brl(
+                  totalPendente
+                )}
               </strong>
             </div>
 
@@ -166,7 +444,9 @@ export default function DTImoveis() {
               </span>
 
               <strong className="metric-value">
-                {brl(totalAtraso)}
+                {brl(
+                  totalAtraso
+                )}
               </strong>
             </div>
 
@@ -176,14 +456,18 @@ export default function DTImoveis() {
               </span>
 
               <strong className="metric-value">
-                {getAdimplencia(imovel)}
+                {getAdimplencia(
+                  imovel
+                )}
               </strong>
             </div>
           </div>
 
           <div className="imv-grid">
             <section className="box">
-              <h3>Inquilino</h3>
+              <h3>
+                Proprietário
+              </h3>
 
               <div className="tenant">
                 <div className="tenant-avatar">
@@ -191,191 +475,383 @@ export default function DTImoveis() {
                 </div>
 
                 <div>
-                  <strong>{inquilino?.nome}</strong>
+                  <strong>
+                    {
+                      owner?.name
+                    }
+                  </strong>
                 </div>
               </div>
 
               <ul className="info-list">
                 <li>
-                  <span>E-mail</span>
+                  <span>
+                    E-mail
+                  </span>
 
-                  <strong>{inquilino?.email}</strong>
+                  <strong>
+                    {
+                      owner?.email
+                    }
+                  </strong>
                 </li>
 
                 <li>
-                  <span>Telefone</span>
+                  <span>
+                    Telefone
+                  </span>
 
-                  <strong>{inquilino?.telefone}</strong>
+                  <strong>
+                    {
+                      owner?.phone
+                    }
+                  </strong>
                 </li>
               </ul>
             </section>
 
             <section className="box">
-              <h3>Descrição</h3>
-                {imovel.descricao}
+              <h3>
+                Descrição
+              </h3>
+
+              {
+                imovel.description
+              }
             </section>
           </div>
 
           <div className="imv-tabs">
             <button
-              className={aba === "informacoes" ? "tab--active" : ""}
-              onClick={() => setAba("informacoes")}>
+              className={
+                aba ===
+                "informacoes"
+                  ? "tab--active"
+                  : ""
+              }
+              onClick={() =>
+                setAba(
+                  "informacoes"
+                )
+              }
+            >
               Informações
             </button>
 
             <button
-              className={aba === "prioridades" ? "tab--active" : ""}
-              onClick={() => setAba("prioridades")}>
+              className={
+                aba ===
+                "prioridades"
+                  ? "tab--active"
+                  : ""
+              }
+              onClick={() =>
+                setAba(
+                  "prioridades"
+                )
+              }
+            >
               Prioridades
             </button>
 
             <button
-              className={aba === "pagamentos" ? "tab--active" : ""}
-              onClick={() => setAba("pagamentos")}>
+              className={
+                aba ===
+                "pagamentos"
+                  ? "tab--active"
+                  : ""
+              }
+              onClick={() =>
+                setAba(
+                  "pagamentos"
+                )
+              }
+            >
               Pagamentos
             </button>
 
             <button
-              className={aba === "documentos" ? "tab--active" : ""}
-              onClick={() => setAba("documentos")}>
+              className={
+                aba ===
+                "documentos"
+                  ? "tab--active"
+                  : ""
+              }
+              onClick={() =>
+                setAba(
+                  "documentos"
+                )
+              }
+            >
               Documentos
             </button>
           </div>
 
           <section className="tab-content">
-            {aba === "informacoes" && (
+            {aba ===
+              "informacoes" && (
               <div className="info-grid">
                 <section className="box">
-                  <h3>Endereço</h3>
+                  <h3>
+                    Endereço
+                  </h3>
 
                   <ul className="info-list">
                     <li>
-                      <span>Logradouro</span>
-                      <strong>{imovel.logradouro}</strong>
+                      <span>
+                        Logradouro
+                      </span>
+
+                      <strong>
+                        {
+                          imovel.street
+                        }
+                      </strong>
                     </li>
 
                     <li>
-                      <span>Número</span>
-                      <strong>{imovel.numero}</strong>
+                      <span>
+                        Número
+                      </span>
+
+                      <strong>
+                        {
+                          imovel.number
+                        }
+                      </strong>
                     </li>
 
                     <li>
-                      <span>Complemento</span>
-                      <strong>{imovel.complemento}</strong>
+                      <span>
+                        Complemento
+                      </span>
+
+                      <strong>
+                        {
+                          imovel.complement
+                        }
+                      </strong>
                     </li>
 
                     <li>
-                      <span>CEP</span>
-                      <strong>{imovel.CEP}</strong>
+                      <span>
+                        CEP
+                      </span>
+
+                      <strong>
+                        {
+                          imovel.cep
+                        }
+                      </strong>
                     </li>
 
                     <li>
-                      <span>Cidade</span>
-                      <strong>{imovel.cidade}</strong>
+                      <span>
+                        Cidade
+                      </span>
+
+                      <strong>
+                        {
+                          imovel.city
+                        }
+                      </strong>
                     </li>
 
                     <li>
-                      <span>Estado</span>
-                      <strong>{imovel.estado}</strong>
+                      <span>
+                        Estado
+                      </span>
+
+                      <strong>
+                        {
+                          imovel.state
+                        }
+                      </strong>
                     </li>
 
                     <li>
-                      <span>Interfone</span>
-                      <strong>{imovel.n_interfone}</strong>
+                      <span>
+                        Telefone
+                      </span>
+
+                      <strong>
+                        {imovel.phone ??
+                          "Não definido"}
+                      </strong>
                     </li>
                   </ul>
                 </section>
               </div>
             )}
 
-            {aba === "prioridades" && (
+            {aba ===
+              "prioridades" && (
               <div className="box full-width">
-                <h3>Prioridades</h3>
+                <h3>
+                  Prioridades
+                </h3>
 
                 <ul className="timeline">
-                  {getPagamentosPrioridadeLista(imovel)?.map((p, i) => (
-                    <li key={i}>
-                      <span
-                        className={`dot dot-${
-                          pagamentoStatus(p) === "atrasado"
-                            ? "late"
-                            : pagamentoStatus(p)
-                        }`}
-                      />
+                  {getPagamentosPrioridadeLista(
+                    imovel
+                  ).map(
+                    (
+                      p,
+                      i
+                    ) => (
+                      <li
+                        key={i}
+                      >
+                        <span
+                          className={`dot dot-${
+                            pagamentoStatus(
+                              p
+                            ) ===
+                            "atrasado"
+                              ? "late"
+                              : pagamentoStatus(
+                                  p
+                                )
+                          }`}
+                        />
 
-                      <div>
-                        <strong>{p.tipo_pagamento}</strong>
-                      </div>
-                    </li>
-                  ))}
+                        <div>
+                          <strong>
+                            {
+                              p.bill_type
+                            }
+                          </strong>
+                        </div>
+                      </li>
+                    )
+                  )}
                 </ul>
               </div>
             )}
 
-            {aba === "pagamentos" && (
+            {aba ===
+              "pagamentos" && (
               <div className="box full-width">
                 <table className="imv-table">
                   <thead>
                     <tr>
-                      <th>Descrição</th>
-                      <th>Valor</th>
-                      <th>Data</th>
-                      <th>Status</th>
+                      <th>
+                        Descrição
+                      </th>
+
+                      <th>
+                        Valor
+                      </th>
+
+                      <th>
+                        Data
+                      </th>
+
+                      <th>
+                        Status
+                      </th>
                     </tr>
                   </thead>
 
                   <tbody>
-                    {imovel.pagamentos.map((p, i) => (
-                      <tr key={i}>
-                        <td>{p.tipo_pagamento} - {p.emissora}</td>
+                    {imovel.bills?.map(
+                      (
+                        p,
+                        i
+                      ) => (
+                        <tr
+                          key={i}
+                        >
+                          <td>
+                            {
+                              p.bill_type
+                            }{" "}
+                            -{" "}
+                            {
+                              p.emitter
+                            }
+                          </td>
 
-                        <td>{brl(p.total)}</td>
+                          <td>
+                            {brl(
+                              p.total
+                            )}
+                          </td>
 
-                        <td>
-                          {p.data_vencimento.toLocaleDateString(
-                            "pt-BR"
-                          )}
-                        </td>
+                          <td>
+                            {new Date(
+                              p.due_date
+                            ).toLocaleDateString(
+                              "pt-BR"
+                            )}
+                          </td>
 
-                        <td>
-                          <span
-                            className={`pill pill--${pagamentoStatus(p)}`}>
-                            {pagamentoStatus(p) === "ok" &&
-                              "Pago"}
+                          <td>
+                            <span
+                              className={`pill pill--${pagamentoStatus(
+                                p
+                              )}`}
+                            >
+                              {pagamentoStatus(
+                                p
+                              ) ===
+                                "ok" &&
+                                "Pago"}
 
-                            {pagamentoStatus(p) ===
-                              "pendente" &&
-                              "Pendente"}
+                              {pagamentoStatus(
+                                p
+                              ) ===
+                                "pendente" &&
+                                "Pendente"}
 
-                            {pagamentoStatus(p) ===
-                              "atrasado" &&
-                              "Atrasado"}
-                          </span>
-                        </td>
-                      </tr>
-                    ))}
+                              {pagamentoStatus(
+                                p
+                              ) ===
+                                "atrasado" &&
+                                "Atrasado"}
+                            </span>
+                          </td>
+                        </tr>
+                      )
+                    )}
                   </tbody>
                 </table>
               </div>
             )}
 
-            {aba === "documentos" && (
+            {aba ===
+              "documentos" && (
               <ul className="docs">
-                {documentos.map((doc, i) => (
-                  <li key={i}>
-                    <div>
-                      <strong>{doc.nome}</strong>
+                {documentos.map(
+                  (
+                    doc,
+                    i
+                  ) => (
+                    <li key={i}>
+                      <div>
+                        <strong>
+                          {
+                            doc.nome
+                          }
+                        </strong>
 
-                      <p className="muted">
-                        {doc.tipo} · {doc.tamanho}
-                      </p>
-                    </div>
+                        <p className="muted">
+                          {
+                            doc.tipo
+                          }{" "}
+                          ·{" "}
+                          {
+                            doc.tamanho
+                          }
+                        </p>
+                      </div>
 
-                    <button className="btn-ghost">
-                      Baixar
-                    </button>
-                  </li>
-                ))}
+                      <button className="btn-ghost">
+                        Baixar
+                      </button>
+                    </li>
+                  )
+                )}
               </ul>
             )}
           </section>

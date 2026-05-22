@@ -1,285 +1,612 @@
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import "./DetalhesInquilino.css";
 import Base from "./Base";
 import { useNavigate, useParams } from "react-router-dom";
 
 import { ArrowLeft } from "lucide-react";
 
-import { getInquilino, getInitials, formatarId, getImoveis_fromInquilino } from "./constantes";
+import { api } from "./apiService/api";
 
-type Status = "adimplente" | "atraso" | "pendente";
+import type {
+  Owner,
+  Property,
+  Bill,
+} from "./types";
 
-type Pagamento = {
-  competencia: string;
-  vencimento: string;
-  valor: number;
-  status: "pago" | "atraso" | "pendente";
-  imovel: string;
-};
+type Aba =
+  | "visao"
+  | "imoveis"
+  | "documentos"
+  | "historico";
 
-type ImovelVinculado = {
-  endereco: string;
-  tipo: string;
-  contrato: string;
-  aluguel: number;
-  status: Status;
-};
+type StatusPagamento =
+  | "ok"
+  | "pendente"
+  | "atrasado";
 
-type Documento = {
-  nome: string;
-  tipo: string;
-  data: string;
-};
+function getInitials(nome: string) {
+  return nome
+    .split(" ")
+    .map((n) => n[0])
+    .slice(0, 2)
+    .join("")
+    .toUpperCase();
+}
 
-type Evento = {
-  data: string;
-  titulo: string;
-  descricao: string;
-  tipo: "pagamento" | "contrato" | "manutencao" | "mensagem";
-};
+function formatarId(id?: number) {
+  return String(id ?? 0).padStart(
+    4,
+    "0"
+  );
+}
 
-type Inquilino = {
-  nome: string;
-  iniciais: string;
-  email: string;
-  telefone: string;
-  cpf: string;
-  nascimento: string;
-  desde: string;
-  scoreAdimplencia: number;
-  totalPago: number;
-  pendente: number;
-  imoveis: ImovelVinculado[];
-  pagamentos: Pagamento[];
-  documentos: Documento[];
-  eventos: Evento[];
-  observacoes: string;
-};
-
-const inquilino_: Inquilino = {
-  nome: "Ana Beatriz Souza",
-  iniciais: "AB",
-  email: "ana.souza@email.com",
-  telefone: "(11) 98765-4321",
-  cpf: "123.456.789-00",
-  nascimento: "12/04/1990",
-  desde: "Mar 2023",
-  scoreAdimplencia: 96,
-  totalPago: 78400,
-  pendente: 0,
-  imoveis: [
-    {
-      endereco: "Rua das Flores, 120 — Apto 32",
-      tipo: "Apartamento",
-      contrato: "01/03/2023 — 28/02/2026",
-      aluguel: 2800,
-      status: "adimplente",
-    },
-    {
-      endereco: "Av. Paulista, 1500 — Sala 8",
-      tipo: "Comercial",
-      contrato: "10/06/2024 — 09/06/2027",
-      aluguel: 4200,
-      status: "adimplente",
-    },
-  ],
-  pagamentos: [
-    { competencia: "Mai/2026", vencimento: "10/05/2026", valor: 2800, status: "pago", imovel: "Rua das Flores, 120" },
-    { competencia: "Mai/2026", vencimento: "10/05/2026", valor: 4200, status: "pago", imovel: "Av. Paulista, 1500" },
-    { competencia: "Abr/2026", vencimento: "10/04/2026", valor: 2800, status: "pago", imovel: "Rua das Flores, 120" },
-    { competencia: "Abr/2026", vencimento: "10/04/2026", valor: 4200, status: "pago", imovel: "Av. Paulista, 1500" },
-    { competencia: "Mar/2026", vencimento: "10/03/2026", valor: 2800, status: "pago", imovel: "Rua das Flores, 120" },
-    { competencia: "Mar/2026", vencimento: "10/03/2026", valor: 4200, status: "pago", imovel: "Av. Paulista, 1500" },
-  ],
-  documentos: [
-    { nome: "Contrato — Rua das Flores", tipo: "PDF", data: "01/03/2023" },
-    { nome: "RG e CPF", tipo: "PDF", data: "28/02/2023" },
-    { nome: "Comprovante de renda", tipo: "PDF", data: "28/02/2023" },
-    { nome: "Contrato — Av. Paulista", tipo: "PDF", data: "10/06/2024" },
-  ],
-  eventos: [
-    { data: "10/05/2026", titulo: "Pagamento recebido", descricao: "R$ 7.000,00 referente a Mai/2026", tipo: "pagamento" },
-    { data: "02/05/2026", titulo: "Mensagem enviada", descricao: "Lembrete de vencimento próximo", tipo: "mensagem" },
-    { data: "18/04/2026", titulo: "Manutenção solicitada", descricao: "Vazamento na pia da cozinha — Rua das Flores", tipo: "manutencao" },
-    { data: "10/06/2024", titulo: "Novo contrato", descricao: "Contrato assinado para Av. Paulista, 1500", tipo: "contrato" },
-  ],
-  observacoes:
-    "Inquilino pontual, sem histórico de atrasos. Prefere contato por WhatsApp. Solicita reparos via portal.",
-};
-
-type Aba = "visao" | "imoveis" | "documentos" | "historico";
-
-export default function DetalhesInquilino() {
-  const [aba, setAba] = useState<Aba>("visao");
-  const navigate = useNavigate();
-  const { id_inquilino } = useParams();
-  const inquilino = getInquilino(Number(id_inquilino));
-  if (!inquilino) {
-    return <Base>
-            <div>Inquilino não encontrado</div>
-        </Base>
+function getBillStatus(
+  bill: Bill
+): StatusPagamento {
+  if (bill.payment_date) {
+    return "ok";
   }
 
-  const imoveis = getImoveis_fromInquilino(inquilino.id)
+  const hoje = new Date();
+
+  const vencimento = new Date(
+    bill.due_date
+  );
+
+  if (hoje > vencimento) {
+    return "atrasado";
+  }
+
+  return "pendente";
+}
+
+function brl(valor: number) {
+  return valor.toLocaleString(
+    "pt-BR",
+    {
+      style: "currency",
+      currency: "BRL",
+    }
+  );
+}
+
+export default function DetalhesInquilino() {
+  const [aba, setAba] =
+    useState<Aba>("visao");
+
+  const [loading, setLoading] =
+    useState(true);
+
+  const [inquilino, setInquilino] =
+    useState<Owner | null>(null);
+
+  const [imoveis, setImoveis] =
+    useState<Property[]>([]);
+
+  const navigate = useNavigate();
+
+  const { id_inquilino } =
+    useParams();
+
+  useEffect(() => {
+    async function carregar() {
+      try {
+        const [
+          ownerResponse,
+          propertiesResponse,
+        ] = await Promise.all([
+          api.get(
+            `/owner/${id_inquilino}`
+          ),
+
+          api.get("/property"),
+        ]);
+
+        const owner =
+          ownerResponse.data;
+
+        const properties =
+          propertiesResponse.data;
+
+        const propriedadesFiltradas =
+          properties.filter(
+            (
+              property: Property
+            ) =>
+              property.owner_id ===
+              Number(id_inquilino)
+          );
+
+        setInquilino(owner);
+
+        setImoveis(
+          propriedadesFiltradas
+        );
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    carregar();
+  }, [id_inquilino]);
+
+  const todosBoletos =
+    useMemo(() => {
+      return imoveis.flatMap(
+        (imovel) =>
+          imovel.bills ?? []
+      );
+    }, [imoveis]);
+
+  const totalPago = todosBoletos
+    .filter(
+      (bill) =>
+        getBillStatus(bill) ===
+        "ok"
+    )
+    .reduce(
+      (total, bill) =>
+        total + bill.total,
+      0
+    );
+
+  const totalPendente =
+    todosBoletos
+      .filter(
+        (bill) =>
+          getBillStatus(
+            bill
+          ) !== "ok"
+      )
+      .reduce(
+        (total, bill) =>
+          total + bill.total,
+        0
+      );
+
+  const adimplencia =
+    todosBoletos.length === 0
+      ? 100
+      : Math.round(
+          (todosBoletos.filter(
+            (bill) =>
+              getBillStatus(
+                bill
+              ) === "ok"
+          ).length /
+            todosBoletos.length) *
+            100
+        );
+
+  const eventos = todosBoletos
+    .map((bill) => ({
+      titulo:
+        getBillStatus(bill) ===
+        "ok"
+          ? "Pagamento recebido"
+          : getBillStatus(
+                bill
+              ) === "atrasado"
+            ? "Pagamento atrasado"
+            : "Pagamento pendente",
+
+      descricao: `${
+        bill.bill_type
+      } • ${brl(
+        bill.total
+      )}`,
+
+      data:
+        bill.payment_date ??
+        bill.due_date,
+
+      tipo:
+        getBillStatus(bill),
+    }))
+    .sort(
+      (a, b) =>
+        new Date(
+          b.data
+        ).getTime() -
+        new Date(
+          a.data
+        ).getTime()
+    );
+
+  if (loading) {
+    return (
+      <Base>
+        <p>Carregando...</p>
+      </Base>
+    );
+  }
+
+  if (!inquilino) {
+    return (
+      <Base>
+        <div className="card panel">
+          <h2>
+            Inquilino não
+            encontrado
+          </h2>
+        </div>
+      </Base>
+    );
+  }
 
   return (
     <Base>
-        <div className="card panel" >
+      <div className="card panel">
         <div className="inq-header">
-            <button
-                type="button"
-                className="btn-back"
-                onClick={() => navigate(-1)}
-                aria-label="Voltar"
-            >
-                <ArrowLeft size={18} />
-            </button>
-            <div className="inq-id">
-            <div className="inq-avatar-lg">{getInitials(inquilino.nome)}</div>
+          <button
+            type="button"
+            className="btn-back"
+            onClick={() =>
+              navigate(-1)
+            }
+            aria-label="Voltar"
+          >
+            <ArrowLeft
+              size={18}
+            />
+          </button>
+
+          <div className="inq-id">
+            <div className="inq-avatar-lg">
+              {getInitials(
+                inquilino.name
+              )}
+            </div>
+
             <div>
-                <h1>{inquilino.nome}</h1>
-                <p className="muted">Cadastrado em {inquilino.dt_cadastrado.toLocaleDateString("pt-br")}</p>
+              <h1>
+                {inquilino.name}
+              </h1>
+
+              <p className="muted">
+                Cadastrado em{" "}
+                {new Date(
+                  inquilino.signup_date
+                ).toLocaleDateString(
+                  "pt-BR"
+                )}
+              </p>
             </div>
-            </div>
-            <div className="inq-actions">
-            <button className="btn-ghost">Mensagem</button>
-            <button className="btn-edit">Editar</button>
-            </div>
+          </div>
+
+          <div className="inq-actions">
+            <button className="btn-ghost">
+              Mensagem
+            </button>
+
+            <button className="btn-edit">
+              Editar
+            </button>
+          </div>
         </div>
 
         <div className="inq-scroll">
-            <div className="inq-metrics">
-                <div className="metric">
-                    <span className="metric-label">Total pago</span>
-                    {/* <strong className="metric-value">{fmtBRL(inquilino.totalPago)}</strong> */}
-                    <strong className="metric-value">R$ 7281.01</strong>
-                </div>
-                <div className="metric">
-                    <span className="metric-label">Pendente</span>
-                    {/* <strong className="metric-value">{fmtBRL(inquilino.pendente)}</strong> */}
-                    <strong className="metric-value">R$ 1082.12</strong>
-                </div>
-                <div className="metric">
-                    <span className="metric-label">Imóveis vinculados</span>
-                    <strong className="metric-value">{imoveis.length}</strong>
-                </div>
-                <div className="metric">
-                    <span className="metric-label">Adimplência</span>
-                    {/* <strong className="metric-value">{inquilino.scoreAdimplencia}%</strong> */}
-                    <strong className="metric-value">97%</strong>
-                </div>
+          <div className="inq-metrics">
+            <div className="metric">
+              <span className="metric-label">
+                Total pago
+              </span>
+
+              <strong className="metric-value">
+                {brl(totalPago)}
+              </strong>
             </div>
 
-            <div className="inq-grid">
+            <div className="metric">
+              <span className="metric-label">
+                Pendente
+              </span>
+
+              <strong className="metric-value">
+                {brl(
+                  totalPendente
+                )}
+              </strong>
+            </div>
+
+            <div className="metric">
+              <span className="metric-label">
+                Imóveis vinculados
+              </span>
+
+              <strong className="metric-value">
+                {
+                  imoveis.length
+                }
+              </strong>
+            </div>
+
+            <div className="metric">
+              <span className="metric-label">
+                Adimplência
+              </span>
+
+              <strong className="metric-value">
+                {adimplencia}%
+              </strong>
+            </div>
+          </div>
+
+          <div className="inq-grid">
             <section className="box">
-                <h3>Contato</h3>
-                <ul className="info-list">
-                <li><span>E-mail</span><strong>{inquilino.email}</strong></li>
-                <li><span>Telefone</span><strong>{inquilino.telefone}</strong></li>
-                <li><span>CPF</span><strong>{inquilino.cpf}</strong></li>
-                </ul>
+              <h3>Contato</h3>
+
+              <ul className="info-list">
+                <li>
+                  <span>
+                    E-mail
+                  </span>
+
+                  <strong>
+                    {
+                      inquilino.email
+                    }
+                  </strong>
+                </li>
+
+                <li>
+                  <span>
+                    Telefone
+                  </span>
+
+                  <strong>
+                    {
+                      inquilino.phone
+                    }
+                  </strong>
+                </li>
+
+                <li>
+                  <span>CPF</span>
+
+                  <strong>
+                    {
+                      inquilino.cpf
+                    }
+                  </strong>
+                </li>
+              </ul>
             </section>
 
             <section className="box">
-                <h3>Observações</h3>
-                <p className="obs">{inquilino.observacoes}</p>
-            </section>
-            </div>
+              <h3>
+                Observações
+              </h3>
 
-            <div className="inq-tabs" role="tablist">
-            {([
-                ["visao", "Visão geral"],
-                ["imoveis", "Imóveis"],
-                ["documentos", "Documentos"],
-                ["historico", "Histórico"],
-            ] as [Aba, string][]).map(([k, l]) => (
-                <button
+              <p className="obs">
+                {inquilino.observations ||
+                  "Sem observações"}
+              </p>
+            </section>
+          </div>
+
+          <div
+            className="inq-tabs"
+            role="tablist"
+          >
+            {(
+              [
+                [
+                  "visao",
+                  "Visão geral",
+                ],
+
+                [
+                  "imoveis",
+                  "Imóveis",
+                ],
+
+                [
+                  "documentos",
+                  "Documentos",
+                ],
+
+                [
+                  "historico",
+                  "Histórico",
+                ],
+              ] as [
+                Aba,
+                string
+              ][]
+            ).map(([k, l]) => (
+              <button
                 key={k}
                 role="tab"
-                className={`tab ${aba === k ? "tab--active" : ""}`}
-                onClick={() => setAba(k)}
-                >
+                className={`tab ${
+                  aba === k
+                    ? "tab--active"
+                    : ""
+                }`}
+                onClick={() =>
+                  setAba(k)
+                }
+              >
                 {l}
-                </button>
+              </button>
             ))}
-            </div>
+          </div>
 
-            <section className="tab-content">
+          <section className="tab-content">
             {aba === "visao" && (
-                <div className="box full-width">
-                    <h3>Últimos eventos</h3>
-                    <ul className="timeline">
-                        {inquilino_.eventos.slice(0, 3).map((e, i) => (
-                            <li key={i}>
-                            <span className={`dot dot--${e.tipo}`} />
-                            <div>
-                                <strong>{e.titulo}</strong>
-                                <p className="muted">{e.data} — {e.descricao}</p>
-                            </div>
-                            </li>
-                        ))}
-                    </ul>
-                </div>
-            )}
+              <div className="box full-width">
+                <h3>
+                  Últimos eventos
+                </h3>
 
-            {aba === "imoveis" && (
-                <div className="imoveis-list">
-                    {imoveis.map((imovel) => {
-                        if (!imovel) return null;
-
-                        return (
-                            <div key={imovel.id} className="imovel-row">
-                            <div>
-                                <strong>({formatarId(imovel.id)}) {imovel.logradouro}, {imovel.numero} - {imovel.complemento}</strong>
-
-                                <p className="muted"> {imovel.complemento} </p>
-                            </div>
-
-                            <div className="imovel-row__right">
-                                <button
-                                className="btn-edit"
-                                onClick={() =>
-                                    navigate(`/imoveis/${imovel.id}`)
-                                }>
-                                Ver imóvel
-                                </button>
-                            </div>
-                            </div>
-                        );
-                        })}
-                    </div>
-                    )}
-
-            {aba === "documentos" && (
-                <ul className="docs">
-                {inquilino_.documentos.map((d, i) => (
-                    <li key={i}>
-                    <div>
-                        <strong>{d.nome}</strong>
-                        <p className="muted">{d.tipo} · {d.data}</p>
-                    </div>
-                    <button className="btn-ghost">Baixar</button>
-                    </li>
-                ))}
-                </ul>
-            )}
-
-            {aba === "historico" && (
                 <ul className="timeline">
-                {inquilino_.eventos.map((e, i) => (
-                    <li key={i}>
-                    <span className={`dot dot--${e.tipo}`} />
-                    <div>
-                        <strong>{e.titulo}</strong>
-                        <p className="muted">{e.data} — {e.descricao}</p>
-                    </div>
-                    </li>
-                ))}
+                  {eventos
+                    .slice(0, 5)
+                    .map(
+                      (
+                        evento,
+                        i
+                      ) => (
+                        <li
+                          key={i}
+                        >
+                          <span
+                            className={`dot dot--${evento.tipo}`}
+                          />
+
+                          <div>
+                            <strong>
+                              {
+                                evento.titulo
+                              }
+                            </strong>
+
+                            <p className="muted">
+                              {new Date(
+                                evento.data
+                              ).toLocaleDateString(
+                                "pt-BR"
+                              )}{" "}
+                              —{" "}
+                              {
+                                evento.descricao
+                              }
+                            </p>
+                          </div>
+                        </li>
+                      )
+                    )}
                 </ul>
+              </div>
             )}
-            </section>  
+
+            {aba ===
+              "imoveis" && (
+              <div className="imoveis-list">
+                {imoveis.map(
+                  (
+                    imovel
+                  ) => (
+                    <div
+                      key={
+                        imovel.id
+                      }
+                      className="imovel-row"
+                    >
+                      <div>
+                        <strong>
+                          (
+                          {formatarId(
+                            imovel.id
+                          )}
+                          ){" "}
+                          {
+                            imovel.street
+                          }
+                          ,{" "}
+                          {
+                            imovel.number
+                          }{" "}
+                          -{" "}
+                          {
+                            imovel.complement
+                          }
+                        </strong>
+
+                        <p className="muted">
+                          {
+                            imovel.city
+                          }
+                          {" - "}
+                          {
+                            imovel.state
+                          }
+                        </p>
+                      </div>
+
+                      <div className="imovel-row__right">
+                        <button
+                          className="btn-edit"
+                          onClick={() =>
+                            navigate(
+                              `/imoveis/${imovel.id}`
+                            )
+                          }
+                        >
+                          Ver imóvel
+                        </button>
+                      </div>
+                    </div>
+                  )
+                )}
+              </div>
+            )}
+
+            {aba ===
+              "documentos" && (
+              <ul className="docs">
+                <li>
+                  <div>
+                    <strong>
+                      Nenhum
+                      documento
+                    </strong>
+
+                    <p className="muted">
+                      Ainda não
+                      existem
+                      documentos
+                      cadastrados
+                    </p>
+                  </div>
+                </li>
+              </ul>
+            )}
+
+            {aba ===
+              "historico" && (
+              <ul className="timeline">
+                {eventos.map(
+                  (
+                    evento,
+                    i
+                  ) => (
+                    <li
+                      key={i}
+                    >
+                      <span
+                        className={`dot dot--${evento.tipo}`}
+                      />
+
+                      <div>
+                        <strong>
+                          {
+                            evento.titulo
+                          }
+                        </strong>
+
+                        <p className="muted">
+                          {new Date(
+                            evento.data
+                          ).toLocaleDateString(
+                            "pt-BR"
+                          )}{" "}
+                          —{" "}
+                          {
+                            evento.descricao
+                          }
+                        </p>
+                      </div>
+                    </li>
+                  )
+                )}
+              </ul>
+            )}
+          </section>
         </div>
-        </div>
+      </div>
     </Base>
-    );
+  );
 }
