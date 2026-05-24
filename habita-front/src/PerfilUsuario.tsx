@@ -38,7 +38,7 @@ type Usuario = {
 
 const usuarioInicial: Usuario = {
   nome: "Silvia Mendes",
-  email: "silvia.mendes@habita.com",
+  email: "silvia.mendes@email.com",
   telefone: "(11) 98765-4321",
   cpf: "123.456.789-77",
   endereco: "Rua das Flores, 123 - São Paulo, SP",
@@ -73,7 +73,7 @@ export default function PerfilUsuario() {
 
   const handleLogout = () => {
     console.log("Logout realizado");
-    navigate("/login");
+    navigate("/");
   };
 
   const dados = editando ? rascunho : usuario;

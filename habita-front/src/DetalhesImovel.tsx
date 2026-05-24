@@ -234,12 +234,12 @@ export default function DTImoveis() {
               onClick={() => setAba("pagamentos")}>
               Pagamentos
             </button>
-
+{/* 
             <button
               className={aba === "documentos" ? "tab--active" : ""}
               onClick={() => setAba("documentos")}>
               Documentos
-            </button>
+            </button> */}
           </div>
 
           <section className="tab-content">
@@ -304,7 +304,7 @@ export default function DTImoveis() {
                       />
 
                       <div>
-                        <strong>{p.tipo_pagamento}</strong>
+                        <strong>{p.tipo_pagamento} {p.emissora}</strong>
                       </div>
                     </li>
                   ))}

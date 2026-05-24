@@ -22,7 +22,7 @@ export default function Login() {
     setLoading(true);
     await new Promise((r) => setTimeout(r, 800));
     setLoading(false);
-    alert(`Login simulado para ${email}`);
+    alert(`Login realizado ${email}`);
   };
 
   return (

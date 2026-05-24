@@ -8,7 +8,7 @@ export function formatarId(id: number) {
   return id.toString().padStart(4, "0");
 }
 
-export const dataAtual = corretorData("2026-06-13")
+export const dataAtual = new Date();
 
 export type CorStat = "ok" | "pendente" | "late" | "muted";
 
@@ -86,8 +86,8 @@ export const imoveis: Imovel[] = [
         emissora: "ENEL",
         total: 184.9,
         data_emissao: corretorData("2026-06-01"),
-        data_vencimento: corretorData("2026-06-10"),
-        data_pagamento: corretorData("2026-06-09"),
+        data_vencimento: corretorData("2026-05-19"),
+        data_pagamento: corretorData("2026-05-19"),
         tipo_pagamento: "Conta de energia",
         codigo_barra: "846700000018449000240209624061000001000000001",
         n_boleto: "ENL-10001",
@@ -97,7 +97,7 @@ export const imoveis: Imovel[] = [
         emissora: "ALUGUEL",
         total: 3200,
         data_emissao: corretorData("2026-06-01"),
-        data_vencimento: corretorData("2026-06-05"),
+        data_vencimento: corretorData("2026-05-05"),
         data_pagamento: corretorData("2026-06-05"),
         tipo_pagamento: "Aluguel",
         codigo_barra: null,
@@ -135,7 +135,7 @@ export const imoveis: Imovel[] = [
         emissora: "ALUGUEL",
         total: 2850,
         data_emissao: corretorData("2026-06-01"),
-        data_vencimento: corretorData("2026-06-08"),
+        data_vencimento: corretorData("2026-05-18"),
         data_pagamento: null,
         tipo_pagamento: "Aluguel",
         codigo_barra: null,
@@ -192,7 +192,7 @@ export const imoveis: Imovel[] = [
       },
 
       {
-        emissora: "ALUGUEL",
+        emissora: "",
         total: 4100,
         data_emissao: corretorData("2026-06-01"),
         data_vencimento: corretorData("2026-06-05"),
@@ -368,56 +368,56 @@ export const movimentacoes = [
     dot: "ok",
     desc: "Pix recebido - Ana Costa",
     value: 301.56,
-    date: corretorData("2026-06-07"),
+    date: corretorData("2026-06-20"),
   },
 
   {
     dot: "late",
     desc: "Pagamento ComGás (com atraso)",
-    value: -94.62,
-    date: corretorData("2026-06-07"),
+    value: 94.62,
+    date: corretorData("2026-06-19"),
   },
 
   {
     dot: "ok",
     desc: "Pix recebido - Renato Oliveira",
     value: 213.12,
-    date: corretorData("2026-06-06"),
+    date: corretorData("2026-06-21"),
   },
 
   {
     dot: "ok",
     desc: "Imóvel Apt 97, Av. Barros - Cadastrado",
     value: 0,
-    date: corretorData("2026-06-06"),
+    date: corretorData("2026-06-20"),
   },
 
   {
     dot: "pendente",
     desc: "Pagamento Enel - Av. Ribeiro, 861/Apt 97",
-    value: -68.38,
-    date: corretorData("2026-06-06"),
+    value: 68.38,
+    date: corretorData("2026-06-18"),
   },
 
   {
     dot: "ok",
     desc: "Aluguel pago - Rua das Palmeiras",
     value: 119.95,
-    date: corretorData("2026-06-05"),
+    date: corretorData("2026-06-20"),
   },
 
   {
     dot: "ok",
     desc: "Pix recebido - Marina Souza",
     value: 890,
-    date: corretorData("2026-06-05"),
+    date: corretorData("2026-06-20"),
   },
 
   {
     dot: "late",
     desc: "Multa atraso - Rua João Pedro, 700",
-    value: -22.4,
-    date: corretorData("2026-06-04"),
+    value: 22.4,
+    date: corretorData("2026-06-19"),
   },
 ];
 
@@ -669,26 +669,26 @@ type Notificacao = {
 
 export const notificacoes: Notificacao[] = [
   {
-    titulo: "Pagamento de: Ana Costa recebido",
-    data: corretorData("2026-06-13"),
+    titulo: "Usuário silvia.mendes@email.com logado",
+    data: corretorData("2026-05-21"),
     tipo: "ok",
   },
 
   {
     titulo: "Novo imóvel: Rua Oliveira - Apt 76 cadastrado",
-    data: corretorData("2026-06-11"),
+    data: corretorData("2026-05-21"),
     tipo: "pendente",
   },
 
   {
     titulo: "Novo inquilino: Arthur da Silva cadastrado",
-    data: corretorData("2026-06-12"),
+    data: corretorData("2026-05-20"),
     tipo: "atrasado",
   },
 
   {
     titulo: "Mensagem enviada para: rafael.nog@email.com",
-    data: corretorData("2026-06-12"),
+    data: corretorData("2026-05-20"),
     tipo: "pendente",
   },
 ];

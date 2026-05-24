@@ -117,7 +117,7 @@ export default function Base({ children }: LayoutProps) {
         <div className="header">
           <div>
             <h1>Bem vinda Silvia</h1>
-            <p>Terça-Feira, {dataAtual.toLocaleDateString("pt-BR")}</p>
+            <p>Quinta-Feira, {dataAtual.toLocaleDateString("pt-BR")}</p>
           </div>
 
           <button className="notif-btn" onClick={ () => navigate(`/notificacao`) }>

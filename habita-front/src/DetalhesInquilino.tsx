@@ -190,7 +190,7 @@ export default function DetalhesInquilino() {
             {([
                 ["visao", "Visão geral"],
                 ["imoveis", "Imóveis"],
-                ["documentos", "Documentos"],
+                // ["documentos", "Documentos"],
                 ["historico", "Histórico"],
             ] as [Aba, string][]).map(([k, l]) => (
                 <button
@@ -250,7 +250,7 @@ export default function DetalhesInquilino() {
                     </div>
                     )}
 
-            {aba === "documentos" && (
+            {/* {aba === "documentos" && (
                 <ul className="docs">
                 {inquilino_.documentos.map((d, i) => (
                     <li key={i}>
@@ -262,7 +262,7 @@ export default function DetalhesInquilino() {
                     </li>
                 ))}
                 </ul>
-            )}
+            )} */}
 
             {aba === "historico" && (
                 <ul className="timeline">

@@ -74,7 +74,7 @@ function Card({ data }: { data: Imovel }) {
 
         <div className="rel-metric">
           <p className="metric-label">Pendente</p>
-          <p className="metric-value">R$ {pendenciaTotal(data)}</p>
+          <p className="metric-value">R$ {pendenciaTotal(data).toFixed(2)}</p>
 
           <div className="metric-inline">
             <p className={qtd_atrasados === 0 ? "metric-ok" : "metric-atraso"}>
