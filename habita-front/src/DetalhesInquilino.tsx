@@ -83,6 +83,22 @@ export default function DetalhesInquilino() {
   const [imoveis, setImoveis] =
     useState<Property[]>([]);
 
+  const [editando, setEditando] =
+    useState(false);
+
+  const [emailEditado, setEmailEditado] =
+    useState("");
+
+  const [
+    telefoneEditado,
+    setTelefoneEditado,
+  ] = useState("");
+
+  const [
+    observacoesEditadas,
+    setObservacoesEditadas,
+  ] = useState("");
+
   const navigate = useNavigate();
 
   const { id_inquilino } =
@@ -118,6 +134,18 @@ export default function DetalhesInquilino() {
           );
 
         setInquilino(owner);
+
+        setEmailEditado(
+          owner.email ?? ""
+        );
+
+        setTelefoneEditado(
+          owner.phone ?? ""
+        );
+
+        setObservacoesEditadas(
+          owner.observations ?? ""
+        );
 
         setImoveis(
           propriedadesFiltradas
@@ -215,6 +243,44 @@ export default function DetalhesInquilino() {
         ).getTime()
     );
 
+  async function setEditInquilino() {
+    if (!inquilino) {
+      return;
+    }
+
+    try {
+      const payload = {
+        name: inquilino.name,
+
+        email: emailEditado,
+
+        phone: telefoneEditado,
+
+        cpf: inquilino.cpf,
+
+        observations:
+          observacoesEditadas,
+
+        signup_date:
+          inquilino.signup_date,
+      };
+
+      const response =
+        await api.put(
+          `/owner/${inquilino.id}`,
+          payload
+        );
+
+      setInquilino(
+        response.data
+      );
+
+      setEditando(false);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   if (loading) {
     return (
       <Base>
@@ -277,13 +343,23 @@ export default function DetalhesInquilino() {
           </div>
 
           <div className="inq-actions">
-            <button className="btn-ghost">
+            <button
+              className="btn-ghost"
+              onClick={() =>
+                editando
+                  ? setEditInquilino()
+                  : setEditando(true)
+              }
+            >
+              {editando
+                ? "Salvar"
+                : "Editar"}
+            </button>
+
+            <button className="btn-msg">
               Mensagem
             </button>
 
-            <button className="btn-edit">
-              Editar
-            </button>
           </div>
         </div>
 
@@ -344,11 +420,21 @@ export default function DetalhesInquilino() {
                     E-mail
                   </span>
 
-                  <strong>
-                    {
-                      inquilino.email
-                    }
-                  </strong>
+                  {editando ? (
+                    <input
+                      className="edit-input"
+                      value={emailEditado}
+                      onChange={(e) =>
+                        setEmailEditado(
+                          e.target.value
+                        )
+                      }
+                    />
+                  ) : (
+                    <strong>
+                      {inquilino.email}
+                    </strong>
+                  )}
                 </li>
 
                 <li>
@@ -356,11 +442,21 @@ export default function DetalhesInquilino() {
                     Telefone
                   </span>
 
-                  <strong>
-                    {
-                      inquilino.phone
-                    }
-                  </strong>
+                  {editando ? (
+                    <input
+                      className="edit-input"
+                      value={telefoneEditado}
+                      onChange={(e) =>
+                        setTelefoneEditado(
+                          e.target.value
+                        )
+                      }
+                    />
+                  ) : (
+                    <strong>
+                      {inquilino.phone}
+                    </strong>
+                  )}
                 </li>
 
                 <li>
@@ -380,10 +476,24 @@ export default function DetalhesInquilino() {
                 Observações
               </h3>
 
-              <p className="obs">
-                {inquilino.observations ||
-                  "Sem observações"}
-              </p>
+              {editando ? (
+                <textarea
+                  className="obs-input"
+                  value={
+                    observacoesEditadas
+                  }
+                  onChange={(e) =>
+                    setObservacoesEditadas(
+                      e.target.value
+                    )
+                  }
+                />
+              ) : (
+                <p className="obs">
+                  {inquilino.observations ||
+                    "Sem observações"}
+                </p>
+              )}
             </section>
           </div>
 

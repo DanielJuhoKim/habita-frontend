@@ -18,39 +18,40 @@ import type {
 type Aba =
   | "informacoes"
   | "prioridades"
-  | "pagamentos"
-  | "documentos";
+  | "pagamentos";
+  // | "documentos";
 
-type Documento = {
-  nome: string;
-  tipo: string;
-  tamanho: string;
-};
+// type Documento = {
+//   nome: string;
+//   tipo: string;
+//   tamanho: string;
+// };
 
 type Status =
   | "ok"
   | "pendente"
   | "atrasado";
 
-const documentos: Documento[] = [
-  {
-    nome: "Contrato de locação.pdf",
-    tipo: "PDF",
-    tamanho: "1.2 MB",
-  },
+// const documentos: Documento[] = [
+//   {
+//     nome: "Contrato de locação.pdf",
+//     tipo: "PDF",
+//     tamanho: "1.2 MB",
+//   },
 
-  {
-    nome: "Comprovante de renda.pdf",
-    tipo: "PDF",
-    tamanho: "380 KB",
-  },
+//   {
+//     nome: "Comprovante de renda.pdf",
+//     tipo: "PDF",
+//     tamanho: "380 KB",
+//   },
 
-  {
-    nome: "Vistoria inicial.pdf",
-    tipo: "PDF",
-    tamanho: "2.1 MB",
-  },
-];
+//   {
+//     nome: "Vistoria inicial.pdf",
+//     tipo: "PDF",
+//     tamanho: "2.1 MB",
+//   },
+// ];
+
 
 function brl(v: number) {
   return v.toLocaleString(
@@ -242,6 +243,12 @@ export default function DTImoveis() {
       "informacoes"
     );
 
+  const [editandoDescricao, setEditandoDescricao] =
+    useState(false);
+
+  const [descricaoEditada, setEdit] =
+    useState("");
+
   const [
     imovel,
     setImovel,
@@ -268,6 +275,10 @@ export default function DTImoveis() {
 
         setImovel(
           response.data
+        );
+
+        setEdit(
+          response.data.description ?? ""
         );
       } catch (error) {
         console.error(error);
@@ -334,6 +345,31 @@ export default function DTImoveis() {
   const totalAtraso =
     atrasoTotal(imovel);
 
+  async function editDescricao() {
+    if (!imovel) {
+      return;
+    }
+
+    try {
+      const payload = {
+        ...imovel,
+        description: descricaoEditada,
+      };
+
+      const response =
+        await api.put(
+          `/property/${imovel.id}`,
+          payload
+        );
+
+      setImovel(response.data);
+
+      setEditandoDescricao(false);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   return (
     <Base>
       <div className="card panel imv-panel">
@@ -393,8 +429,17 @@ export default function DTImoveis() {
                 "Em atraso"}
             </span>
 
-            <button className="btn-ghost">
-              Editar
+            <button
+              className="btn-ghost"
+              onClick={() =>
+                editandoDescricao
+                  ? editDescricao()
+                  : setEditandoDescricao(true)
+              }
+            >
+              {editandoDescricao
+                ? "Salvar"
+                : "Editar"}
             </button>
 
             <button
@@ -466,7 +511,7 @@ export default function DTImoveis() {
           <div className="imv-grid">
             <section className="box">
               <h3>
-                Proprietário
+                Inquilino
               </h3>
 
               <div className="tenant">
@@ -515,9 +560,21 @@ export default function DTImoveis() {
                 Descrição
               </h3>
 
-              {
-                imovel.description
-              }
+              {editandoDescricao ? (
+                <textarea
+                  className="descricao-input"
+                  value={descricaoEditada}
+                  onChange={(e) =>
+                    setEdit(
+                      e.target.value
+                    )
+                  }
+                />
+              ) : (
+                <p>
+                  {imovel.description}
+                </p>
+              )}
             </section>
           </div>
 
@@ -570,7 +627,7 @@ export default function DTImoveis() {
               Pagamentos
             </button>
 
-            <button
+            {/* <button
               className={
                 aba ===
                 "documentos"
@@ -584,7 +641,7 @@ export default function DTImoveis() {
               }
             >
               Documentos
-            </button>
+            </button> */}
           </div>
 
           <section className="tab-content">
@@ -819,7 +876,7 @@ export default function DTImoveis() {
               </div>
             )}
 
-            {aba ===
+            {/* {aba ===
               "documentos" && (
               <ul className="docs">
                 {documentos.map(
@@ -853,7 +910,7 @@ export default function DTImoveis() {
                   )
                 )}
               </ul>
-            )}
+            )} */}
           </section>
         </div>
       </div>

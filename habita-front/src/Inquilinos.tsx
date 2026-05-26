@@ -226,7 +226,7 @@ export default function Inquilinos() {
             <div className="search">
               <input
                 type="text"
-                placeholder=" 🔎 Buscar por nome, e-mail ou telefone..."
+                placeholder=" 🔎 Buscar por inquilino"
                 value={query}
                 onChange={(e) =>
                   setQuery(

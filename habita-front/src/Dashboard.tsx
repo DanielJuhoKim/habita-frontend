@@ -168,7 +168,7 @@ function getPagamentoPrioridade(
         new Date(
           b.due_date
         ).getTime()
-    );
+    ).slice(0, 3);
 
   if (pendentes.length > 0) {
     return pendentes[0];
@@ -482,7 +482,7 @@ export default function Dashboard() {
                       </p>
 
                       <p className="desc-objeto">
-                        Proprietário:
+                        Inquilino:
                         {" "}
                         {imovel
                           .owner
@@ -560,7 +560,7 @@ export default function Dashboard() {
 
                     <div className="row-main">
                       <p className="titulo-objeto">
-                        {
+                        Conta de {
                           alert.title
                         }
                       </p>
@@ -586,7 +586,7 @@ export default function Dashboard() {
           </div>
         </div>
       </div>
-
+{/* 
       <div className="card panel">
         <div className="objetos">
           <h2>
@@ -643,7 +643,7 @@ export default function Dashboard() {
             )}
           </div>
         </div>
-      </div>
+      </div> */}
     </Base>
   );
 }

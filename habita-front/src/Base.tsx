@@ -1,5 +1,7 @@
 import { useNavigate, useLocation } from "react-router-dom";
 
+import { useUser } from "./UserInfo";
+
 import {
   Bell,
   LayoutDashboard,
@@ -10,7 +12,7 @@ import {
   Plus
 } from "lucide-react";
 
-import { dataAtual } from "./constantes";
+import { dataAtual, getInitials } from "./constantes";
 
 type LayoutProps = {
   children: React.ReactNode;
@@ -61,6 +63,7 @@ export default function Base({ children }: LayoutProps) {
     }
   ];
   const location = useLocation();
+  const { user } = useUser();
 
   return (
     <div className="app">
@@ -104,11 +107,11 @@ export default function Base({ children }: LayoutProps) {
         <div className="barra_opcoes-divider" />
 
         <button className="barra_opcoes-user" onClick={() => navigate("/usuario")}>
-          <div className="avatar">S</div>
+          <div className="avatar">{getInitials(user?.nome)}</div>
 
           <div>
-            <p className="user-name">Silvia</p>
-            <p className="user-plan">Plano Premium</p>
+            <p className="user-name">{user?.nome}</p>
+            <p className="user-plan">Plano {user?.plano}</p>
           </div>
         </button>
       </aside>
@@ -116,7 +119,7 @@ export default function Base({ children }: LayoutProps) {
       <main className="main">
         <div className="header">
           <div>
-            <h1>Bem vinda Silvia</h1>
+            <h1>Olá {user?.nome}</h1>
             <p>Terça-Feira, {dataAtual.toLocaleDateString("pt-BR")}</p>
           </div>
 

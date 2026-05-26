@@ -89,7 +89,7 @@
   font-weight: 500;
 }
 
-.btn-edit {
+.btn-msg {
   background: var(--edit);
   color: var(--edit-fg);
   border: none;
@@ -97,6 +97,40 @@
   padding: 7px 20px;
   cursor: pointer;
   font-weight: 370;
+}
+
+.edit-input {
+  width: 100%;
+
+  border: 1px solid #ccc;
+
+  border-radius: 8px;
+
+  padding: 8px 12px;
+
+  font-size: 14px;
+
+  font-family: inherit;
+
+  box-sizing: border-box;
+}
+
+.obs-input {
+  width: 100%;
+
+  min-height: 120px;
+
+  resize: vertical;
+
+  border: 1px solid #ccc;
+
+  border-radius: 10px;
+
+  padding: 12px;
+
+  font-size: 14px;
+
+  font-family: inherit;
 }
 
 .inq-scroll {
@@ -167,11 +201,18 @@
 }
 
 .info-list li {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+
+  grid-template-columns: 110px 1fr;
+
+  align-items: center;
+
   gap: 12px;
-  padding: 6px 0;
+
+  padding: 8px 0;
+
   border-bottom: 1px dashed var(--border);
+
   font-size: 14px;
 }
 

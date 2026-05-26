@@ -120,9 +120,9 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
 .notif-btn:hover { background: #a8ebd7be }
 
 .filtro-bt {
-  display: flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 6px;
+  display: flex; align-items: center; gap: 6px; border-radius: 6px;
   border: 1px solid var(--border); font-size: 12px; color: var(--muted-foreground);
-  background: #e3eaea;
+  background: #e3eaea; padding: 7px;
 }
 
 .filtro-bt:hover { background: rgb(207, 216, 218); }

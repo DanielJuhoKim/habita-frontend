@@ -8,7 +8,7 @@ export function formatarId(id: number) {
   return id.toString().padStart(4, "0");
 }
 
-export const dataAtual = corretorData("2026-06-13")
+export const dataAtual = new Date()
 
 export type CorStat = "ok" | "pendente" | "late" | "muted";
 
